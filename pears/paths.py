@@ -9,7 +9,7 @@ class SetupPaths:
         ):
 
         # directories for group data
-        self.basedir = self.basedir
+        self.basedir = basedir
         self.home = self.basedir + "katie/"
         self.illustris = self.basedir + "Illustris/"
         self.illustristng = self.basedir + "IllustrisTNG/"
