@@ -12,6 +12,7 @@ class SetupPaths:
         self.basedir = self.basedir
         self.home = self.basedir + "katie/"
         self.illustris = self.basedir + "Illustris/"
+        self.illustristng = self.basedir + "IllustrisTNG/"
 
         # directories in my home 
         self.pears = self.home + "pears/"
@@ -19,11 +20,12 @@ class SetupPaths:
         # group catalog paths
         self.illustrisdark = self.illustris + "GroupCatalogsDark/"
         self.illustrishydro = self.illustris + "GroupCatalogsHydro/"
-        self.tngdark = basedir +
-        self.tnghydro = basedir +
+        self.tngdark = self.illustristng + "TNG100-1-Dark/"
+        self.tnghydro = self.illustristng + "TNG100-1/"
 
         # merger tree paths
         self.illustrisdark_trees = self.illustris + "Illustris-1-Dark-MergerTree/"
         self.illustrishydro_trees = self.illustris + "Illustris-1-MergerTree/"
-        self.tngdark_trees = basedir +
-        self.tnghydro_trees = basedir +
+        self.tngdark_trees = self.tngdark + "MergerTree/"
+        self.tnghydro_trees = self.tnghydro + "MergerTree/"
+
