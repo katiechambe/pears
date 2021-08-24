@@ -9,23 +9,23 @@ class SetupPaths:
         ):
 
         # directories for group data
-        self.basedir = basedir
-        self.path_home = self.basedir + "katie/"
-        self.path_illustris = self.basedir + "Illustris/"
-        self.path_illustristng = self.basedir + "IllustrisTNG/"
+        self.path_basedir = basedir
+        self.path_home = self.path_basedir + "katie/"
+        self.path_illustris = self.path_basedir + "Illustris/"
+        self.path_illustristng = self.path_basedir + "IllustrisTNG/"
 
         # directories in my home 
-        self.path_pears = self.home + "pears/"
+        self.path_pears = self.path_home + "pears/"
 
         # group catalog paths
-        self.path_illustrisdark = self.illustris + "GroupCatalogsDark/"
-        self.path_illustrishydro = self.illustris + "GroupCatalogsHydro/"
-        self.path_tngdark = self.illustristng + "TNG100-1-Dark/"
-        self.path_tnghydro = self.illustristng + "TNG100-1/"
+        self.path_illustrisdark = self.path_illustris + "GroupCatalogsDark/"
+        self.path_illustrishydro = self.path_illustris + "GroupCatalogsHydro/"
+        self.path_tngdark = self.path_illustristng + "TNG100-1-Dark/"
+        self.path_tnghydro = self.path_illustristng + "TNG100-1/"
 
         # merger tree paths
-        self.path_illustrisdark_trees = self.illustris + "Illustris-1-Dark-MergerTree/"
-        self.path_illustrishydro_trees = self.illustris + "Illustris-1-MergerTree/"
-        self.path_tngdark_trees = self.tngdark + "MergerTree/"
-        self.path_tnghydro_trees = self.tnghydro + "MergerTree/"
+        self.path_illustrisdark_trees = self.path_illustris + "Illustris-1-Dark-MergerTree/"
+        self.path_illustrishydro_trees = self.path_illustris + "Illustris-1-MergerTree/"
+        self.path_tngdark_trees = self.path_tngdark + "MergerTree/"
+        self.path_tnghydro_trees = self.path_tnghydro + "MergerTree/"
 
