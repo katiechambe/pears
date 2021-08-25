@@ -10,7 +10,7 @@
     Notice:
     -------
     Katie Chamberlain modified this code slightly in 2021 to resolve 
-    deprecation warnings
+    deprecation
 """
 
 __author__ = "Mark Vogelsberger, Paul Torrey and contributing authors"
@@ -26,8 +26,8 @@ __status__ = "Beta -- forever."
 import os
 import sys
 import numpy as np
-import utils.hdf5libPy3 as hdf5lib
-import utils.namingPy3 as naming
+import hdf5libPy3 as hdf5lib
+import namingPy3 as naming
 
 
 ####################
@@ -150,14 +150,15 @@ class subfind_catalog:
                             val = grp_datablocks[key]
                             type = val[0]
                             dim = val[1]
+                            print(dim)
                             if (type=='FLOAT'):
-                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,(dim,))))
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
                             if (type=='INT'):
-                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,(dim,))))
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,dim)))
                             if (type=='INT64'):
-                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,(dim,))))
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,dim)))
                             if (type=='ID'):
-                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,(dim,))))
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,dim)))
                             vardict[key]=vars(self)[key]
 
 
@@ -169,13 +170,13 @@ class subfind_catalog:
                             type = val[0]
                             dim = val[1]
                             if (type=='FLOAT'):
-                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.double_type,(dim,))))
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.double_type,dim)))
                             if (type=='INT'):
-                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int32,(dim,))))
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int32,dim)))
                             if (type=='INT64'):
-                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int64,(dim,))))
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int64,dim)))
                             if (type=='ID'):
-                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.id_type,(dim,))))
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.id_type,dim)))
                             vardict[key]=vars(self)[key]
 
             #GROUPS
