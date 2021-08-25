@@ -26,8 +26,8 @@ __status__ = "Beta -- forever."
 import os
 import sys
 import numpy as np
-import hdf5libPy3 as hdf5lib
-import namingPy3 as naming
+import utils.hdf5libPy3 as hdf5lib
+import utils.namingPy3 as naming
 
 
 ####################
@@ -152,16 +152,14 @@ class subfind_catalog:
                             dim = val[1]
                             print(dim)
                             if (type=='FLOAT'):
-                                print("no")
+                                print( np.dtype(self.double_type) )
+                                print( np.dtype((self.double_type,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
                             if (type=='INT'):
-                                print("it")
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,dim)))
                             if (type=='INT64'):
-                                print("is")
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,dim)))
                             if (type=='ID'):
-                                print("not")
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,dim)))
                             vardict[key]=vars(self)[key]
 
