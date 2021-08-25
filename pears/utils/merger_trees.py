@@ -1,12 +1,5 @@
-import numpy as np
-import pandas as pd
-import h5py
-
-import hdf5libPy3 as hdf5lib
-import readsubfHDF5Py3 as readsubfHDF5
-import readtreeHDF5Py3 as readtreeHDF5
-
-from .paths import SetupPaths
+from utils import readtreeHDF5Py3 as readTree
+from utils.paths import SetupPaths
 
 class TraceMergerTree(SetupPaths):
 
@@ -34,20 +27,33 @@ class TraceMergerTree(SetupPaths):
             to specify which simulation
         """
 
+        SetupPaths.__init__(self)
+
         self.snapshot = snapshot
         self.subfindID = subfindID
         self.sim = sim
         self.physics = physics
 
-        # TODO: fix this directory! 
-        # should be a function of the simulation and the physics
-        treeDirectory = 'Illustris-1-Dark-MergerTree'
+        # defining the simulation path from paths.py
+        if self.sim == "Illustris":
+            if self.physics == "dark":
+                self.treepath = self.path_illustrisdark_trees
+            elif self.physics == "hydro":
+                self.treepath = self.path_illustrishydro_trees
+                
+        elif self.sim == "IllustrisTNG":
+            if self.physics == "dark":
+                self.treepath = self.path_tngdark_trees
+            elif self.physics == "hydro":
+                self.treepath = self.path_tnghydro_trees
 
-        tree = readtreeHDF5.TreeDB(treeDirectory)
+        treeDirectory = self.treepath
+
+        tree = readTree.TreeDB(treeDirectory)
         branch = tree.get_main_branch( 
-            snapnum, 
-            subfind_id, 
-            keysel=['SnapNum', 'SubhaloMass', 'SubhaloPos', 'SubhaloVel', 'SubhaloID', 'SubfindID']
+            self.snapshot, 
+            self.subfindID
+            # keysel=['SnapNum', 'SubhaloMass', 'SubhaloPos', 'SubhaloVel', 'SubhaloID', 'SubfindID']
             )
 
         self.branch = branch
@@ -77,7 +83,7 @@ class TraceMergerTree(SetupPaths):
         maxredshift: float
             the maximum redshift at which max mass occurs
         """
-        maxmass = np.max(self.masses)
+        maxmass = max(self.masses)
         maxmass_mask =  max(self.masses)==self.masses
         maxsnap = self.snaps[maxmass_mask][0]
         return maxmass, maxsnap
