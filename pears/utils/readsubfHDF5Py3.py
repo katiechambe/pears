@@ -26,8 +26,8 @@ __status__ = "Beta -- forever."
 import os
 import sys
 import numpy as np
-import hdf5libPy3 as hdf5lib
-import namingPy3 as naming
+import utils.hdf5libPy3 as hdf5lib
+import utils.namingPy3 as naming
 
 
 ####################
