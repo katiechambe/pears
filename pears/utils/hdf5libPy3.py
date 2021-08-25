@@ -40,11 +40,9 @@ if True:
     hdf5libname = hdf5lib_param.libname
     if hdf5libname == "tables":
         import tables
-        print("imported tables...")
         use_tables=True
     if hdf5libname == "h5py":
         import h5py
-        print("imported h5py...")
         use_tables=False
 else:
 #except:
@@ -56,7 +54,6 @@ else:
         import h5py
         use_tables=False
 
-print("modules seem to have loaded?")
 
 def OpenFile(fname, mode = "r"):
         if use_tables:
