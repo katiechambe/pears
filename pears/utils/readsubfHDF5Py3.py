@@ -5,6 +5,12 @@
     
     Dependencies:
       hdf5lib.py
+
+
+    Notice:
+    -------
+    Katie Chamberlain modified this code slightly in 2021 to resolve 
+    deprecation warnings
 """
 
 __author__ = "Mark Vogelsberger, Paul Torrey and contributing authors"
@@ -145,13 +151,13 @@ class subfind_catalog:
                             type = val[0]
                             dim = val[1]
                             if (type=='FLOAT'):
-                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,(dim,))))
                             if (type=='INT'):
-                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,dim)))
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,(dim,))))
                             if (type=='INT64'):
-                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,dim)))
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,(dim,))))
                             if (type=='ID'):
-                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,dim)))
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,(dim,))))
                             vardict[key]=vars(self)[key]
 
 
@@ -163,13 +169,13 @@ class subfind_catalog:
                             type = val[0]
                             dim = val[1]
                             if (type=='FLOAT'):
-                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.double_type,dim)))
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.double_type,(dim,))))
                             if (type=='INT'):
-                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int32,dim)))
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int32,(dim,))))
                             if (type=='INT64'):
-                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int64,dim)))
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int64,(dim,))))
                             if (type=='ID'):
-                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.id_type,dim)))
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.id_type,(dim,))))
                             vardict[key]=vars(self)[key]
 
             #GROUPS
