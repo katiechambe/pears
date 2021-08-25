@@ -152,12 +152,16 @@ class subfind_catalog:
                             dim = val[1]
                             print(dim)
                             if (type=='FLOAT'):
+                                print("no")
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
                             if (type=='INT'):
+                                print("it")
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,dim)))
                             if (type=='INT64'):
+                                print("is")
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,dim)))
                             if (type=='ID'):
+                                print("not")
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,dim)))
                             vardict[key]=vars(self)[key]
 
