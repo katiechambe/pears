@@ -156,10 +156,16 @@ class subfind_catalog:
                                 print( np.dtype((self.double_type,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
                             if (type=='INT'):
+                                print( np.dtype( ((self.double_type),(dim,)) ) )
+                                print( np.dtype((self.double_type,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,dim)))
                             if (type=='INT64'):
+                                print( np.dtype( ((self.double_type),(dim,)) ) )
+                                print( np.dtype((self.double_type,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,dim)))
                             if (type=='ID'):
+                                print( np.dtype( ((self.double_type),(dim,)) ) )
+                                print( np.dtype((self.double_type,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,dim)))
                             vardict[key]=vars(self)[key]
 
