@@ -152,20 +152,20 @@ class subfind_catalog:
                             dim = val[1]
                             print(dim)
                             if (type=='FLOAT'):
-                                print( "What's up", np.dtype( ((self.double_type),(dim,)) ) )
-                                print( "hello", np.dtype((self.double_type,dim)) )
+                                print( "solution?", np.dtype( ((self.double_type),(dim,)) ) )
+                                print( "should be", np.dtype((self.double_type,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
                             if (type=='INT'):
-                                print( "What's up", np.dtype( ((self.double_type),(dim,)) ) )
-                                print( "hello", np.dtype((self.double_type,dim)) )
+                                print( "solution?", np.dtype( ((np.int32),(dim,)) ) )
+                                print( "should be", np.dtype((np.int32,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,dim)))
                             if (type=='INT64'):
-                                print( "What's up", np.dtype( ((self.double_type),(dim,)) ) )
-                                print( "hello", np.dtype((self.double_type,dim)) )
+                                print( "solution?", np.dtype( ((np.int64),(dim,)) ) )
+                                print( "should be", np.dtype((np.int64,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,dim)))
                             if (type=='ID'):
-                                print( "What's up", np.dtype( ((self.double_type),(dim,)) ) )
-                                print( "hello", np.dtype((self.double_type,dim)) )
+                                print( "solution?", np.dtype( ((self.id_type),(dim,)) ) )
+                                print( "should be", np.dtype((self.id_type,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,dim)))
                             vardict[key]=vars(self)[key]
 
