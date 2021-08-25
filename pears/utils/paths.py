@@ -29,3 +29,7 @@ class SetupPaths:
         self.path_tngdark_trees = self.path_tngdark + "MergerTree/"
         self.path_tnghydro_trees = self.path_tnghydro + "MergerTree/"
 
+        # paths to save data!
+        self.path_groups = self.path_pears + "data/groups/"
+        self.path_subhalos = self.path_pears + "data/subhalos/"
+

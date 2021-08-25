@@ -14,8 +14,8 @@ outputs from this script are in SIMULATION units!
 __author__ = "Katie Chamberlain"
 __status__ = "Beta -- forever."
 
-from paths import SetupPaths
-import readsubfHDF5Py3 as readSub
+from utils.paths import SetupPaths
+import utils.readsubfHDF5Py3 as readSub
 
 class ReadCats:
 
