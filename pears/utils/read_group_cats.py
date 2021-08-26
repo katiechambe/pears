@@ -84,3 +84,4 @@ class ReadCats:
         self.mvirs = self.catalog.Group_M_TopHat200
         self.rvirs = self.catalog.Group_R_TopHat200
         self.nsubs = self.catalog.GroupNsubs
+        self.redshift = self.catalog.redshift
