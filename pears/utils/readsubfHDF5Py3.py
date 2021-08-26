@@ -150,14 +150,28 @@ class subfind_catalog:
                             val = grp_datablocks[key]
                             type = val[0]
                             dim = val[1]
+                            
+                            # Notice: added if and elif to get rid of deprecation error:
+                            # Previously: 
+                            # if (type=='FLOAT'):
+                            #    vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
                             if (type=='FLOAT') and (dim ==1):
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type)))
                             elif (type=='FLOAT'):
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
-                            if (type=='INT'):
+
+                            if (type=='INT') and (dim==1):
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32)))
+                            elif (type=='INT'):
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,dim)))
-                            if (type=='INT64'):
+
+                            if (type=='INT64') and (dim==1):
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64)))
+                            elif (type=='INT64'):
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,dim)))
+
+                            if (type=='ID') and (dim==1):
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type)))
                             if (type=='ID'):
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,dim)))
                             vardict[key]=vars(self)[key]
@@ -170,14 +184,27 @@ class subfind_catalog:
                             val = sub_datablocks[key]
                             type = val[0]
                             dim = val[1]
-                            if (type=='FLOAT'):
+                            # Notice: added if and elif to get rid of deprecation error
+                            if (type=='FLOAT') and (dim ==1):
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.double_type)))
+                            elif (type=='FLOAT'):
                                 vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.double_type,dim)))
-                            if (type=='INT'):
+
+                            if (type=='INT') and (dim==1):
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int32)))
+                            elif (type=='INT'):
                                 vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int32,dim)))
-                            if (type=='INT64'):
+
+                            if (type=='INT64') and (dim==1):
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int64)))
+                            elif (type=='INT64'):
                                 vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((np.int64,dim)))
+
+                            if (type=='ID') and (dim==1):
+                                vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.id_type)))
                             if (type=='ID'):
                                 vars(self)[key]=np.empty(self.nsubs, dtype=np.dtype((self.id_type,dim)))
+                                
                             vardict[key]=vars(self)[key]
 
             #GROUPS
