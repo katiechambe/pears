@@ -150,7 +150,9 @@ class subfind_catalog:
                             val = grp_datablocks[key]
                             type = val[0]
                             dim = val[1]
-                            if (type=='FLOAT'):
+                            if (type=='FLOAT') and (dim ==1):
+                                vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type)))
+                            elif (type=='FLOAT'):
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
                             if (type=='INT'):
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,dim)))
