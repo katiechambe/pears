@@ -23,7 +23,7 @@ class GetGroups:
         snapshot=135,
         sim="Illustris",
         physics="dark",
-        scale="dwarf",
+        size="dwarf",
         **kwargs
         ):
 
@@ -42,7 +42,7 @@ class GetGroups:
         physics: str
             "dark" or "hydro"
             to specify which simulation
-        scale: str
+        size: str
             "dwarf" or "massive"
         kwargs: dict
             group_mass_min: float
@@ -56,7 +56,7 @@ class GetGroups:
         self.snapshot = snapshot
         self.sim = sim
         self.physics = physics
-        self.scale = scale
+        self.size = size
         self.kwargs = kwargs
         
         self.group_min = self.kwargs.pop("group_mass_min", 8)
@@ -69,40 +69,35 @@ class GetGroups:
             sim=self.sim, 
             physics=self.physics
             )
+        self.scale = 1/(1+self.redshift)
 
-        self.masses = self.mvirs
+        # to pull out all of the groups within the bounds
+        self.mvirs_phys = self.mvirs/self.h
+        self.rvirs_phys = self.rvirs*self.scale
+        low_cut = (self.mvirs_phys > self.group_min)
+        high_cut = (self.mvirs_phys < self.group_max)
+        non_zero = self.mvirs != 0 
+        mass_cut =  low_cut&high_cut&non_zero
 
-        mask = self.masses > lowerGroupMass) & (self.masses < upperGroupMass)
+        self.pass_numbers = np.where(mass_cut==True)[0]
+        self.pass_mass = self.mvirs_phys[self.pass_numbers]
+        self.pass_mass = self.rvirs_phys[self.pass_numbers]
+        self.pass_nsubs = self.nsubs[self.pass_numbers]
 
-        # mask = np.where((self.masses > lowerGroupMass) & (self.masses < upperGroupMass))
+        print('alright now lets see if she breaks')
 
-
-
-
-        print("got catalog")
-
+        self.pass_isoflag = self.get_isolation_flag(self.pass_numbers)
         
-        dict={{"group_mass_min":8},{"group_mass_max":50}}
-
-        number_of_groups = len(self.mvirs)
-        group_numbers = np.arange(0, number_of_groups,1)
 
 
-groupMask =   # mask groups that pass the first mass cut
-groupMasses = mvirs[groupMask] # to get all group masses in Msun instead of Msun/h
-groupNumbers = subgr[inds[groupMask]]
-
-
-subhaloMask = mvirs != 0 # to remove all groups with 0 mass
-
-groupNum = subgr[i]
+    
 
 
 
 
 
     def get_isolation_flag(self, group_number):
-        xLo, xHi, yLo, yHi, zLo, zHi = subbox(groupPos[groupNum]) # in ckpc/h
+        xLo, xHi, yLo, yHi, zLo, zHi = subbox(groupPos[groupNum]) # in ckpc/h   
         xGrps, yGrps, zGrps = groupPos[:,0], groupPos[:,1], groupPos[:,2]
         xPos, yPos, zPos = groupPos[groupNum][0], groupPos[groupNum][1], groupPos[groupNum][2]
 
@@ -110,7 +105,7 @@ groupNum = subgr[i]
 
     def save_groups(self):
         SetupPaths.__init__(self)
-        save_path = self.path_groups + f"{self.sim}_{self.physics}_{self.scale}_{self.snapshot}.csv"
+        save_path = self.path_groups + f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.csv"
 
 groupMass = mvirs[groupNum]
     groupRadius = rvirs[groupNum]
