@@ -26,8 +26,8 @@ __status__ = "Beta -- forever."
 import os
 import sys
 import numpy as np
-import utils.hdf5libPy3 as hdf5lib
-import utils.namingPy3 as naming
+import hdf5libPy3 as hdf5lib
+import namingPy3 as naming
 
 
 ####################
@@ -150,22 +150,13 @@ class subfind_catalog:
                             val = grp_datablocks[key]
                             type = val[0]
                             dim = val[1]
-                            print(dim)
                             if (type=='FLOAT'):
-                                print( "solution?", np.dtype( ((self.double_type),(dim,)) ) )
-                                print( "should be", np.dtype((self.double_type,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.double_type,dim)))
                             if (type=='INT'):
-                                print( "solution?", np.dtype( ((np.int32),(dim,)) ) )
-                                print( "should be", np.dtype((np.int32,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int32,dim)))
                             if (type=='INT64'):
-                                print( "solution?", np.dtype( ((np.int64),(dim,)) ) )
-                                print( "should be", np.dtype((np.int64,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((np.int64,dim)))
                             if (type=='ID'):
-                                print( "solution?", np.dtype( ((self.id_type),(dim,)) ) )
-                                print( "should be", np.dtype((self.id_type,dim)) )
                                 vars(self)[key]=np.empty(self.ngroups, dtype=np.dtype((self.id_type,dim)))
                             vardict[key]=vars(self)[key]
 
