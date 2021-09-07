@@ -12,11 +12,11 @@ jobs:
         with:
           working_directory: paper
           root_file: pears.tex
-      - name: HACK - remove gitignore so PDF is added and deployed
-        run: rm tex/.gitignore
+#       - name: HACK - remove gitignore so PDF is added and deployed
+#         run: rm tex/.gitignore
       - name: Deploy PDF
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./tex
+          publish_dir: ./paper
           force_orphan: true
