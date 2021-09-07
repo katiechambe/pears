@@ -1,1 +1,4 @@
 # pears
+
+
+[![PDF](https://img.shields.io/badge/latex-PDF-blueviolet.svg?style=flat)](https://github.com/katiechambe/pears/paper/pears.pdf)
