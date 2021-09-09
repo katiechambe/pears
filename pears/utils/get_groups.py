@@ -14,6 +14,9 @@ __status__ = "Beta -- forever."
 import numpy as np
 from utils.read_group_cats import ReadCats
 from utils.paths import SetupPaths
+from astropy.table import QTable
+import astropy.units as u
+# import pandas as pd
 
 
 class GetGroups:
@@ -37,7 +40,7 @@ class GetGroups:
         subfindID: int
             the ID number of the subhalo at the corresponding snapshot
         sim: str
-            "Illustris" or "IllustrisTNG"
+            "Illustris" or "TNG"
             to specify which simulation
         physics: str
             "dark" or "hydro"
@@ -72,119 +75,64 @@ class GetGroups:
         self.scale = 1/(1+self.redshift)
 
         # to pull out all of the groups within the bounds
-        self.mvirs_phys = self.mvirs/self.h
-        self.rvirs_phys = self.rvirs*self.scale
+        # Note: virial mass and virial radius are both in physical units
+        self.mvirs_phys = self.mvirs/self.h 
+        self.rvirs_phys = self.rvirs*self.scale/self.h
         low_cut = (self.mvirs_phys > self.group_min)
         high_cut = (self.mvirs_phys < self.group_max)
         non_zero = self.mvirs != 0 
         mass_cut =  low_cut&high_cut&non_zero
 
+        # find the Group ID #s of all groups that pass the cut
         self.pass_numbers = np.where(mass_cut==True)[0]
-        self.pass_mass = self.mvirs_phys[self.pass_numbers]
-        self.pass_mass = self.rvirs_phys[self.pass_numbers]
+        self.pass_mvir = self.mvirs_phys[self.pass_numbers]
+        self.pass_rvir = self.rvirs_phys[self.pass_numbers]
         self.pass_nsubs = self.nsubs[self.pass_numbers]
-
-        print('alright now lets see if she breaks')
-
-        self.pass_isoflag = self.get_isolation_flag(self.pass_numbers)
-        
-
-
-    
-
-
-
-
-
-    def get_isolation_flag(self, group_number):
-        xLo, xHi, yLo, yHi, zLo, zHi = subbox(groupPos[groupNum]) # in ckpc/h   
-        xGrps, yGrps, zGrps = groupPos[:,0], groupPos[:,1], groupPos[:,2]
-        xPos, yPos, zPos = groupPos[groupNum][0], groupPos[groupNum][1], groupPos[groupNum][2]
-
-
 
     def save_groups(self):
         SetupPaths.__init__(self)
-        save_path = self.path_groups + f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.csv"
+        save_path = f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv"
 
-groupMass = mvirs[groupNum]
-    groupRadius = rvirs[groupNum]
-    groupMasses.append(groupMass) 
-    groupRadii.append(groupRadius)   
+        group_number = u.Quantity(self.pass_numbers,dtype=np.int64)
+        group_number.info.description = "Group Number"
 
-    if xLo < xHi:
-        xMask = np.logical_and(xGrps > xLo, xGrps < xHi)
-    else:
-        xMask = np.logical_or(xGrps > xLo, xGrps < xHi)
+        group_mass = self.pass_mvir*u.Unit(1e10 * u.Msun)
+        group_mass.info.description = "Physical mass from Group_M_TopHat200"
 
-    if yLo < yHi:
-        yMask = np.logical_and(yGrps > yLo, yGrps < yHi)
-    else:
-        yMask = np.logical_or(yGrps > yLo, yGrps < yHi)
+        group_radius = self.pass_rvir*u.kpc
+        group_radius.info.description = "Physical radius from Group_R_TopHat200"
 
-    if zLo < zHi:
-        zMask = np.logical_and(zGrps > zLo, zGrps < zHi)
-    else: 
-        zMask = np.logical_or(zGrps > zLo, zGrps < zHi)
+        group_nsubs = u.Quantity(self.pass_nsubs,dtype=np.int64)
+        group_nsubs.info.description = "Number of subhalos in group"
 
-    equivMask = np.logical_and(xGrps == xPos, yGrps == yPos) # to remove the group itself
-    massMask  = (mvirs > groupMass) # only consider groups with masses higher than the group mass
-
-    fullMask = xMask&yMask&zMask&~equivMask&subhaloMask&massMask
-
-    if (~fullMask).all():
-        massMask  = (mvirs > groupMass/10) # only consider groups with masses higher than the group mass
-        fullMask = xMask&yMask&zMask&~equivMask&subhaloMask&massMask
-        if (~fullMask).all():
-            fullMask = xMask&yMask&zMask&~equivMask&subhaloMask
+        t = QTable()
+        t['group_number'] = group_number
+        t['group_mass'] = group_mass
+        t['group_radius'] = 
+        t['group_nsubs'] = 
+        self.pass_numbers.info.description
+        t.write(self.path_groups + save_path)
 
 
+        # zipped = list(zip(self.pass_numbers, 
+        #                   self.pass_mvir*u.Unit(1e10 * u.Msun), 
+        #                   self.pass_rvir*u.kpc, 
+        #                   self.pass_nsubs))
 
-    linear = np.arange(0,len(fullMask),1)
+        # df = pd.DataFrame(data=zipped, 
+        #     columns=["Group Number","Group Mass","",""])
 
-    groupNumbers = linear[fullMask]
-    masses       = mvirs[fullMask]
-    massRatios    = masses/groupMass
-    radiuses     = rvirs[fullMask]
+        df = pd.DataFrame(data = )
 
-    xPoses = groupPos[fullMask][:,0]
-    yPoses = groupPos[fullMask][:,1]
-    zPoses = groupPos[fullMask][:,2]
-
-    primaryPos = groupPos[fullMask]
-    numberGroups = len(primaryPos)
-    secondaryPos = np.column_stack([xPos*np.ones(numberGroups),yPos*np.ones(numberGroups),zPos*np.ones(numberGroups)])
-
-    correctedSeparations = np.array([np.linalg.norm(i) for i in np.array(vector(primaryPos,secondaryPos,scale))]) # physical kpc
-
-    hillRadii = hillRadius(groupMass, correctedSeparations, masses)
-
-    if (hillRadii < groupRadius).any():
-        isolation_flag = False
-    else:
-        isolation_flag = True
-
-        return isolation_flag 
+        print(f"Saved groups at {self.sim}_{self.physics}_{self.size}_{self.snapshot}.csv")
 
 
-
-    
-    pertInd = np.where(np.min(hillRadius) == hillRadius)[0][0]
-    perturber = groupNumbers[pertInd]
-    pertGroupNum.append(perturber)
-    pertMassRatio.append( (mvirs[perturber]) / groupMass )
-    pertSep.append( correctedSeparations[pertInd] )
-
-    count = groupsList.index(i)
-    if count%100 == 0:
-        print('Have gone through ',count," groups out of ", len(firstSubhaloNumbers)+1)
 print('got groups')
 
 #######################################
 # collecting the groups and exporting #
 #######################################
 # groupNumbers = np.array(groups)
-zipped = list(zip(groups, groupMasses, groupRadii, isoFlagHill, pertGroupNum, pertMassRatio, pertSep))
 df = pd.DataFrame(data = zipped, columns=['Group Numbers','Group Mass','Group Radius','Isolated Flag Hill','Perturbing Group Number','Perturbing Group Mass Ratio','Perturbing Group Separation'])
 # zipped = list(zip(groups, groupMasses, isoFlag0p5Mpc, tidalIndex0p5Mpc, isoFlag1Mpc, tidalIndex1Mpc, isoFlag1p5Mpc, tidalIndex1p5Mpc, pertGroupNum, pertMassRatio, pertSep))
 # df = pd.DataFrame(data = zipped, columns=['Group Numbers','Group Mass','Isolated 0.5Mpc Flag','Tidal Index 0.5Mpc','Isolated 1Mpc Flag','Tidal Index 1Mpc', 'Isolated 1.5Mpc Flag','Tidal Index 1.5Mpc','Perturbing Group Number','Perturbing Group Mass Ratio','Perturbing Group Separation'])
