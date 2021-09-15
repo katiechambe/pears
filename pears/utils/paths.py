@@ -1,3 +1,14 @@
+""" 
+Collection of all paths used in analysis
+
+Dependencies:
+-------------
+None
+"""
+
+__author__ = "Katie Chamberlain"
+__date__   = "September 2021"
+
 class SetupPaths:
     """ 
     Defines the paths that are read into each file
