@@ -91,6 +91,6 @@ class ReadCats:
         self.redshift = self.catalog.redshift
         self.inds = self.catalog.GroupFirstSub
         self.subgr = self.catalog.SubhaloGrNr
-        self.submass = self.catalog.Subhalomass
+        self.submass = self.catalog.SubhaloMass
         self.subpos = self.catalog.SubhaloPos
         self.subvel = self.catalog.SubhaloVel
