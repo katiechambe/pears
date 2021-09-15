@@ -13,6 +13,7 @@ outputs from this script are in SIMULATION units!
 
 __author__ = "Katie Chamberlain"
 __status__ = "Beta -- forever."
+__date__   = "September 2021"
 
 from utils.paths import SetupPaths
 import utils.readsubfHDF5Py3 as readSub
@@ -70,8 +71,11 @@ class ReadCats:
                 self.catpath = self.path_tnghydro
 
         keysel = [
-            'GroupPos', 'Group_M_TopHat200', 
-            'Group_R_TopHat200', 'GroupNsubs'
+            'GroupPos','Group_M_TopHat200', 
+            'Group_R_TopHat200','GroupNsubs',
+            'GroupFirstSub',
+            'SubhaloGrNr','SubhaloMass',
+            'SubhaloPos','SubhaloVel'
             ]
 
         self.catalog = readSub.subfind_catalog(
@@ -85,3 +89,8 @@ class ReadCats:
         self.rvirs = self.catalog.Group_R_TopHat200
         self.nsubs = self.catalog.GroupNsubs
         self.redshift = self.catalog.redshift
+        self.inds = self.catalog.GroupFirstSub
+        self.subgr = self.catalog.SubhaloGrNr
+        self.submass = self.catalog.Subhalomass
+        self.subpos = self.catalog.SubhaloPos
+        self.subvel = self.catalog.SubhaloVel
