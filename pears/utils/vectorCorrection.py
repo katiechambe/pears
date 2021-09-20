@@ -24,5 +24,5 @@ def vectorCorrection(primaryPosition, secondaryPosition, boxsize):
                                          differenceVector
                                          ) 
                                 )
-    return differenceVector 
+    return corrected 
 
