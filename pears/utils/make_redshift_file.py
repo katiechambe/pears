@@ -36,7 +36,7 @@ t = QTable()
 t['snapshot'] = snapshots
 t['redshift'] = reds
 t['scale'] = scales
-t.write("../../data/.csv"
+t.write(f"../../data/{sim}_snapdata.csv"
         overwrite=True)
 
 print(f"Saved data")
