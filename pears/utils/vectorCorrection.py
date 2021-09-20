@@ -1,17 +1,28 @@
 import numpy as np
 
-h = 0.704 # this is not a function of redshift!
+'''
+vectorCorrection corrects the separation vector between two subhalos
+accounting for the periodic boundary conditions of the simulation box. 
+Returns the corrected separation vector between the subhalos
+Note: 
+----- 
+Input all values in physical units (kpc)
+'''
 
-################################################################
-# this script takes in the positions of the primary and        #
-# secondary halos and returns the corrected separation vector! #
-# between them in physical units, accounting for the           #
-# periodic boundary conditions of the simulation box           #
-################################################################
+def vectorCorrection(primaryPosition, secondaryPosition, boxsize):
+    '''
+    Note:
+    -----
+    All values should be input in physical units! including box size
+    '''
+    differenceVector = (primaryPosition - secondaryPosition) 
 
-def vectorCorrection(primaryPosition, secondaryPosition, scale):
-    boxSize = 75000*scale/h # box size in kpc, since box size is 75 cMpc/h! 
-    differenceVector = (primaryPosition - secondaryPosition)*scale/h # positions are in comoving kpc/h
-    differenceVector = np.where( differenceVector < -boxSize/2, differenceVector + boxSize, np.where( differenceVector > boxSize/2, differenceVector - boxSize , differenceVector ) )
-    return differenceVector # returns in physical kpc
+    corrected = np.where(differenceVector < -boxsize/2, 
+                                differenceVector + boxsize, 
+                                np.where(differenceVector > boxsize/2, 
+                                         differenceVector - boxsize, 
+                                         differenceVector
+                                         ) 
+                                )
+    return differenceVector 
 
