@@ -10,8 +10,10 @@ __author__ = "Katie Chamberlain"
 __status__ = "Beta - forever~"
 __date__   = "September 2021"
 
+from threading import current_thread
 import numpy as np
 from utils.read_group_cats import ReadCats
+from utils.merger_trees import TraceMergerTree
 from astropy.table import QTable
 import astropy.units as u
 
@@ -30,7 +32,7 @@ class GetGroups:
         Defines bounds for group parameters and 
 
         Parameters:
-        ----------_
+        -----------
         snapshot: int
             the number of the snapshot with the corresponding subhalo ID
         subfindID: int
@@ -73,7 +75,7 @@ class GetGroups:
 
         self.group_min = self.kwargs.pop("group_mass_min", self.group_min)
         self.group_max = self.kwargs.pop("group_mass_max", self.group_max)
-        self.h = self.kwargs.pop("little_h", 0.702)
+        self.h = self.kwargs.pop("little_h", 0.704)
         
         ReadCats.__init__(
             self, 
@@ -104,14 +106,99 @@ class GetGroups:
         # and that have current mass >1e9Msun
         subhalo_group_mask = np.in1d(self.subgr, self.pass_numbers)
         subhalo_mass_mask = self.submass_phys >= 0.1 
-        self.subhalo_mask = np.where(subhalo_group_mask&subhalo_mass_mask)
+        self.subhalo_mask = np.where(subhalo_group_mask&subhalo_mass_mask)[0]
+
+        self.save_path = f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv"
     
+
+
+# TODO: fix this up! 
+    def save_subhalos(self):
+        '''
+        Save the subhalo data for groups that pass mass cuts.
+        Note:
+        -----
+        This may be slow because it has to look up the merger trees for 
+        each of the subhalos 
+        '''
+        x = []
+        mask = []
+        prev_group=None
+        for subid in self.subhalo_mask: 
+            current_group = self.subgr[subid]
+
+            # only pay attention to first 5 subhalos
+            if prev_group is None:
+                prev_group = current_group     
+                i=-1
+            elif prev_group==current_group:
+                i+=1
+            elif prev_group!=current_group:
+                i=0
+
+            if i < 5:
+                try:
+                    x.append(TraceMergerTree(
+                            snapshot=hey.snapshot,
+                            subfindID=subid,
+                            sim=self.sim, 
+                            physics=self.physics).maxmass )
+                    mask.append(True)
+
+                except AttributeError:
+                    print(f'Could not find merger tree for {sim} {physics} {subid}')
+                    mask.append(False)
+
+            else:
+                mask.append(False)
+            prev_group=current_group
+
+        x = np.array(x)
+
+        sub_max = x[:,0]
+        sub_max_snap = x[:,1]
+
+        subhalo_groupnum = u.Quantity( self.subgr[self.subhalo_mask][mask], dtype=np.int64)
+        subhalo_groupnum.info.description = "Group Number"
+
+        subhalo_id = u.Quantity( self.subhalo_mask[mask], dtype=np.int64) 
+        subhalo_id.info.description = "Subhalo ID"
+
+        subhalo_mass =  self.submass_phys[self.subhalo_mask][mask] * u.Unit(1e10 * u.Msun)
+        subhalo_mass.info.description = "Physical mass bound to subhalo"
+
+        subhalo_pos = self.subpos_phys[self.subhalo_mask][mask] * u.kpc
+        subhalo_pos.info.description = "Physical position of subhalo in the box"
+
+        subhalo_vel = self.subvel[self.subhalo_mask][mask] * u.km / u.s
+        subhalo_vel.info.description = "Peculiar velocity of subhalo"
+
+        subhalo_maxmass =  sub_max * u.Unit(1e10 * u.Msun)
+        subhalo_maxmass.info.description = "Maximum mass (physical) ever achieved"
+
+        subhalo_maxmass_snap = u.Quantity( sub_max_snap , dtype=np.int64)
+        subhalo_maxmass_snap.info.description = "Snapshot where maximum mass is achieved"
+            
+        t = QTable(meta={"snapshot":self.snapshot, "redshift":self.redshift})
+
+        t['subhalo_groupnum'] = subhalo_groupnum
+        t['subhalo_id'] = subhalo_id
+        t['subhalo_mass'] = subhalo_mass
+        t['subhalo_pos'] = subhalo_pos
+        t['subhalo_vel'] = subhalo_vel
+        t['subhalo_maxmass'] = subhalo_maxmass
+        t['subhalo_maxmass_snap'] = subhalo_maxmass_snap
+
+        t.write(self.path_subhalos + self.save_path,
+                overwrite=True)
+
+        print(f"Saved subhalos at {self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv")
+
+
     def save_groups(self):
         '''
         Save the groups that pass the mass cuts
         '''
-        save_path = f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv"
-
         group_number = u.Quantity(self.pass_numbers,
                                   dtype=np.int64)
         group_number.info.description = "Group Number"
@@ -126,55 +213,12 @@ class GetGroups:
                                  dtype=np.int64)
         group_nsubs.info.description = "Number of subhalos in group"
 
-        t = QTable()
+        t = QTable(meta={"snapshot":self.snapshot, "redshift":self.redshift})
         t['group_number'] = group_number
         t['group_mass'] = group_mass
         t['group_radius'] = group_radius
         t['group_nsubs'] = group_nsubs
-        t.write(self.path_groups + save_path,
+        t.write(self.path_groups + self.save_path,
                 overwrite=True)
 
-        print(f"Saved groups at {self.sim}_{self.physics}_{self.size}_{self.snapshot}.csv")
-
-# TODO: fix this up! 
-# TODO: make sure to save the redshift of each snapshoit in the metadata of the ecsv file! 
-    def save_subhalos(self):
-            '''
-            Save the subhalo data
-            '''
-                # max mass and corresponding snapnumber
-            inst = mergerClass.MergerTree(snap, subID)
-                maxMass, maxMassSnap    = inst.maxMass()[0]/h, inst.maxMass()[1]
-                # i is group number, subID is subhalo ID, 
-                data.append([groupID, subID, massz0, maxMass, maxMassSnap, ])
-            
-
-
-            save_path = f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv"
-
-            subhalo_number = u.Quantity(self.pass_numbers,
-                                    dtype=np.int64)
-            subhalo_number.info.description = "Group Number"
-
-            subhalo_mass = self.pass_mvir * u.Unit(1e10 * u.Msun)
-            subhalo_mass.info.description = "Physical mass from Group_M_TopHat200"
-
-            subhalo_nsubs = u.Quantity(self.pass_nsubs,
-                                    dtype=np.int64)
-            subhalo_nsubs.info.description = "Number of subhalos in group"
-
-            t.meta?? 
-
-
-    subhalo_pos, subhalo_vel, subhalo_mass, subhalo_grnmb, subhalo_IDs, subhalo_maxmass, subhalo_maxmass_snap
-
-
-            t = QTable()
-            t['group_number'] = group_number
-            t['group_mass'] = group_mass
-            t['group_radius'] = group_radius
-            t['group_nsubs'] = group_nsubs
-            t.write(self.path_subhalos + save_path,
-                    overwrite=True)
-
-            print(f"Saved groups at {self.sim}_{self.physics}_{self.size}_{self.snapshot}.csv")
+        print(f"Saved groups at data/groups/{self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv")

@@ -1,7 +1,7 @@
 from utils import readtreeHDF5Py3 as readTree
 from utils.paths import SetupPaths
 
-class TraceMergerTree(SetupPaths):
+class TraceMergerTree:
 
     def __init__(
         self, 
@@ -20,7 +20,7 @@ class TraceMergerTree(SetupPaths):
         subfindID: int
             the ID number of the subhalo at the corresponding snapshot
         sim: str
-            "Illustris" or "IllustrisTNG"
+            "Illustris" or "TNG"
             to specify which simulation
         physics: str
             "dark" or "hydro"
@@ -41,7 +41,7 @@ class TraceMergerTree(SetupPaths):
             elif self.physics == "hydro":
                 self.treepath = self.path_illustrishydro_trees
                 
-        elif self.sim == "IllustrisTNG":
+        elif self.sim == "TNG":
             if self.physics == "dark":
                 self.treepath = self.path_tngdark_trees
             elif self.physics == "hydro":

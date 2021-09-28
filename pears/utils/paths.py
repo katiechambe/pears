@@ -44,4 +44,3 @@ class SetupPaths:
         self.path_data = self.path_pears + "data/"
         self.path_groups = self.path_pears + "data/groups/"
         self.path_subhalos = self.path_pears + "data/subhalos/"
-

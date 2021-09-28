@@ -36,7 +36,7 @@ class ReadCats:
         subfindID: int
             the ID number of the subhalo at the corresponding snapshot
         sim: str
-            "Illustris" or "IllustrisTNG"
+            "Illustris" or "TNG"
             to specify which simulation
         physics: str
             "dark" or "hydro"
