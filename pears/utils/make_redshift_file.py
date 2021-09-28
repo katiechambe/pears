@@ -9,34 +9,77 @@ __author__ = "Katie Chamberlain"
 __status__ = "Beta - forever~"
 __date__   = "September 2021"
 
-import numpy as np
-from utils.read_group_cats import ReadCats
+import utils.readsubfHDF5Py3 as readSub
 from astropy.table import QTable
+import numpy as np
+from utils.paths import SetupPaths
 
-snapshot_nums = np.arange(0,135)
+
 
 reds = []
 snapshots = []
 scales = [] 
 
-sim = "Illustris"
+paths = SetupPaths()
+
+# sim = "Illustris"
+sim = "TNG"
+
+if sim == "Illustris":
+    catpath = paths.path_illustrisdark
+    backup = paths.path_illustrishydro
+    snapshot_nums = np.arange(0,136)
+
+        
+elif sim == "TNG":
+    catpath = paths.path_tngdark
+    backup = paths.path_tnghydro
+    snapshot_nums = np.arange(0,100)
+
 
 for snap in snapshot_nums:
+    print(snap)
     try:
-        redshift = ReadCats(snapshot=snap).redshift
+        catalog = readSub.subfind_catalog(
+        basedir=catpath,
+        snapnum=snap,
+        keysel=[]
+        )
+
+        redshift = catalog.redshift
         scale = 1/(1+redshift)
 
         reds.append(redshift)
         scales.append(scale)
         snapshots.append(snap)
-    except :
-        continue
+    except OSError:
+        print("snapshot corrupt in dark")
+        try:
+            catalog = readSub.subfind_catalog(
+            basedir=backup,
+            snapnum=snap,
+            keysel=[]
+            )
+
+            redshift = catalog.redshift
+            scale = 1/(1+redshift)
+
+            reds.append(redshift)
+            scales.append(scale)
+            snapshots.append(snap)
+        except OSError:
+            print(f"snapshot {snap} does not exist")
+            continue
+        except SystemExit:
+            continue
 
 t = QTable()
 t['snapshot'] = snapshots
 t['redshift'] = reds
 t['scale'] = scales
-t.write(f"../../data/{sim}_snapdata.csv"
+t.write(f"{paths.path_data}{sim}_snapdata.csv",
         overwrite=True)
 
 print(f"Saved data")
+
+
