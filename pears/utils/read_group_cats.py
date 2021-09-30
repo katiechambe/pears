@@ -71,8 +71,8 @@ class ReadCats:
                 self.catpath = self.path_tnghydro
 
         try:
-            print(self.catpath)
-        except:
+            self.catpath
+        except AttributeError:
             print('Unknown simulation or physics type. Check inputs!')
             
 
