@@ -86,6 +86,7 @@ class ReadCats:
                 )
         except AttributeError:
             print('Unknown simulation or physics type. Check inputs!')
+            break
 
         self.groupPos = self.catalog.GroupPos
         self.mvirs = self.catalog.Group_M_TopHat200
