@@ -8,7 +8,8 @@ class TraceMergerTree:
         snapshot,
         subfindID,
         sim = "Illustris",
-        physics ="dark"
+        physics ="dark",
+        **kwargs
         ):
         """
         Identifies and pulls merger tree for a single subhalo
@@ -25,6 +26,8 @@ class TraceMergerTree:
         physics: str
             "dark" or "hydro"
             to specify which simulation
+        kwargs: dict
+            little_h: h varies for each simulation!
         """
 
         SetupPaths.__init__(self)
@@ -33,6 +36,9 @@ class TraceMergerTree:
         self.subfindID = subfindID
         self.sim = sim
         self.physics = physics
+        self.h = self.kwargs.pop("little_h", 0.704)
+        self.scale = 1/(1+self.redshift)
+
 
         # defining the simulation path from paths.py
         if self.sim == "Illustris":
@@ -59,10 +65,12 @@ class TraceMergerTree:
         self.branch = branch
         self.snaps = branch.SnapNum
         self.masses = branch.SubhaloMass
-        self.positions = branch.SubhaloPos
+        self.positions = branch.SubhaloPos # note this is in comoving!
         self.velocities = branch.SubhaloVel
-        self.id = branch.SubhaloID
+        self.id = branch.SubhaloID 
         self.subfindIDTree = branch.SubfindID
+
+        self.masses_phys = self.masses / self.h
         
     @property
     def maxmass(self):
@@ -83,8 +91,8 @@ class TraceMergerTree:
         maxredshift: float
             the maximum redshift at which max mass occurs
         """
-        maxmass = max(self.masses)
-        maxmass_mask =  max(self.masses)==self.masses
+        maxmass = max(self.masses_phys)
+        maxmass_mask =  max(self.masses_phys)==self.masses_phys
         maxsnap = self.snaps[maxmass_mask][0]
         return maxmass, maxsnap
 
