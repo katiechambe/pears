@@ -17,6 +17,7 @@ __date__   = "September 2021"
 
 from utils.paths import SetupPaths
 import utils.readsubfHDF5Py3 as readSub
+import sys
 
 class ReadCats:
 
@@ -86,7 +87,7 @@ class ReadCats:
                 )
         except AttributeError:
             print('Unknown simulation or physics type. Check inputs!')
-            break
+            sys.exit(1)
 
         self.groupPos = self.catalog.GroupPos
         self.mvirs = self.catalog.Group_M_TopHat200
