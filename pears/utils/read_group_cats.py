@@ -66,7 +66,7 @@ class ReadCats:
                 self.catpath = self.path_illustrishydro
             else:
                 print("Unrecognized physics type")
-                return
+                raise Exception("Failed to construct path")
                 
         elif self.sim == "TNG":
             if self.physics == "dark":
@@ -75,11 +75,11 @@ class ReadCats:
                 self.catpath = self.path_tnghydro
             else:
                 print("Unrecognized physics type")
-                return
+                raise Exception("Failed to construct path")
 
         else:
             print("Unrecognized simulation type")
-            return
+            raise Exception("Failed to construct path")
 
         keysel = [
             'GroupPos','Group_M_TopHat200', 
