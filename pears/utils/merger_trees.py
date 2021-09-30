@@ -38,8 +38,6 @@ class TraceMergerTree:
         self.physics = physics
         self.kwargs = kwargs
         self.h = self.kwargs.pop("little_h", 0.704)
-        self.scale = 1/(1+self.redshift)
-
 
         # defining the simulation path from paths.py
         if self.sim == "Illustris":
