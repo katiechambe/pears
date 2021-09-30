@@ -69,9 +69,9 @@ class ReadCats:
                 self.catpath = self.path_tngdark
             elif self.physics == "hydro":
                 self.catpath = self.path_tnghydro
-                
+
         try:
-            self.catpath
+            type(self.catpath)
         except:
             print('Unknown simulation or physics type. Check inputs!')
             
