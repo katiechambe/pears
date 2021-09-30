@@ -71,6 +71,10 @@ class ReadCats:
             elif self.physics == "hydro":
                 self.catpath = self.path_tnghydro
 
+        else:
+            print("Unrecognized simulation type")
+            return
+
         keysel = [
             'GroupPos','Group_M_TopHat200', 
             'Group_R_TopHat200','GroupNsubs',
@@ -79,15 +83,11 @@ class ReadCats:
             'SubhaloPos','SubhaloVel'
             ]
 
-        try:
-            self.catalog = readSub.subfind_catalog(
-                basedir=self.catpath,
-                snapnum=self.snapshot,
-                keysel=keysel
-                )
-        except:
-            print('Unknown simulation or physics type. Check inputs!')
-            raise
+        self.catalog = readSub.subfind_catalog(
+            basedir=self.catpath,
+            snapnum=self.snapshot,
+            keysel=keysel
+            )
 
         self.groupPos = self.catalog.GroupPos
         self.mvirs = self.catalog.Group_M_TopHat200
