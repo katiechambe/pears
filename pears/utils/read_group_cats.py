@@ -63,15 +63,21 @@ class ReadCats:
                 self.catpath = self.path_illustrisdark
             elif self.physics == "hydro":
                 self.catpath = self.path_illustrishydro
+            else:
+                print('Unknown physics type. Check inputs!')
+                raise 
                 
         elif self.sim == "TNG":
             if self.physics == "dark":
                 self.catpath = self.path_tngdark
             elif self.physics == "hydro":
                 self.catpath = self.path_tnghydro
+            else:
+                print('Unknown physics type. Check inputs!')
+                raise 
 
         else:
-            print('Unknown simulation or physics type. Check inputs!')
+            print('Unknown simulation type. Check inputs!')
             raise 
 
         keysel = [
