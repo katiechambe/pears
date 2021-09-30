@@ -85,9 +85,9 @@ class ReadCats:
                 snapnum=self.snapshot,
                 keysel=keysel
                 )
-        except AttributeError:
+        except:
             print('Unknown simulation or physics type. Check inputs!')
-            sys.exit(1)
+            raise
 
         self.groupPos = self.catalog.GroupPos
         self.mvirs = self.catalog.Group_M_TopHat200
