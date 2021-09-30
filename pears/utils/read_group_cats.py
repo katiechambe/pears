@@ -58,27 +58,21 @@ class ReadCats:
         SetupPaths.__init__(self)
         
         # defining the simulation path from paths.py
-        if self.sim == "Illustris":
-            if self.physics == "dark":
-                self.catpath = self.path_illustrisdark
-            elif self.physics == "hydro":
-                self.catpath = self.path_illustrishydro
-            else:
-                print('Unknown physics type. Check inputs!')
-                raise 
-                
-        elif self.sim == "TNG":
-            if self.physics == "dark":
-                self.catpath = self.path_tngdark
-            elif self.physics == "hydro":
-                self.catpath = self.path_tnghydro
-            else:
-                print('Unknown physics type. Check inputs!')
-                raise 
-
-        else:
-            print('Unknown simulation type. Check inputs!')
-            raise 
+        try:
+            if self.sim == "Illustris":
+                if self.physics == "dark":
+                    self.catpath = self.path_illustrisdark
+                elif self.physics == "hydro":
+                    self.catpath = self.path_illustrishydro
+                    
+            elif self.sim == "TNG":
+                if self.physics == "dark":
+                    self.catpath = self.path_tngdark
+                elif self.physics == "hydro":
+                    self.catpath = self.path_tnghydro
+        except:
+            print('Unknown simulation or physics type. Check inputs!')
+            
 
         keysel = [
             'GroupPos','Group_M_TopHat200', 
