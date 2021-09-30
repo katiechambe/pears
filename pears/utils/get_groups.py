@@ -10,7 +10,6 @@ __author__ = "Katie Chamberlain"
 __status__ = "Beta - forever~"
 __date__   = "September 2021"
 
-from threading import current_thread
 import numpy as np
 from utils.read_group_cats import ReadCats
 from utils.merger_trees import TraceMergerTree
@@ -106,7 +105,7 @@ class GetGroups:
         # and that have current mass >1e9Msun
         subhalo_group_mask = np.in1d(self.subgr, self.pass_numbers)
         subhalo_mass_mask = self.submass_phys >= 0.1 
-        self.subhalo_mask = np.where(subhalo_group_mask&subhalo_mass_mask)[0]
+        self.subhalo_ids = np.where(subhalo_group_mask&subhalo_mass_mask)[0]
 
         self.save_path = f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv"
     
@@ -124,7 +123,7 @@ class GetGroups:
         x = []
         mask = []
         prev_group=None
-        for subid in self.subhalo_mask: 
+        for subid in self.subhalo_ids: 
             current_group = self.subgr[subid]
 
             # only pay attention to first 5 subhalos
@@ -158,19 +157,19 @@ class GetGroups:
         sub_max = x[:,0]
         sub_max_snap = x[:,1]
 
-        subhalo_groupnum = u.Quantity( self.subgr[self.subhalo_mask][mask], dtype=np.int64)
+        subhalo_groupnum = u.Quantity( self.subgr[self.subhalo_ids][mask], dtype=np.int64)
         subhalo_groupnum.info.description = "Group Number"
 
-        subhalo_id = u.Quantity( self.subhalo_mask[mask], dtype=np.int64) 
+        subhalo_id = u.Quantity( self.subhalo_ids[mask], dtype=np.int64) 
         subhalo_id.info.description = "Subhalo ID"
 
-        subhalo_mass =  self.submass_phys[self.subhalo_mask][mask] * u.Unit(1e10 * u.Msun)
+        subhalo_mass =  self.submass_phys[self.subhalo_ids][mask] * u.Unit(1e10 * u.Msun)
         subhalo_mass.info.description = "Physical mass bound to subhalo"
 
-        subhalo_pos = self.subpos_phys[self.subhalo_mask][mask] * u.kpc
+        subhalo_pos = self.subpos_phys[self.subhalo_ids][mask] * u.kpc
         subhalo_pos.info.description = "Physical position of subhalo in the box"
 
-        subhalo_vel = self.subvel[self.subhalo_mask][mask] * u.km / u.s
+        subhalo_vel = self.subvel[self.subhalo_ids][mask] * u.km / u.s
         subhalo_vel.info.description = "Peculiar velocity of subhalo"
 
         subhalo_maxmass =  sub_max * u.Unit(1e10 * u.Msun)
