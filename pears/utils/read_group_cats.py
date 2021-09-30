@@ -70,6 +70,10 @@ class ReadCats:
             elif self.physics == "hydro":
                 self.catpath = self.path_tnghydro
 
+        else:
+            print('Unknown simulation or physics type. Check inputs!')
+            raise 
+
         keysel = [
             'GroupPos','Group_M_TopHat200', 
             'Group_R_TopHat200','GroupNsubs',
