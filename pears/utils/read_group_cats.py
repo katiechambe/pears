@@ -74,11 +74,11 @@ class ReadCats:
             elif self.physics == "hydro":
                 self.catpath = self.path_tnghydro
             else:
-                raise AttributeError("Unrecognized physics type: \n
+                raise AttributeError("Unrecognized physics type: \
                       Failed to construct path to catalog")
 
         else:
-            raise AttributeError("Unrecognized simulation type: \n
+            raise AttributeError("Unrecognized simulation type: \
                   Failed to construct path to catalog")
 
         keysel = [
