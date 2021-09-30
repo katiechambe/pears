@@ -64,12 +64,18 @@ class ReadCats:
                 self.catpath = self.path_illustrisdark
             elif self.physics == "hydro":
                 self.catpath = self.path_illustrishydro
+            else:
+                print("Unrecognized physics type")
+                return
                 
         elif self.sim == "TNG":
             if self.physics == "dark":
                 self.catpath = self.path_tngdark
             elif self.physics == "hydro":
                 self.catpath = self.path_tnghydro
+            else:
+                print("Unrecognized physics type")
+                return
 
         else:
             print("Unrecognized simulation type")
