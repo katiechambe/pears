@@ -17,6 +17,7 @@ __date__   = "September 2021"
 
 import numpy as np
 import h5py
+import sys
 import os
 from utils.merger_trees import TraceMergerTree
 from utils.get_groups import GetGroups
