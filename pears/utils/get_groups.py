@@ -126,6 +126,11 @@ class GetGroups:
         for subid in self.subhalo_ids: 
             current_group = self.subgr[subid]
 
+
+
+# dataa = h5py.File(f"{groups.path_data}max_masses/{sim}_{phys}.hdf5", 'r')
+
+
             # only pay attention to first 5 subhalos
             if prev_group is None:
                 prev_group = current_group     
