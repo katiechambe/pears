@@ -47,7 +47,7 @@ for phys in ["dark","hydro"]:
     max_mass_snapshot = []
 
 
-    for subid in subids:
+    for subid in subids[0:100]:
         max_mass_info = TraceMergerTree(snapshot=snap,
                             subfindID=subid,
                             sim=sim, 
