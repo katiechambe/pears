@@ -24,8 +24,6 @@ from utils.get_groups import GetGroups
 
 snap = int(sys.argv[1])
 sim = str(sys.argv[2])
-# snap = 135
-# sim = "Illustris"
 
 if sim == "Illustris":
     little_h = 0.704
@@ -49,7 +47,7 @@ for phys in ["dark","hydro"]:
     max_mass_snapshot = []
 
 
-    for subid in subids[0:10]:
+    for subid in subids:
         max_mass_info = TraceMergerTree(snapshot=snap,
                             subfindID=subid,
                             sim=sim, 
