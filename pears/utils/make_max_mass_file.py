@@ -17,6 +17,7 @@ __date__   = "September 2021"
 
 import numpy as np
 import h5py
+import os
 from utils.merger_trees import TraceMergerTree
 from utils.get_groups import GetGroups
 
@@ -58,7 +59,11 @@ for phys in ["dark","hydro"]:
 
         current_mass.append(max_mass_info.masses[-1])
 
-    savefile = h5py.File(f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.hdf5", "w")
+    file_name = f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.hdf5"
+    if os.path.exists(file_name):
+        os.remove(file_name)
+
+    savefile = h5py.File(file_name, "w")
     subs = savefile.create_dataset("Subhalo ID", 
                                    dtype=np.int64, 
                                    data=subids)
