@@ -48,7 +48,11 @@ for phys in ["dark","hydro"]:
 
 
     print(len(subids))
+    countertho = 0
     for subid in subids:
+        countertho += 1
+        if countertho%1000 == 0:
+            print(f"Done with {countertho} out of{len(subids)}")
         max_mass_info = TraceMergerTree(snapshot=snap,
                             subfindID=subid,
                             sim=sim, 
