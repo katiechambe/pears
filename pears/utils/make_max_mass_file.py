@@ -35,7 +35,7 @@ kwargs = {"group_mass_min": 8,
           "group_mass_max": 500,
           "little_h": little_h}
 
-for phys in ["dark","hydro"]:
+for phys in ["hydro","dark"]:
     groups = GetGroups(snapshot=snap,
                         sim=sim,
                         physics=phys,
@@ -49,15 +49,26 @@ for phys in ["dark","hydro"]:
 
     print(len(subids))
     for subid in subids:
-        max_mass_info = TraceMergerTree(snapshot=snap,
+
+        try:
+            # max mass and corresponding snapnumber
+            max_mass_info = TraceMergerTree(snapshot=snap,
                             subfindID=subid,
                             sim=sim, 
                             physics=phys,
                             **kwargs)
-        max_mass.append(max_mass_info.maxmass[0])
-        max_mass_snapshot.append(max_mass_info.maxmass[1])
+    
+        except AttributeError:
+            print('Could not find merger tree for subhalo:', subid)
+            print('Appending many zeros')
+            max_mass.append(0)
+            max_mass_snapshot.append(0)
+            current_mass.append(0)
 
-        current_mass.append(max_mass_info.masses[-1])
+        else:
+            max_mass.append(max_mass_info.maxmass[0])
+            max_mass_snapshot.append(max_mass_info.maxmass[1])
+            current_mass.append(max_mass_info.masses[-1])
 
     file_name = f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.hdf5"
     if os.path.exists(file_name):
