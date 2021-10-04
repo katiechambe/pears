@@ -46,12 +46,11 @@ for phys in ["hydro","dark"]:
     current_mass = []
     max_mass_snapshot = []
 
-
     print(len(subids))
     countertho = 0
     for subid in subids:
         countertho += 1
-        if countertho%1000 == 0:
+        if countertho%10000 == 0:
             print(f"Done with {countertho} out of{len(subids)}")
         try:
             # max mass and corresponding snapnumber
@@ -71,28 +70,38 @@ for phys in ["hydro","dark"]:
         else:
             max_mass.append(max_mass_info.maxmass[0])
             max_mass_snapshot.append(max_mass_info.maxmass[1])
-            current_mass.append(max_mass_info.masses[-1])
+            current_mass.append(max_mass_info.masses[0])
 
-    file_name = f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.hdf5"
+    file_name = f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.ecsv"
     if os.path.exists(file_name):
         os.remove(file_name)
 
-    savefile = h5py.File(file_name, "w")
-    subs = savefile.create_dataset("Subhalo ID", 
-                                   dtype=np.int64, 
-                                   data=subids)
-    maxs = savefile.create_dataset("Max Mass", 
-                                   dtype=np.float64, 
-                                   data=max_mass)
-    snaps = savefile.create_dataset("Max Mass Snap", 
-                                    dtype=np.int64, 
-                                    data=max_mass_snapshot)
-    masss = savefile.create_dataset("Current Snap Mass", 
-                                    dtype=np.float64, 
-                                    data=current_mass)
+    # saving file as hdf5
+    # savefile = h5py.File(file_name, "w")
+    # subs = savefile.create_dataset("Subhalo ID", 
+    #                                dtype=np.int64, 
+    #                                data=subids)
+    # maxs = savefile.create_dataset("Max Mass", 
+    #                                dtype=np.float64, 
+    #                                data=max_mass)
+    # snaps = savefile.create_dataset("Max Mass Snap", 
+    #                                 dtype=np.int64, 
+    #                                 data=max_mass_snapshot)
+    # masss = savefile.create_dataset("Current Snap Mass", 
+    #                                 dtype=np.float64, 
+    #                                 data=current_mass)
 
-    for i in [maxs,masss]:
-        i.attrs['units'] = "1e10 Msun"
-    savefile.close()
+    # for i in [maxs,masss]:
+    #     i.attrs['units'] = "1e10 Msun"
+    # savefile.close()
+
+    # saving file as ecsv
+    t = QTable()
+    t["Subhalo ID"] = subids
+    t["Max Mass"] = max_mass * u.Unit(1e10*u.Msun)
+    t["Max Mass Snap"] = max_mass_snapshot
+    t["Current Snap Mass"] = current_mass * u.Unit(1e10*u.Msun)
+    t.write(f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.ecsv",
+            overwrite=True)
 
     
