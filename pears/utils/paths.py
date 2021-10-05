@@ -42,5 +42,7 @@ class SetupPaths:
 
         # paths to save data!
         self.path_data = self.path_pears + "data/"
-        self.path_groups = self.path_pears + "data/groups/"
-        self.path_subhalos = self.path_pears + "data/subhalos/"
+        self.path_groups = self.path_data + "groups/"
+        self.path_subhalos = self.path_data + "subhalos/"
+        self.path_maxmass = self.path_data + "max_masses/"
+        self.path_am_mass = self.path_data + "am_masses/"
