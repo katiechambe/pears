@@ -22,6 +22,7 @@ import os
 from utils.merger_trees import TraceMergerTree
 from utils.get_groups import GetGroups
 from astropy.table import QTable
+import astropy.units as u
 
 snap = int(sys.argv[1])
 sim = str(sys.argv[2])
