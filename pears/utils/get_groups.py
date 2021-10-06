@@ -49,12 +49,6 @@ class GetGroups:
                 minimum mass of the group in 1e10Msun, default 8
             group_mass_max: float
                 maximum mass of the group in 1e10Msun, default 50
-            little_h: float
-                definition of little h, default h=0.702
-            omega_m:
-            omega_r:
-            omega_l:
-
         """
 
         self.snapshot = snapshot
@@ -74,7 +68,12 @@ class GetGroups:
 
         self.group_min = self.kwargs.pop("group_mass_min", self.group_min)
         self.group_max = self.kwargs.pop("group_mass_max", self.group_max)
-        self.h = self.kwargs.pop("little_h", 0.704)
+
+        if self.sim == "Illustris":
+            self.little_h = 0.704
+
+        elif self.sim == "TNG":
+            self.little_h = 0.6774
         
         ReadCats.__init__(
             self, 
@@ -106,6 +105,7 @@ class GetGroups:
         subhalo_group_mask = np.in1d(self.subgr, self.pass_numbers)
         subhalo_mass_mask = self.submass_phys >= 0.1 
         self.subhalo_ids = np.where(subhalo_group_mask&subhalo_mass_mask)[0]
+        self.subhalo_masses = self.submass_phys[self.subhalo_ids]
 
         self.save_path = f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv"
     
