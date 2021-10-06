@@ -34,8 +34,8 @@ class SetupPaths:
         # merger trees
         self.path_illustrisdark_trees = self.path_illustris + "Illustris-1-Dark-MergerTree/"
         self.path_illustrishydro_trees = self.path_illustris + "Illustris-1-MergerTree/"
-        self.path_tngdark_trees = self.path_tngdark + "trees"
-        self.path_tnghydro_trees = self.path_tnghydro + "trees"
+        self.path_tngdark_trees = self.path_tngdark + "postprocessing/"
+        self.path_tnghydro_trees = self.path_tnghydro + "postprocessing/"
 
         # pears directories
         self.path_data = self.path_pears + "data/"
