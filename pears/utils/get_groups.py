@@ -34,6 +34,7 @@ class GetGroups:
         -----------
         snapshot: int
             the number of the snapshot with the corresponding subhalo ID
+            default 135 
         subfindID: int
             the ID number of the subhalo at the corresponding snapshot
         sim: str
@@ -85,10 +86,10 @@ class GetGroups:
 
         # to pull out all of the groups within the bounds
         # Note: virial mass and virial radius are both in physical units
-        self.mvirs_phys = self.mvirs/self.h 
-        self.rvirs_phys = self.rvirs*self.scale/self.h
-        self.submass_phys = self.submass/self.h 
-        self.subpos_phys = self.subpos*self.scale/self.h 
+        self.mvirs_phys = self.mvirs/self.little_h 
+        self.rvirs_phys = self.rvirs*self.scale/self.little_h
+        self.submass_phys = self.submass/self.little_h 
+        self.subpos_phys = self.subpos*self.scale/self.little_h 
         low_cut = (self.mvirs_phys > self.group_min)
         high_cut = (self.mvirs_phys < self.group_max)
         non_zero = self.mvirs != 0 
