@@ -103,7 +103,7 @@ for phys in ["hydro","dark"]:
     t["Max Mass"] = max_mass * u.Unit(1e10*u.Msun)
     t["Max Mass Snap"] = max_mass_snapshot
     t["Current Snap Mass"] = current_mass * u.Unit(1e10*u.Msun)
-    t.write(f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.ecsv",
+    t.write(f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.csv",
             overwrite=True)
 
     
