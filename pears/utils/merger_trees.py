@@ -1,4 +1,4 @@
-from utils import readtreeHDF5Py3 as readTree
+
 from utils.paths import SetupPaths
 
 class TraceMergerTree:
@@ -30,6 +30,9 @@ class TraceMergerTree:
             little_h: h varies for each simulation!
         """
 
+        
+        
+
         SetupPaths.__init__(self)
 
         self.snapshot = snapshot
@@ -37,16 +40,18 @@ class TraceMergerTree:
         self.sim = sim
         self.physics = physics
         self.kwargs = kwargs
-        self.h = self.kwargs.pop("little_h", 0.704)
+        self.little_h = self.kwargs.pop("little_h", 0.704)
 
         # defining the simulation path from paths.py
         if self.sim == "Illustris":
+            from utils.readtreeHDF5Py3 import TreeDB
             if self.physics == "dark":
                 self.treepath = self.path_illustrisdark_trees
             elif self.physics == "hydro":
                 self.treepath = self.path_illustrishydro_trees
                 
         elif self.sim == "TNG":
+            from utils.readtreeHDF5Py3_public import TreeDB
             if self.physics == "dark":
                 self.treepath = self.path_tngdark_trees
             elif self.physics == "hydro":
@@ -54,7 +59,7 @@ class TraceMergerTree:
 
         treeDirectory = self.treepath
 
-        tree = readTree.TreeDB(treeDirectory)
+        tree = TreeDB(treeDirectory)
         branch = tree.get_main_branch( 
             self.snapshot, 
             self.subfindID
@@ -69,7 +74,7 @@ class TraceMergerTree:
         self.id = branch.SubhaloID 
         self.subfindIDTree = branch.SubfindID
 
-        self.masses_phys = self.masses / self.h
+        self.masses_phys = self.masses / self.little_h
         
     @property
     def maxmass(self):
