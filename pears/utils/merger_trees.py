@@ -51,7 +51,7 @@ class TraceMergerTree:
                 self.treepath = self.path_illustrishydro_trees
                 
         elif self.sim == "TNG":
-            from utils.readtreeHDF5Py3_public import TreeDB
+            from utils.readtreeHDF5_public import TreeDB
             if self.physics == "dark":
                 self.treepath = self.path_tngdark_trees
             elif self.physics == "hydro":
