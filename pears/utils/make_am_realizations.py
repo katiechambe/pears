@@ -53,7 +53,7 @@ for ind in range(len(subhalo_data)):
         # median          = AM(maxMass, red, 'median').stellarMass()/1e10
     stars = AbundanceMatching(maxmass=halo_maxmass*1e10, 
                               redshift=redshift,
-                              samples=num_reals).stellar_mass() # in 1e10Msun
+                              samples=num_reals).stellar_mass()[0] # in 1e10Msun
 
     # NOTE: am i going to have to reshape this? what type does this come out as? 
     # What are the dimensions of the data structure that comes out from this.
@@ -65,11 +65,11 @@ for ind in range(len(subhalo_data)):
 
 t = QTable()
 t["Subhalo ID"] = ids
-t["Max Mass"] = maxmasses * u.Unit(1e10*u.Msun)
+t["Max Mass"] = maxmasses * u.Unit(1e10 * u.Msun)
 t["Max Mass Snap"] = maxsnaps
-t["Current Snap Mass"] = masses * u.Unit(1e10*u.Msun)
-t["Stellar Masses"] = stellar_reals
-save_path = f"{paths.path_am_mass}{sim}_{physics}_{snapshot}.csv"
+t["Current Snap Mass"] = masses * u.Unit(1e10 * u.Msun)
+t["Stellar Masses"] = stellar_reals * u.Unit(1e10 * u.Msun)
+save_path = f"{paths.path_am_mass}{sim}_{physics}_{snapshot}.ecsv"
 t.write(save_path, overwrite=True)
 print('All done!')
 
