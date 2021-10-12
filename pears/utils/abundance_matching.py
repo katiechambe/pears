@@ -20,7 +20,7 @@ __date__   = "May 2019 - edited Oct. 2021"
 from numpy.random import normal
 
 class AbundanceMatching:
-    def __init__(self, maxmass, z, samples):
+    def __init__(self, maxmass, redshift, samples):
         """
         Samples from gaussian distributed abundance matching relation 
 
@@ -37,7 +37,7 @@ class AbundanceMatching:
         """
         
         self.maxmass = maxmass
-        self.z = z
+        self.z = redshift
         self.samples = samples
         
     def logM1(self):
