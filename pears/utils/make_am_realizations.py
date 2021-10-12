@@ -24,7 +24,7 @@ from utils.paths import SetupPaths
 sim = "Illustris" 
 physics = "dark"
 snapshot = 135
-num_reals = 10000
+num_reals = 1000
 
 paths = SetupPaths()
 
@@ -39,7 +39,7 @@ subhalo_data = QTable.read(read_path)
 
 ids, masses, maxmasses, maxsnaps, stellar_reals = [], [], [], [], []
 
-for ind in range(len(subhalo_data))[0:10]:
+for ind in range(len(subhalo_data)):
     halo_id = subhalo_data['Subhalo ID'][ind]
     halo_mass = subhalo_data['Current Snap Mass'][ind]
     halo_maxmass = subhalo_data['Max Mass'][ind]
@@ -54,6 +54,10 @@ for ind in range(len(subhalo_data))[0:10]:
     stars = AbundanceMatching(maxmass=halo_maxmass*1e10, 
                               redshift=redshift,
                               samples=num_reals).stellar_mass() # in 1e10Msun
+
+    # NOTE: am i going to have to reshape this? what type does this come out as? 
+    # What are the dimensions of the data structure that comes out from this.
+    # Is it easier to save the stellar masses as one big stucture and then reshape it? 
     stellar_reals.append(stars/1e10)
 
     if ind%5000 == 0:
