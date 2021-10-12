@@ -24,55 +24,48 @@ from utils.paths import SetupPaths
 sim = "Illustris" 
 physics = "dark"
 snapshot = 135
+num_reals = 10000
 
 paths = SetupPaths()
 
 # calculate the redshift at current snapshot
 snapdata_path = f"{paths.path_snapdata}{sim}_snapdata.csv"
 snapdata = QTable.read(snapdata_path)
-redshift = snapdata['redshift'][snapdata['Snapshot'] == snapshot]
+redshift = snapdata['redshift'][snapdata['snapshot'] == snapshot][0]
 
-read_path = f"{paths.path_maxmass}{sim}_{phys}_{snapshot}.csv"
+read_path = f"{paths.path_maxmass}{sim}_{physics}_{snapshot}.csv"
 
 subhalo_data = QTable.read(read_path)
 
+ids, masses, maxmasses, maxsnaps, stellar_reals = [], [], [], [], []
 
+for ind in range(len(subhalo_data))[0:10]:
+    halo_id = subhalo_data['Subhalo ID'][ind]
+    halo_mass = subhalo_data['Current Snap Mass'][ind]
+    halo_maxmass = subhalo_data['Max Mass'][ind]
+    halo_snap = subhalo_data['Max Mass Snap'][ind]
 
-masses = np.array([1e10,1e12])
+    ids.append(halo_id)
+    masses.append(halo_mass)
+    maxmasses.append(halo_maxmass)
+    maxsnaps.append(halo_snap)
+        
+        # median          = AM(maxMass, red, 'median').stellarMass()/1e10
+    stars = AbundanceMatching(maxmass=halo_maxmass*1e10, 
+                              redshift=redshift,
+                              samples=num_reals).stellar_mass() # in 1e10Msun
+    stellar_reals.append(stars/1e10)
 
-stels = AbundanceMatching(masses, redshift, 10).stellarMass()
+    if ind%5000 == 0:
+        print('on count ', ind, 'of ',len(subhalo_data))
 
-
-
-# primID, primHaloMass, primStellars = [], [], []
-
-haloGroup, haloID, haloMass, haloMaxMass, stellarMedian, stellarGauss = [], [], [], [], [], []
-
-for ind in range(len(haloData)):
-    haloGroup.append(haloData['Group Number'][ind])
-    haloID.append(haloData['Subhalo ID'][ind])
-    haloMass.append(haloData['Mass at snap'][ind])
-    haloMaxMass.append(haloData['Max Mass'][ind]) # in 1e10 Msun
-
-    maxMass         = haloData['Max Mass'][ind]*1e10 # halo mass in Msun (not 1e10!)
-    maxMassRedshift = haloData['Redshift at Max Mass'][ind]
-    median          = AM(maxMass, red, 'median').stellarMass()/1e10
-    stellars        = AMGauss(maxMass, red, numRealizations).stellarMass()/1e10 # in 1e10Msun
-    stellarMedian.append(median)
-    stellarGauss.append(stellars)
-
-    if ind%1000 == 0:
-        print('on count ', ind, 'of ',len(haloData))
-
-
-
-columnNames = ['Group Number','Subhalo ID', 'Mass at snap', 'Max Mass','Median Stellar'] + ['Stellar %i' % i for i in range(numRealizations)]
-haloTable = np.column_stack([haloGroup, haloID, haloMass, haloMaxMass, stellarMedian, stellarGauss])
-print('Created table')
-haloDF = pd.DataFrame(data = haloTable, columns=columnNames)
-print('Created dataframe')
-print('Exporting to file')
-haloDF.to_csv(fileToSave,index=False,header=True)
+t = QTable()
+t["Subhalo ID"] = ids
+t["Max Mass"] = maxmasses * u.Unit(1e10*u.Msun)
+t["Max Mass Snap"] = maxsnaps
+t["Current Snap Mass"] = masses * u.Unit(1e10*u.Msun)
+t["Stellar Masses"] = stellar_reals
+save_path = f"{paths.path_am_mass}{sim}_{physics}_{snapshot}.csv"
+t.write(save_path, overwrite=True)
 print('All done!')
 
-save_path = f"{paths.path_am_mass}{sim}_{phys}_{snapshot}.csv"
