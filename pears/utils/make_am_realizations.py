@@ -17,10 +17,7 @@ from astropy.table import QTable
 from utils.abundance_matching import AbundanceMatching
 from utils.paths import SetupPaths
 
-
-#TODO: define physics, simulation, and snapshot
-#TODO: allow for median in abundance matching code! as alt calc.
-snap = int(sys.argv[1])
+snapshot = int(sys.argv[1])
 sim = str(sys.argv[2])
 physics = str(sys.argv[3])
 num_reals = int(sys.argv[4])
