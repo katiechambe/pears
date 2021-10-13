@@ -11,6 +11,7 @@ __author__ = "Katie Chamberlain"
 __status__ = "Beta - forever~"
 __date__   = "October 2021"
 
+import numpy as np
 import sys
 import h5py
 from astropy.table import QTable
@@ -48,11 +49,14 @@ for ind in range(len(subhalo_data)):
     maxmasses.append(halo_maxmass)
     maxsnaps.append(halo_snap)
         
-    stars = AbundanceMatching(maxmass=halo_maxmass*1e10, 
-                              redshift=redshift,
-                              samples=num_reals).stellar_mass()[0] # in 1e10Msun
+    if halo_maxmass == 0:
+        stars = np.zeros(1000)
+    else:
+        stars = AbundanceMatching(maxmass=halo_maxmass*1e10, 
+                                redshift=redshift,
+                                samples=num_reals).stellar_mass()[0]
 
-    stellar_reals.append(stars/1e10)
+    stellar_reals.append(stars/1e10) # in units of 1e10 Msun
 
     if ind%10000 == 0:
         print('on count ', ind, 'of ',len(subhalo_data))
