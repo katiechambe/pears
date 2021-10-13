@@ -1,6 +1,6 @@
 """ 
-Creates data file of maximum mass of all subhalos with mass >1e9 and 
-
+Creates data file of maximum mass of all subhalos with mass >1e9
+for both hydro and dark runs of either Illustris-1 or TNG
 
 --------
 How to run:
@@ -13,7 +13,7 @@ and 0 to 99 for "TNG"
 """
 __author__ = "Katie Chamberlain"
 __status__ = "Beta - forever~"
-__date__   = "September 2021"
+__date__   = "October 2021"
 
 import h5py
 import sys
@@ -83,4 +83,3 @@ for phys in ["hydro","dark"]:
     f.close()
 
     print(f"Saved at {groups.path_data}max_masses/{sim}_{phys}_{snap}.hdf5")
-    
