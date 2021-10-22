@@ -131,112 +131,114 @@ class GetGroups:
 
         f = h5py.File(f"{self.path_groups}{self.save_path}", 'w')
 
-        header = f.create_dataset('Header')
-        for key, val in self.header_dict.items():
-            header[key] = val
-
         if self.size == "dwarf":
-            dataset_name = "Dwarf Groups"
+            dataset_name = "Dwarf"
 
         elif self.size == "massive":
-            dataset_name = "Massive Groups"
+            dataset_name = "Massive"
 
-        groups = f.create_dataset(dataset_name)
         for key, val in group_dict.items():
-            groups[key] = val
-            groups.attrs[key] = units_dict[key]
+            dset = f.create_dataset(f'/{dataset_name}/{key}', 
+                                    shape=val.shape,
+                                    dtype=val.dtype)
+            dset.attrs[key] = units_dict[key]
+            dset[:] = val
 
+        dset = f.create_group('/Header')
+        for key in self.header_dict.keys():
+            dset.attrs[key] = self.header_dict[key]
+    
         f.close()
         
         print(f"Saved groups at {self.path_groups}{self.save_path}")
 
 
-# TODO: fix this up! 
-    def save_subhalos(self):
-        '''
-        Save the subhalo data for groups that pass mass cuts.
-        Note:
-        -----
-        This may be slow because it has to look up the merger trees for 
-        each of the subhalos 
-        '''
-        x = []
-        mask = []
-        prev_group=None
-        for subid in self.subhalo_ids: 
-            current_group = self.subgr[subid]
+# # TODO: fix this up! 
+#     def save_subhalos(self):
+#         '''
+#         Save the subhalo data for groups that pass mass cuts.
+#         Note:
+#         -----
+#         This may be slow because it has to look up the merger trees for 
+#         each of the subhalos 
+#         '''
+#         x = []
+#         mask = []
+#         prev_group=None
+#         for subid in self.subhalo_ids: 
+#             current_group = self.subgr[subid]
 
 
 
-# dataa = h5py.File(f"{groups.path_data}max_masses/{sim}_{phys}.hdf5", 'r')
+# # dataa = h5py.File(f"{groups.path_data}max_masses/{sim}_{phys}.hdf5", 'r')
 
 
-            # only pay attention to first 5 subhalos
-            if prev_group is None:
-                prev_group = current_group     
-                i=-1
-            elif prev_group==current_group:
-                i+=1
-            elif prev_group!=current_group:
-                i=0
+#             # only pay attention to first 5 subhalos
+#             if prev_group is None:
+#                 prev_group = current_group     
+#                 i=-1
+#             elif prev_group==current_group:
+#                 i+=1
+#             elif prev_group!=current_group:
+#                 i=0
 
-            if i < 5:
-                try:
-                    x.append(TraceMergerTree(
-                            snapshot=hey.snapshot,
-                            subfindID=subid,
-                            sim=self.sim, 
-                            physics=self.physics).maxmass )
-                    mask.append(True)
+#             if i < 5:
+#                 try:
+#                     x.append(TraceMergerTree(
+#                             snapshot=hey.snapshot,
+#                             subfindID=subid,
+#                             sim=self.sim, 
+#                             physics=self.physics).maxmass )
+#                     mask.append(True)
 
-                except AttributeError:
-                    print(f'Could not find merger tree for {sim} {physics} {subid}')
-                    mask.append(False)
+#                 except AttributeError:
+#                     print(f'Could not find merger tree for {sim} {physics} {subid}')
+#                     mask.append(False)
 
-            else:
-                mask.append(False)
-            prev_group=current_group
+#             else:
+#                 mask.append(False)
+#             prev_group=current_group
 
-        x = np.array(x)
+#         x = np.array(x)
 
-        sub_max = x[:,0]
-        sub_max_snap = x[:,1]
+#         sub_max = x[:,0]
+#         sub_max_snap = x[:,1]
 
-        subhalo_groupnum = u.Quantity( self.subgr[self.subhalo_ids][mask], dtype=np.int64)
-        subhalo_groupnum.info.description = "Group Number"
+#         subhalo_groupnum = u.Quantity( self.subgr[self.subhalo_ids][mask], dtype=np.int64)
+#         subhalo_groupnum.info.description = "Group Number"
 
-        subhalo_id = u.Quantity( self.subhalo_ids[mask], dtype=np.int64) 
-        subhalo_id.info.description = "Subhalo ID"
+#         subhalo_id = u.Quantity( self.subhalo_ids[mask], dtype=np.int64) 
+#         subhalo_id.info.description = "Subhalo ID"
 
-        subhalo_mass =  self.submass_phys[self.subhalo_ids][mask] * u.Unit(1e10 * u.Msun)
-        subhalo_mass.info.description = "Physical mass bound to subhalo"
+#         subhalo_mass =  self.submass_phys[self.subhalo_ids][mask] * u.Unit(1e10 * u.Msun)
+#         subhalo_mass.info.description = "Physical mass bound to subhalo"
 
-        subhalo_pos = self.subpos_phys[self.subhalo_ids][mask] * u.kpc
-        subhalo_pos.info.description = "Physical position of subhalo in the box"
+#         subhalo_pos = self.subpos_phys[self.subhalo_ids][mask] * u.kpc
+#         subhalo_pos.info.description = "Physical position of subhalo in the box"
 
-        subhalo_vel = self.subvel[self.subhalo_ids][mask] * u.km / u.s
-        subhalo_vel.info.description = "Peculiar velocity of subhalo"
+#         subhalo_vel = self.subvel[self.subhalo_ids][mask] * u.km / u.s
+#         subhalo_vel.info.description = "Peculiar velocity of subhalo"
 
-        subhalo_maxmass =  sub_max * u.Unit(1e10 * u.Msun)
-        subhalo_maxmass.info.description = "Maximum mass (physical) ever achieved"
+#         subhalo_maxmass =  sub_max * u.Unit(1e10 * u.Msun)
+#         subhalo_maxmass.info.description = "Maximum mass (physical) ever achieved"
 
-        subhalo_maxmass_snap = u.Quantity( sub_max_snap , dtype=np.int64)
-        subhalo_maxmass_snap.info.description = "Snapshot where maximum mass is achieved"
+#         subhalo_maxmass_snap = u.Quantity( sub_max_snap , dtype=np.int64)
+#         subhalo_maxmass_snap.info.description = "Snapshot where maximum mass is achieved"
             
-        t = QTable(meta={"snapshot":self.snapshot, "redshift":self.redshift})
+#         t = QTable(meta={"snapshot":self.snapshot, "redshift":self.redshift})
 
-        t['subhalo_groupnum'] = subhalo_groupnum
-        t['subhalo_id'] = subhalo_id
-        t['subhalo_mass'] = subhalo_mass
-        t['subhalo_pos'] = subhalo_pos
-        t['subhalo_vel'] = subhalo_vel
-        t['subhalo_maxmass'] = subhalo_maxmass
-        t['subhalo_maxmass_snap'] = subhalo_maxmass_snap
+#         t['subhalo_groupnum'] = subhalo_groupnum
+#         t['subhalo_id'] = subhalo_id
+#         t['subhalo_mass'] = subhalo_mass
+#         t['subhalo_pos'] = subhalo_pos
+#         t['subhalo_vel'] = subhalo_vel
+#         t['subhalo_maxmass'] = subhalo_maxmass
+#         t['subhalo_maxmass_snap'] = subhalo_maxmass_snap
 
-        t.write(self.path_subhalos + self.save_path,
-                overwrite=True)
+#         t.write(self.path_subhalos + self.save_path,
+#                 overwrite=True)
 
-        print(f"Saved subhalos at {self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv")
+#         print(f"Saved subhalos at {self.sim}_{self.physics}_{self.size}_{self.snapshot}.ecsv")
 
 
 
