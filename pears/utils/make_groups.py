@@ -1,3 +1,4 @@
+import h5py
 import numpy as np
 from utils.get_groups import GetGroups
 from utils.paths import SetupPaths
