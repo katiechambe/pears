@@ -106,7 +106,7 @@ class GetGroups:
         self.subhalo_ids = np.where(subhalo_group_mask&subhalo_mass_mask)[0]
         self.subhalo_masses = self.submass_phys[self.subhalo_ids]
 
-        self.save_path = f"{self.sim}_{self.snapshot}.hdf5"
+        self.save_path = f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.hdf5"
 
         self.header_dict = {"Snapshot":self.snapshot,
              "Redshift":self.redshift,
@@ -129,20 +129,18 @@ class GetGroups:
              "Group Radius":"Physical radius from Group_R_TopHat200 -- kpc", 
              "Nsubs":"Number of subhalos in group"}
 
-        f = h5py.File(f"{self.path_groups}{self.save_path}", 'a')
+        f = h5py.File(f"{self.path_groups}{self.save_path}", 'w')
 
         for key, val in group_dict.items():
-            dset = f.create_dataset(f'/{self.physics}/{self.size}/{key}', 
+            dset = f.create_dataset(f'/Groups/{key}', 
                                     shape=val.shape,
                                     dtype=val.dtype)
             dset.attrs[key] = units_dict[key]
             dset[:] = val
 
-        if "Header" is not in f.keys():
-
-            dset = f.create_group('/Header')
-            for key in self.header_dict.keys():
-                dset.attrs[key] = self.header_dict[key]
+        dset = f.create_group('/Header')
+        for key in self.header_dict.keys():
+            dset.attrs[key] = self.header_dict[key]
     
         f.close()
         
