@@ -61,4 +61,4 @@ for sim in ["Illustris","TNG"]:
             dset.attrs[key] = header_dict[key]
 
         f.close()
-        print(f"Saved groups at {paths.path_groups}{sim}_{snap}.hdf5"
+        print(f"Saved groups at {paths.path_groups}{sim}_{snap}.hdf5")
