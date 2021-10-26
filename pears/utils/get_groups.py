@@ -129,7 +129,7 @@ class GetGroups:
              "Group Radius":"Physical radius from Group_R_TopHat200 -- kpc", 
              "Nsubs":"Number of subhalos in group"}
 
-        f = h5py.File(f"{self.path_groups}{self.save_path}", 'w')
+        f = h5py.File(f"{self.path_groups}{self.save_path}", 'a')
 
         for key, val in group_dict.items():
             dset = f.create_dataset(f'/{self.physics}/{self.size}/{key}', 
@@ -138,9 +138,11 @@ class GetGroups:
             dset.attrs[key] = units_dict[key]
             dset[:] = val
 
-        dset = f.create_group('/Header')
-        for key in self.header_dict.keys():
-            dset.attrs[key] = self.header_dict[key]
+        if "Header" is not in f.keys():
+
+            dset = f.create_group('/Header')
+            for key in self.header_dict.keys():
+                dset.attrs[key] = self.header_dict[key]
     
         f.close()
         
