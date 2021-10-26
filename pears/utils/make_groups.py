@@ -21,7 +21,7 @@ for sim in ["Illustris","TNG"]:
         savepath = f"{sim}_{snap}.hdf5"
         f = h5py.File(f"{paths.path_groups}{savepath}", 'w')
 
-
+        success=False
         for phys in ["dark","hydro"]:
             for s in ["dwarf","massive"]:
                 try:
@@ -47,19 +47,22 @@ for sim in ["Illustris","TNG"]:
                         dset.attrs[key] = units_dict[key]
                         dset[:] = val
 
+                    success = True
+
                 except AttributeError:
                     print(f"Cannot save {sim} {phys} {s} for snapshot {snap}")
                 except OSError:
                     print(f"Cannot save {sim} {phys} {s} for snapshot {snap} - DNE")
 
-        #create header with simulation info
-        header_dict = {"Snapshot":inst.snapshot,
-             "Redshift":inst.redshift,
-             "Simulation":inst.sim}
+        if success:
+            #create header with simulation info
+            header_dict = {"Snapshot":inst.snapshot,
+                "Redshift":inst.redshift,
+                "Simulation":inst.sim}
 
-        dset = f.create_group('/Header')
-        for key in header_dict.keys():
-            dset.attrs[key] = header_dict[key]
+            dset = f.create_group('/Header')
+            for key in header_dict.keys():
+                dset.attrs[key] = header_dict[key]
 
-        f.close()
-        print(f"Saved groups at {paths.path_groups}{sim}_{snap}.hdf5")
+            f.close()
+            print(f"Saved groups at {paths.path_groups}{sim}_{snap}.hdf5")
