@@ -48,9 +48,9 @@ for sim in ["Illustris","TNG"]:
                         dset[:] = val
 
                 except AttributeError:
-                    print(f"Cannot save {sim} {x} {s} for snapshot {i}")
+                    print(f"Cannot save {sim} {phys} {s} for snapshot {snap}")
                 except OSError:
-                    print(f"Cannot save {sim} {x} {s} for snapshot {i} - DNE")
+                    print(f"Cannot save {sim} {phys} {s} for snapshot {snap} - DNE")
 
         #create header with simulation info
         header_dict = {"Snapshot":inst.snapshot,
