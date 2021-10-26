@@ -9,7 +9,6 @@ python make_max_mass_file.py snapshot# simulation
 
 where snapshot can range between 0 and 136 for "Illustris"
 and 0 to 99 for "TNG"
-
 """
 __author__ = "Katie Chamberlain"
 __status__ = "Beta - forever~"
