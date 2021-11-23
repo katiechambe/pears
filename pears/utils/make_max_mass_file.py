@@ -1,7 +1,6 @@
 """ 
 Creates data file of maximum mass of all subhalos with mass >1e9
 for both hydro and dark runs of either Illustris-1 or TNG
-
 --------
 How to run:
 -----------
@@ -16,6 +15,7 @@ __date__   = "October 2021"
 
 import h5py
 import sys
+from h5py._hl import group
 from utils.merger_trees import TraceMergerTree
 from utils.get_groups import GetGroups
 
@@ -39,6 +39,7 @@ for phys in ["hydro","dark"]:
                         **kwargs)
 
     subids = groups.subhalo_ids
+    groupids = groups.subgr[subids]
     max_mass = []
     current_mass = []
     max_mass_snapshot = []
@@ -72,6 +73,7 @@ for phys in ["hydro","dark"]:
     save_path = f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.hdf5"
     
     data_dict = {"Subhalo ID":subids, 
+             "Group ID":groupids,
              "Max Mass":max_mass, 
              "Max Mass Snap":max_mass_snapshot, 
              "Current Snap Mass":current_mass}
