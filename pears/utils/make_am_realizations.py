@@ -27,18 +27,20 @@ paths = SetupPaths()
 
 # importing paths
 snapdata_path = f"{paths.path_snapdata}{sim}_snapdata.csv"
-read_path = f"{paths.path_maxmass}{sim}_{physics}_{snapshot}.csv"
+read_path = f"{paths.path_maxmass}{sim}_{physics}_{snapshot}.hdf5"
 
 # defining redshift corresponding to snapshot
 snapdata = QTable.read(snapdata_path)
 redshift = snapdata['redshift'][snapdata['snapshot'] == snapshot][0]
 
 # reading in subhalo information
-subhalo_data = QTable.read(read_path)
+subhalo_data = h5py.File(read_path, "r")
 
 ids, gids, masses, maxmasses, maxsnaps, stellar_reals = [], [], [], [], [], []
 
-for ind in range(len(subhalo_data)):
+
+
+for ind in range(len( subhalo_data[list(subhalo_data.keys())[0]] )):
     halo_id = subhalo_data['Subhalo ID'][ind]
     halo_mass = subhalo_data['Current Snap Mass'][ind]
     halo_maxmass = subhalo_data['Max Mass'][ind]
