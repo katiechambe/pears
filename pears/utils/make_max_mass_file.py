@@ -33,6 +33,8 @@ kwargs = {"group_mass_min": 8,
           "little_h": little_h}
 
 for phys in ["hydro","dark"]:
+    if phys =="hydro":
+        continue
     groups = GetGroups(snapshot=snap,
                         sim=sim,
                         physics=phys,
