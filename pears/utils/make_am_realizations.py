@@ -36,18 +36,20 @@ redshift = snapdata['redshift'][snapdata['snapshot'] == snapshot][0]
 # reading in subhalo information
 subhalo_data = QTable.read(read_path)
 
-ids, masses, maxmasses, maxsnaps, stellar_reals = [], [], [], [], []
+ids, gids, masses, maxmasses, maxsnaps, stellar_reals = [], [], [], [], [], []
 
 for ind in range(len(subhalo_data)):
     halo_id = subhalo_data['Subhalo ID'][ind]
     halo_mass = subhalo_data['Current Snap Mass'][ind]
     halo_maxmass = subhalo_data['Max Mass'][ind]
     halo_snap = subhalo_data['Max Mass Snap'][ind]
+    halo_group_id = subhalo_data["Group ID"][ind]
 
     ids.append(halo_id)
     masses.append(halo_mass)
     maxmasses.append(halo_maxmass)
     maxsnaps.append(halo_snap)
+    gids.append(halo_group_id)
         
     if halo_maxmass == 0:
         stars = np.zeros(1000)
@@ -62,6 +64,7 @@ for ind in range(len(subhalo_data)):
         print('on count ', ind, 'of ',len(subhalo_data))
 
 data_dict = {"Subhalo ID":ids, 
+             "Group ID":gids,
              "Max Mass":maxmasses, 
              "Max Mass Snap":maxsnaps, 
              "Current Snap Mass":masses, 
