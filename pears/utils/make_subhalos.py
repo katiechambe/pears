@@ -12,10 +12,8 @@ paths = SetupPaths()
 
 snaps = {}
 
-snaps["Illustris"] = np.arange(0,136,1)
-snaps["TNG"] = np.arange(0,100)
-
-        
+snaps["Illustris"] = np.arange(132,136,1)
+snaps["TNG"] = np.arange(98,100)
 
 for sim in ["Illustris","TNG"]:
     for snap in snaps[sim]:
