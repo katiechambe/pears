@@ -52,9 +52,9 @@ for sim in ["Illustris","TNG"]:
                                 "Subhalo Mass":inst.subhalo_masses,
                                 "Subhalo Pos":inst.subhalo_pos,
                                 "Subhalo Vel":inst.subhalo_vel,
-                                "Subhalo Max Mass":maxmasses,
-                                "Subhalo Max Mass Snap":maxmasssnaps,
-                                "Subhalo Stellar Masses":stellars
+                                "Subhalo Max Mass":np.array(maxmasses),
+                                "Subhalo Max Mass Snap":np.array(maxmasssnaps),
+                                "Subhalo Stellar Masses":np.array(stellars)
                                 }
 
                     units_dict = {
