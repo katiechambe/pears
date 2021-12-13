@@ -105,6 +105,8 @@ class GetGroups:
         subhalo_mass_mask = self.submass_phys >= 0.1 
         self.subhalo_ids = np.where(subhalo_group_mask&subhalo_mass_mask)[0]
         self.subhalo_masses = self.submass_phys[self.subhalo_ids]
+        self.subhalo_pos = self.subpos_phys[self.subhalo_ids]
+        self.subhalo_vel = self.subvel[self.subhalo_ids]
 
         self.save_path = f"{self.sim}_{self.physics}_{self.size}_{self.snapshot}.hdf5"
 
@@ -146,21 +148,50 @@ class GetGroups:
         
         print(f"Saved groups at {self.path_groups}{self.save_path}")
 
+    # def save_subhalos(self):
+    #     '''
+    #     Save the subhalo data for groups that pass mass cuts.
+    #     Note:
+    #     -----
+    #     This should be relatively quick because it uses the max mass info that 
+    #     was generated for each subhalo with M>1e9Msun in any group between 
+    #     5e10-8e12 Msun.
+    #     '''
 
-# # TODO: fix this up! 
-#     def save_subhalos(self):
-#         '''
-#         Save the subhalo data for groups that pass mass cuts.
-#         Note:
-#         -----
-#         This may be slow because it has to look up the merger trees for 
-#         each of the subhalos 
-#         '''
-#         x = []
-#         mask = []
-#         prev_group=None
-#         for subid in self.subhalo_ids: 
-#             current_group = self.subgr[subid]
+
+
+
+    #     for i in self.subhalo_ids:
+
+
+    #     sub_dict = {"Group ID":self.pass_numbers, 
+    #          "Subhalo ID":self.
+    #          "Group Mass":self.pass_mvir, 
+    #          "Group Radius":self.pass_rvir, 
+    #          "Nsubs":self.pass_nsubs,
+    #          }
+
+    #     units_dict = {"Group Number":"Group Number in Subfind Catalogs", 
+    #          "Group Mass":"Physical mass from Group_M_TopHat200 -- 1e10 Msun", 
+    #          "Group Radius":"Physical radius from Group_R_TopHat200 -- kpc", 
+    #          "Nsubs":"Number of subhalos in group"}
+
+    #     f = h5py.File(f"{self.path_subhalos}{self.save_path}", 'w')
+
+    #     for key, val in sub_dict.items():
+    #         dset = f.create_dataset(f'/Subhalos/{key}', 
+    #                                 shape=val.shape,
+    #                                 dtype=val.dtype)
+    #         dset.attrs[key] = units_dict[key]
+    #         dset[:] = val
+
+    #     dset = f.create_group('/Header')
+    #     for key in self.header_dict.keys():
+    #         dset.attrs[key] = self.header_dict[key]
+    
+    #     f.close()
+        
+    #     print(f"Saved groups at {self.path_subhalos}{self.save_path}")
 
 
 
