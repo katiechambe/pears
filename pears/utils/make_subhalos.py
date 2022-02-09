@@ -15,6 +15,32 @@ snaps = {}
 snaps["Illustris"] = np.arange(134,136,1)
 snaps["TNG"] = np.arange(99,100)
 
+
+snap = 134
+sim = "Illustris"
+
+savepath = f"{sim}_{snap}.hdf5"
+print(savepath)
+print(f"{paths.path_subhalos}{savepath}")
+f = h5py.File(f"{paths.path_subhalos}{savepath}", 'w')
+print(f"created new hdf5 file in {paths.path_subhalos}{savepath}")
+
+success=False
+print(success)
+
+phys = "dark"
+
+
+am_file_path = f"{sim}_{phys}_{snap}.hdf5"
+am_masses = h5py.File(f"{paths.path_am_mass}{am_file_path}", "r")
+am_dict = {}
+for key,val in am_masses.items():
+    am_dict[key] = np.array(val)
+
+s = "dwarf"
+
+################################################################################
+################################################################################
 for sim in ["Illustris","TNG"]:
     for snap in snaps[sim]:
         #create the hdf5 file!
@@ -27,7 +53,7 @@ for sim in ["Illustris","TNG"]:
             am_masses = h5py.File(f"{paths.path_am_mass}{am_file_path}", "r")
             am_dict = {}
             for key,val in am_masses.items():
-                am_dict[key] = np.array(list(val))
+                am_dict[key] = np.array(val)
 
             for s in ["dwarf","massive"]:
                 try:
@@ -36,18 +62,27 @@ for sim in ["Illustris","TNG"]:
                             physics=phys,
                             size=s)
 
-                    maxmasses, maxmasssnaps, stellars = [], [], []
+                    maxmasses, maxmasssnaps, stellars = ([] for i in range(3))
+                    gid, gmvir, grvir, gnsubs  = ([] for i in range(4))
 
                     for i in inst.subhalo_ids:
+                        # get the max mass and stellar mass data
                         ind = np.where( am_dict['Subhalo ID'] == i )[0][0]
-                        maxmasses.append( am_dict['Max Mass'] )
-                        maxmasssnaps.append( am_dict['Max Mass Snap'])
-                        stellars.append( am_dict['Stellar Masses'] )
+                        maxmasses.append( am_dict['Max Mass'][ind] )
+                        maxmasssnaps.append( am_dict['Max Mass Snap'][ind])
+                        stellars.append( am_dict['Stellar Masses'][ind] )
 
-                    sub_dict = {"Group ID":inst.pass_numbers, 
-                                "Group Mass":inst.pass_mvir, 
-                                "Group Radius":inst.pass_rvir, 
-                                "Nsubs":inst.pass_nsubs,
+                        # get the data about the group each subhalo belongs to
+                        groupnum = am_dict['Group ID'][ind]
+                        gid.append(groupnum)
+                        gmvir.append(inst.mvirs_phys[groupnum])
+                        grvir.append(inst.rvirs_phys[groupnum])
+                        gnsubs.append(inst.nsubs[groupnum])
+
+                    sub_dict = {"Group ID":np.array(gid), 
+                                "Group Mass":np.array(gmvir), 
+                                "Group Radius":np.array(grvir), 
+                                "Nsubs":np.array(gnsubs),
                                 "Subhalo ID":inst.subhalo_ids,
                                 "Subhalo Mass":inst.subhalo_masses,
                                 "Subhalo Pos":inst.subhalo_pos,
@@ -57,8 +92,12 @@ for sim in ["Illustris","TNG"]:
                                 "Subhalo Stellar Masses":np.array(stellars)
                                 }
 
+################################################################################
+################################################################################
+# have not debugged below
+
                     units_dict = {
-                        "Group Number":"Group Number in Subfind Catalogs", 
+                        "Group ID":"Group Number in Subfind Catalogs", 
                         "Group Mass":"Physical mass from Group_M_TopHat200 -- 1e10 Msun", 
                         "Group Radius":"Physical radius from Group_R_TopHat200 -- kpc", 
                         "Nsubs":"Number of subhalos in group",
