@@ -15,47 +15,21 @@ snaps = {}
 snaps["Illustris"] = np.arange(134,136,1)
 snaps["TNG"] = np.arange(99,100)
 
-
-snap = 134
-sim = "Illustris"
-
-savepath = f"{sim}_{snap}.hdf5"
-print(savepath)
-print(f"{paths.path_subhalos}{savepath}")
-f = h5py.File(f"{paths.path_subhalos}{savepath}", 'w')
-print(f"created new hdf5 file in {paths.path_subhalos}{savepath}")
-
-success=False
-print(success)
-
-phys = "dark"
-
-
-am_file_path = f"{sim}_{phys}_{snap}.hdf5"
-am_masses = h5py.File(f"{paths.path_am_mass}{am_file_path}", "r")
-am_dict = {}
-for key,val in am_masses.items():
-    am_dict[key] = np.array(val)
-
-s = "dwarf"
-
-################################################################################
-################################################################################
-for sim in ["Illustris","TNG"]:
+for sim in ["Illustris","TNG"][:1]:
     for snap in snaps[sim]:
         #create the hdf5 file!
         savepath = f"{sim}_{snap}.hdf5"
         f = h5py.File(f"{paths.path_subhalos}{savepath}", 'w')
 
         success=False
-        for phys in ["dark","hydro"]:
+        for phys in ["dark","hydro"][:1]:
             am_file_path = f"{sim}_{phys}_{snap}.hdf5"
             am_masses = h5py.File(f"{paths.path_am_mass}{am_file_path}", "r")
             am_dict = {}
             for key,val in am_masses.items():
                 am_dict[key] = np.array(val)
 
-            for s in ["dwarf","massive"]:
+            for s in ["dwarf","massive"][:1]:
                 try:
                     inst = GetGroups( snapshot=snap, 
                             sim=sim,
@@ -91,10 +65,6 @@ for sim in ["Illustris","TNG"]:
                                 "Subhalo Max Mass Snap":np.array(maxmasssnaps),
                                 "Subhalo Stellar Masses":np.array(stellars)
                                 }
-
-################################################################################
-################################################################################
-# have not debugged below
 
                     units_dict = {
                         "Group ID":"Group Number in Subfind Catalogs", 
