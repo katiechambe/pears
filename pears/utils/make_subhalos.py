@@ -96,6 +96,8 @@ for sim in ["Illustris","TNG"]:
                         print(f"Cannot save {sim} {phys} {s} for snapshot {snap} - DNE")
             except OSError:
                 print(f"Cannot find AM file for {sim} {phys} for snapshot {snap}")
+                f.close()
+                print("Closed file")
 
         if success:
             #create header with simulation info
@@ -111,5 +113,6 @@ for sim in ["Illustris","TNG"]:
             print(f"Saved groups at {paths.path_groups}{sim}_{snap}.hdf5")
         
         else:
+            print("Closing file")
             f.close()
             print(f"Something went wrong at {paths.path_groups}{sim}_{snap}.hdf5")
