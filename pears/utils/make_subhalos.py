@@ -12,7 +12,7 @@ paths = SetupPaths()
 
 snaps = {}
 
-snaps["Illustris"] = np.arange(134,136,1)
+snaps["Illustris"] = np.arange(0,136,1)
 snaps["TNG"] = np.arange(99,100)
 
 for sim in ["Illustris","TNG"]:
@@ -109,3 +109,7 @@ for sim in ["Illustris","TNG"]:
 
             f.close()
             print(f"Saved groups at {paths.path_groups}{sim}_{snap}.hdf5")
+        
+        else:
+            f.close()
+            print(f"Something went wrong at {paths.path_groups}{sim}_{snap}.hdf5")
