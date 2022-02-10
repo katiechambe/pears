@@ -15,21 +15,21 @@ snaps = {}
 snaps["Illustris"] = np.arange(134,136,1)
 snaps["TNG"] = np.arange(99,100)
 
-for sim in ["Illustris","TNG"][:1]:
+for sim in ["Illustris","TNG"]:
     for snap in snaps[sim]:
         #create the hdf5 file!
         savepath = f"{sim}_{snap}.hdf5"
         f = h5py.File(f"{paths.path_subhalos}{savepath}", 'w')
 
         success=False
-        for phys in ["dark","hydro"][:1]:
+        for phys in ["dark","hydro"]:
             am_file_path = f"{sim}_{phys}_{snap}.hdf5"
             am_masses = h5py.File(f"{paths.path_am_mass}{am_file_path}", "r")
             am_dict = {}
             for key,val in am_masses.items():
                 am_dict[key] = np.array(val)
 
-            for s in ["dwarf","massive"][:1]:
+            for s in ["dwarf","massive"]:
                 try:
                     inst = GetGroups( snapshot=snap, 
                             sim=sim,
