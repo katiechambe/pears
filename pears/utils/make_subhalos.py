@@ -96,7 +96,6 @@ for sim in ["Illustris","TNG"]:
                         print(f"Cannot save {sim} {phys} {s} for snapshot {snap} - DNE")
             except OSError:
                 print(f"Cannot find AM file for {sim} {phys} for snapshot {snap}")
-                f.close()
                 print("Closed file")
 
         if success:
