@@ -13,9 +13,9 @@ paths = SetupPaths()
 snaps = {}
 
 snaps["Illustris"] = np.arange(0,136,1)
-snaps["TNG"] = np.arange(99,100)
+snaps["TNG"] = np.arange(0,100)
 
-for sim in ["Illustris","TNG"]:
+for sim in ["Illustris","TNG"][1:]:
     for snap in snaps[sim]:
         #create the hdf5 file!
         savepath = f"{sim}_{snap}.hdf5"
