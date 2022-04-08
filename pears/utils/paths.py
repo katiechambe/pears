@@ -44,3 +44,4 @@ class SetupPaths:
         self.path_maxmass = self.path_data + "max_masses/"
         self.path_am_mass = self.path_data + "am_masses/"
         self.path_snapdata = self.path_data + "snapdata/"
+        self.path_pairs = self.path_data + "pairs/"
