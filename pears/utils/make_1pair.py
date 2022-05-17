@@ -113,7 +113,13 @@ for phys in ["dark","hydro"]:
                 vel1 = shortlist['Subhalo Vel'][primary_loc]
                 vel2 = shortlist['Subhalo Vel'][secondary_loc]
 
-                sep = np.linalg.norm( np.array(vector(pos1,pos2,scale) ) )
+                # note: box size is physical units!
+                if sim == "Illustris":
+                    boxsize = 106.5 # in Mpc!
+                elif sim == "TNG":
+                    boxsize = 110.7 # in Mpc!
+
+                sep = np.linalg.norm( np.array(vector(pos1,pos2,boxsize*1000) ) )
                 relvel = np.linalg.norm(vel1-vel2)
                 stlrt = stel2/stel1
 
