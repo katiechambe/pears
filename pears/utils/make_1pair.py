@@ -9,7 +9,6 @@ from utils.get_groups import GetGroups
 from utils.paths import SetupPaths
 from vectorCorrection import vectorCorrection as vector
 
-
 snapshot = int(sys.argv[1])
 sim = str(sys.argv[2])
 # snapshot = int(135)
@@ -47,7 +46,6 @@ units_dict = {
     "RelVel": "Relative velocity between primary and secondary in km/s",
     "Stellar Mass Ratio": "Stellar mass ratio of secondary over primary", # in this case- it's by primary subhalo mass
     "Stellar Mass Realization": "Stellar mass realization (0-1000)" }
-
 
 pair_data = {}
 ## ensure that the dark and/or hydro file exists before operating
@@ -92,8 +90,6 @@ for phys in ["dark","hydro"]:
             numPassingSubs = len(subhalo_dict['Nsubs'][mask])
 
             if numPassingSubs >=2:
-                print(numPassingSubs)
-
                 groupmass = subhalo_dict['Group Mass'][mask][0]
                 groupradius = subhalo_dict['Group Radius'][mask][0]
                 
@@ -141,9 +137,6 @@ for phys in ["dark","hydro"]:
         
         success = True
 
-        # if numSubs == 1:
-
-
 if success:
     #create header with simulation info
     header_dict = {"Snapshot":snapshot,
@@ -164,9 +157,6 @@ else:
 
 subhalo_data.close()
 
-
-
-
 # testing out try
 # for x in ['test1','test2']:
 #     for phys in ['hydro','dark']:
@@ -181,8 +171,3 @@ subhalo_data.close()
 #         l += 1
 #         print(l)
 #     print(x)
-
-
-
-
-
