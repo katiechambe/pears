@@ -37,8 +37,7 @@ redshift = snapdata['redshift'][snapdata['snapshot'] == snapshot][0]
 subhalo_data = h5py.File(read_path, "r")
 
 ids, gids, masses, maxmasses, maxsnaps, stellar_reals = [], [], [], [], [], []
-
-
+stellar_med = []
 
 for ind in range(len( subhalo_data[list(subhalo_data.keys())[0]] )):
     halo_id = subhalo_data['Subhalo ID'][ind]
@@ -55,12 +54,17 @@ for ind in range(len( subhalo_data[list(subhalo_data.keys())[0]] )):
         
     if halo_maxmass == 0:
         stars = np.zeros(1000)
+        medstar = 0
     else:
         stars = AbundanceMatching(maxmass=halo_maxmass*1e10, 
                                 redshift=redshift,
                                 samples=num_reals).stellar_mass()[0]
+        medstar = AbundanceMatching(maxmass=halo_maxmass*1e10, 
+                                    redshift=redshift,
+                                    samples=num_reals).stellar_mass(med=True)[0]
 
     stellar_reals.append(stars/1e10) # in units of 1e10 Msun
+    stellar_med.append(medstar/1e10)
 
     if ind%10000 == 0:
         print('on count ', ind, 'of ',len(subhalo_data))
@@ -70,7 +74,8 @@ data_dict = {"Subhalo ID":ids,
              "Max Mass":maxmasses, 
              "Max Mass Snap":maxsnaps, 
              "Current Snap Mass":masses, 
-             "Stellar Masses":stellar_reals}
+             "Stellar Masses":stellar_reals,
+             "Median Stellar Mass":stellar_med}
 
 save_path = f"{paths.path_am_mass}{sim}_{physics}_{snapshot}.hdf5"
 
