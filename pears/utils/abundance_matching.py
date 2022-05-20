@@ -3,8 +3,13 @@ Creates abundance matched realizations for dark matter halos
 
 Usage:
 ------
-To get stellar mass gives max mass:
-    AbundanceMatching(maxmass,redshift,#samples).stellar_mass()
+To get stellar mass:
+    AbundanceMatching(maxmass,redshift,#samples).stellar_mass(med)
+    -- NOTE:
+        - med=False gives a vector of stellar masses with some spread and
+            length samples
+        - med=True yields one individual value for the given max mass and
+            redshift and is calculated by setting errors to 0
 
 Details:
 --------
