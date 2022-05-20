@@ -10,7 +10,7 @@ Details:
 --------
 Follows Moster, Naab, and White (2012)
 https://arxiv.org/pdf/1205.5807.pdf
-equations (11-14) and 
+equations 2,11-14, and table 1
 """
 
 __author__ = "Katie Chamberlain"
@@ -39,56 +39,35 @@ class AbundanceMatching:
         self.maxmass = maxmass
         self.z = redshift
         self.samples = samples
-        
-    def logM1(self):
-        """eq. 11"""
-        M10      = 11.59
-        M10range = 0.236
-        M11      = 1.195
-        M11range = 0.353
 
-        # picking gaussian distributed variables
-        M10Gauss = normal(M10, M10range,self.samples)
-        M11Gauss = normal(M11, M11range, self.samples)
-        return M10Gauss + M11Gauss*(self.z/(1+self.z))
-    
-    def N(self):
-        """eq. 12"""    
-        N10      = 0.0351
-        N10range = 0.0058
-        N11      = -0.0247
-        N11range = 0.0069
+        # values from table 1
+        self.M10vec = [11.59, 0.236]
+        self.M11vec = [1.195, 0.353]
+        self.N10vec = [0.0351, 0.0058]
+        self.N11vec = [-0.0247, 0.0069]
+        self.beta10vec = [1.376, 0.153]
+        self.beta11vec = [-0.826, 0.225]
+        self.gamma10vec = [0.608, 0.059]
+        self.gamma11vec = [0.329, 0.173]
 
-        # picking gaussian distributed variables
-        N10Gauss = normal(N10, N10range,self.samples)
-        N11Gauss = normal(N11, N11range, self.samples)
-        return N10Gauss + N11Gauss*(self.z/(1+self.z))
+    def getvals(self, vec, med=False):
+        """ 
+        if asking for median (med=True):
+            then the median value is returned
+        if med=False, 
+            return a vector of length self.samples of 
+            values with gaussian error
+        """
+        if med:
+            return normal(vec[0], 0)
+        else:
+            return normal(vec[0], vec[1], self.samples)
 
-    def beta(self):
-        """eq. 13"""
-        beta10      = 1.376
-        beta10range = 0.153
-        beta11      = -0.826
-        beta11range = 0.225
+    def func(self, x, dx):
+        """of form x + dx*(z/z+1)"""
+        return x + dx*(self.z/(1+self.z))
 
-        # picking gaussian distributed variables
-        beta10Gauss = normal(beta10, beta10range,self.samples),
-        beta11Gauss = normal(beta11, beta11range, self.samples)
-        return beta10Gauss + beta11Gauss*(self.z/(1+self.z))   
-
-    def gamma(self):
-        """eq. 14"""
-        gamma10      = 0.608
-        gamma10range = 0.059
-        gamma11      = 0.329
-        gamma11range = 0.173
-        
-        # picking gaussian distributed variables
-        gamma10Gauss = normal(gamma10, gamma10range,self.samples)
-        gamma11Gauss = normal(gamma11, gamma11range, self.samples)
-        return gamma10Gauss + gamma11Gauss*(self.z/(1+self.z))
-
-    def mass_ratio(self):
+    def mass_ratio(self, med=False):
         """
         stellar to halo mass ratio
 
@@ -98,13 +77,27 @@ class AbundanceMatching:
 
         eq.2 in Moster
         """
-        M1 = 10**self.logM1()
-        A = (self.maxmass/M1)**(-self.beta())
-        B = (self.maxmass/M1)**(self.gamma())
-        SHMratio = 2*self.N()*(A+B)**-1
+        M10 = self.getvals(self.M10vec, med)
+        M11 = self.getvals(self.M11vec, med)
+        N10 = self.getvals(self.N10vec, med)
+        N11 = self.getvals(self.N11vec, med)
+        beta10 = self.getvals(self.beta10vec, med)
+        beta11 = self.getvals(self.beta11vec, med)
+        gamma10 = self.getvals(self.gamma10vec, med)
+        gamma11 = self.getvals(self.gamma11vec, med)
+    
+        logM = self.func(M10, M11)
+        N = self.func(N10, N11)
+        beta = self.func(beta10, beta11)
+        gamma = self.func(gamma10, gamma11)
+
+        M1 = 10**logM
+        A = (self.maxmass/M1)**(-beta)
+        B = (self.maxmass/M1)**(gamma)
+        SHMratio = 2*N*(A+B)**-1
         return SHMratio
 
-    def stellar_mass(self):
+    def stellar_mass(self,med=False):
         """ 
         stellar mass
 
@@ -112,6 +105,6 @@ class AbundanceMatching:
         --------
             stellar mass in Msun
         """
-        return self.maxmass*self.mass_ratio()
+        return self.maxmass*self.mass_ratio(med)
 
  
