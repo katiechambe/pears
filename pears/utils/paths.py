@@ -16,11 +16,11 @@ class SetupPaths:
 
     def __init__(
         self, 
-        basedir="/xdisk/gbesla/mig2020/rsgrps/gbeslastudents/"
+        basedir="/xdisk/gbesla/katiechambe/"
         ):
 
         self.path_basedir = basedir
-        self.path_home = self.path_basedir + "katie/"
+        self.path_home = self.path_basedir # + "katie/"
         self.path_pears = self.path_home + "pears/"
 
         # directories for illustris data
