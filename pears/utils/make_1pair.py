@@ -21,7 +21,7 @@ paths = SetupPaths()
 subhalo_path = f"{sim}_{snapshot}.hdf5"
 subhalo_data = h5py.File(f"{paths.path_subhalos}{subhalo_path}", "r")
 
-savepath = f"{sim}_{snapshot}_1pair.hdf5"
+savepath = f"{sim}_{snapshot}_1pair_medstel.hdf5"
 f = h5py.File(f"{paths.path_pairs}{savepath}", 'w')
 
 redshift = subhalo_data["Header"].attrs["Redshift"]
@@ -77,7 +77,8 @@ for phys in ["dark","hydro"]:
                                  "Sub2 Vel": [],
                                  "Separation": [],
                                  "RelVel": [],
-                                 "Stellar Mass Ratio": [] }
+                                 "Stellar Mass Ratio": [],
+                                 "Stellar Mass Realization": []}
 
         ## create dictionary of subhalo info
         for key,val in subhalo_data[phys][size].items():
@@ -99,19 +100,25 @@ for phys in ["dark","hydro"]:
                 
                 # can change these to be by stellar mass instead! 
                 #currently halo mass! 
-                primary_loc = 0
-                secondary_loc = 1
+                meds = shortlist["Subhalo Med Stellar Mass"]
+                primary_loc = np.where(meds==np.max(meds))
+                
+                meds_sansmax = np.where(meds==np.max(meds), 0, meds)
+                secondary_loc = np.where(meds==np.max(meds_sansmax))
 
-                id1 = shortlist['Subhalo ID'][primary_loc]
-                id2 = shortlist['Subhalo ID'][secondary_loc]
-                mass1 = shortlist['Subhalo Mass'][primary_loc]
-                mass2 = shortlist['Subhalo Mass'][secondary_loc]
-                stel1 = shortlist['Subhalo Stellar Masses'][primary_loc][0]
-                stel2 =  shortlist['Subhalo Stellar Masses'][secondary_loc][0]
-                pos1 = shortlist['Subhalo Pos'][primary_loc]
-                pos2 = shortlist['Subhalo Pos'][secondary_loc]
-                vel1 = shortlist['Subhalo Vel'][primary_loc]
-                vel2 = shortlist['Subhalo Vel'][secondary_loc]
+                id1 = shortlist['Subhalo ID'][primary_loc][0]
+                id2 = shortlist['Subhalo ID'][secondary_loc][0]
+                mass1 = shortlist['Subhalo Mass'][primary_loc][0]
+                mass2 = shortlist['Subhalo Mass'][secondary_loc][0]
+                stel1 = shortlist['Subhalo Med Stellar Mass'][primary_loc][0]
+                stel2 =  shortlist['Subhalo Med Stellar Mass'][secondary_loc][0]
+                # when using realizations, use this to index the stellar mass array
+#                 stel1 = shortlist['Subhalo Stellar Masses'][primary_loc][0]
+#                 stel2 =  shortlist['Subhalo Stellar Masses'][secondary_loc][0]
+                pos1 = shortlist['Subhalo Pos'][primary_loc][0]
+                pos2 = shortlist['Subhalo Pos'][secondary_loc][0]
+                vel1 = shortlist['Subhalo Vel'][primary_loc][0]
+                vel2 = shortlist['Subhalo Vel'][secondary_loc][0]
 
                 # note: box size is physical units!
                 if sim == "Illustris":
@@ -123,12 +130,12 @@ for phys in ["dark","hydro"]:
                 relvel = np.linalg.norm(vel1-vel2)
                 stlrt = stel2/stel1
 
-                stellarmassreal = 0
+                real = -1
 
                 pairlist = np.array([groupNum, groupmass, groupradius, numPassingSubs, 
                             id1, id2, mass1, mass2, stel1, stel2, 
                             pos1, pos2, vel1, vel2, 
-                            sep, relvel, stlrt])
+                            sep, relvel, stlrt, real])
 
                 for ind, key in enumerate(pair_data[phys][size].keys()):
                     pair_data[phys][size][key].append(pairlist[ind])
@@ -162,6 +169,9 @@ else:
     print(f"Something went wrong at {paths.path_groups}{sim}_{snapshot}.hdf5")
 
 subhalo_data.close()
+
+
+
 
 # testing out try
 # for x in ['test1','test2']:

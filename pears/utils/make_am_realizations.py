@@ -61,7 +61,7 @@ for ind in range(len( subhalo_data[list(subhalo_data.keys())[0]] )):
                                 samples=num_reals).stellar_mass()[0]
         medstar = AbundanceMatching(maxmass=halo_maxmass*1e10, 
                                     redshift=redshift,
-                                    samples=num_reals).stellar_mass(med=True)[0]
+                                    samples=1).stellar_mass(med=True)
 
     stellar_reals.append(stars/1e10) # in units of 1e10 Msun
     stellar_med.append(medstar/1e10)

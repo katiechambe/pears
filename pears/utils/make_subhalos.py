@@ -5,6 +5,7 @@ in the groups of interest!
 
 import h5py
 import numpy as np
+import sys
 from utils.get_groups import GetGroups
 from utils.paths import SetupPaths
 
@@ -21,6 +22,8 @@ f = h5py.File(f"{paths.path_subhalos}{savepath}", 'w')
 
 success=False
 for phys in ["dark","hydro"]:
+    if phys =="hydro":
+        continue
     try:
         am_file_path = f"{sim}_{phys}_{snap}.hdf5"
         am_masses = h5py.File(f"{paths.path_am_mass}{am_file_path}", "r")
