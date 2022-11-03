@@ -29,7 +29,7 @@ elif sim == "TNG":
     little_h = 0.6774
 
 kwargs = {"group_mass_min": 8,
-          "group_mass_max": 500,
+          "group_mass_max": 650,
           "little_h": little_h}
 
 for phys in ["hydro","dark"]:

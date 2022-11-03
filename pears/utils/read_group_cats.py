@@ -25,7 +25,8 @@ class ReadCats:
         self,
         snapshot,
         sim = "Illustris",
-        physics ="dark"
+        physics ="dark",
+        **kwargs,
         ):
         """
         Reads group catalog for correct simulation and physics
@@ -34,17 +35,12 @@ class ReadCats:
         ----------
         snapshot: int
             the number of the snapshot with the corresponding subhalo ID
-        subfindID: int
-            the ID number of the subhalo at the corresponding snapshot
         sim: str
             "Illustris" or "TNG"
             to specify which simulation
         physics: str
             "dark" or "hydro"
             to specify which simulation
-        kwargs: dict
-            little_h: float
-                definition of little h, default h=0.702
 
         Outputs:
         --------
@@ -55,6 +51,17 @@ class ReadCats:
         self.snapshot = snapshot 
         self.sim = sim
         self.physics = physics
+        self.kwargs = kwargs
+        
+        
+        self.keysel_default =  [
+            'GroupPos','Group_M_TopHat200', 
+            'Group_R_TopHat200','GroupNsubs',
+            'GroupFirstSub',
+            'SubhaloGrNr','SubhaloMass',
+            'SubhaloPos','SubhaloVel' ]
+        
+        self.keysel = self.kwargs.pop("keysel", self.keysel_default)
 
         SetupPaths.__init__(self)
         
@@ -81,20 +88,15 @@ class ReadCats:
             raise AttributeError("Unrecognized simulation type: \
                   Failed to construct path to catalog")
 
-        keysel = [
-            'GroupPos','Group_M_TopHat200', 
-            'Group_R_TopHat200','GroupNsubs',
-            'GroupFirstSub',
-            'SubhaloGrNr','SubhaloMass',
-            'SubhaloPos','SubhaloVel'
-            ]
 
         self.catalog = readSub.subfind_catalog(
             basedir=self.catpath,
             snapnum=self.snapshot,
-            keysel=keysel
+            keysel=self.keysel
             )
-
+        
+        
+        # note if keysel does not include at least all of these, will throw error
         self.groupPos = self.catalog.GroupPos
         self.mvirs = self.catalog.Group_M_TopHat200
         self.rvirs = self.catalog.Group_R_TopHat200

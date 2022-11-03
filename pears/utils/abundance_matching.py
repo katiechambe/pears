@@ -23,6 +23,7 @@ __status__ = "Beta - forever~"
 __date__   = "May 2019 - edited Oct. 2021"
 
 from numpy.random import normal
+from numpy import where
 
 class AbundanceMatching:
     def __init__(self, maxmass, redshift, samples):
@@ -92,14 +93,16 @@ class AbundanceMatching:
         gamma11 = self.getvals(self.gamma11vec, med)
     
         logM = self.func(M10, M11)
-        N = self.func(N10, N11)
+        Nany = self.func(N10, N11)
+        Nmed = self.func( self.getvals(self.N10vec, "True"), self.getvals(self.N11vec, "True") )
+        Npos = where(Nany < 0, Nmed, Nany)
         beta = self.func(beta10, beta11)
         gamma = self.func(gamma10, gamma11)
 
         M1 = 10**logM
         A = (self.maxmass/M1)**(-beta)
         B = (self.maxmass/M1)**(gamma)
-        SHMratio = 2*N*(A+B)**-1
+        SHMratio = 2*Npos*(A+B)**-1
         return SHMratio
 
     def stellar_mass(self,med=False):

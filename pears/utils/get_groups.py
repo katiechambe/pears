@@ -63,7 +63,7 @@ class GetGroups:
 
         elif self.size == "massive":
             self.group_min = 100
-            self.group_max = 400
+            self.group_max = 650
 
         self.group_min = self.kwargs.pop("group_mass_min", self.group_min)
         self.group_max = self.kwargs.pop("group_mass_max", self.group_max)
@@ -73,12 +73,14 @@ class GetGroups:
 
         elif self.sim == "TNG":
             self.little_h = 0.6774
+
         
         ReadCats.__init__(
             self, 
             snapshot=self.snapshot, 
             sim=self.sim, 
-            physics=self.physics
+            physics=self.physics,
+            **self.kwargs
             )
         self.scale = 1/(1+self.redshift)
 
