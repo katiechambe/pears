@@ -45,3 +45,5 @@ class SetupPaths:
         self.path_am_mass = self.path_data + "am_masses/"
         self.path_snapdata = self.path_data + "snapdata/"
         self.path_pairs = self.path_data + "pairs/"
+        self.path_median = self.path_data + "median_realization/"
+        self.path_simstars = self.path_data + "simulation_mstar/"

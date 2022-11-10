@@ -15,14 +15,13 @@ from utils.paths import SetupPaths
 paths = SetupPaths()
   
     
-class compile_summary:
+class summary:
     
     def __init__(
         self,
         sim="Illustris", 
         phys="dark",
         size="dwarf",
-        subset="major",
         **kwargs
         ):
     
@@ -39,53 +38,46 @@ class compile_summary:
             to specify which simulation
         size: str
             "dwarf" or "massive"
-        subset: str
-            to specify the subset
-            choose from: major, minor, all
         """
         
         self.sim = sim
         self.phys = phys
         self.size = size
-        self.subset = subset
         self.kwargs = kwargs
         self.redcutoff = self.kwargs.pop("redshift_cutoff", 1000)
         
 
-    def get_data(self):
+    def get_counts(self):
         
-        summarydata = {"Redshift":[],
-                            "Snapshot":[],
-                            "Number pairs":[],
-                            "Number primaries":[],
-                           # "Number tertiaries":[],
-                            "Ratio pairs":[],
-                            "Median Separation": [],
-                            "Median Separation Quartiles": [],
-                            "Mean Separation": [],
-                            "Mean Separation Std": [],
-                            "Median RelVel": [],
-                            "Median RelVel Quartiles": [],
-                            "Mean RelVel": [],
-                            "Mean RelVel Std": [],
-                            "Mean Lowsep Counts": [],
-                            "Mean Lowsep Counts Std": []}
+#         summarydata = {"Redshift":[],
+#                             "Snapshot":[],
+#                             "Number pairs":[],
+#                             "Number primaries":[],
+#                             "Ratio pairs":[],
+#                             "Median Separation": [],
+#                             "Median Separation Quartiles": [],
+#                             "Mean Separation": [],
+#                             "Mean Separation Std": [],
+#                             "Median RelVel": [],
+#                             "Median RelVel Quartiles": [],
+#                             "Mean RelVel": [],
+#                             "Mean RelVel Std": [],
+#                             "Mean Lowsep Counts": [],
+#                             "Mean Lowsep Counts Std": []}
 #         summarydata = {}
         
-        self.snapshots = {"Illustris":np.arange(0,136), 
-                     "TNG":np.arange(0,100)}
+        self.snapshots = {"Illustris":np.arange(0,136), "TNG":np.arange(0,100)}
         
         for snapshot in self.snapshots[self.sim]:
             pair_path = f"{self.sim}_{snapshot}_10.hdf5"
             pair_data = h5py.File(f"{paths.path_pairs}{pair_path}", "r")
-      
 
             try:
                 data = pair_data[self.phys]
                 red_coor = pair_data['Header'].attrs['Redshift']
 
             except KeyError:
-                print(f"{snapshot} does not exist -- skipping")
+                continue
 
             else:
                 if red_coor < self.redcutoff:
@@ -120,7 +112,6 @@ class compile_summary:
                         countarray.append(counts/numprims)
 
                     masks = {"primaries":primary_analog,
-                             "allpairs":primary_analog & minsep,
                              "median": primary_analog & med_mask,
                              "major":majors & primary_analog & minsep, 
                              "minor":minors & primary_analog & minsep,
@@ -242,7 +233,6 @@ class compile_summary:
                 countarray.append(counts/numprims)
 
             masks = {"primaries":primary_analog,
-                     "allpairs":primary_analog & minsep,
                      "median": primary_analog & med_mask,
                      "major":majors & primary_analog & minsep, 
                      "minor":minors & primary_analog & minsep,

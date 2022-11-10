@@ -280,7 +280,7 @@ for phys in ["dark","hydro"]:
 
     for key, val in pair_data.items():
         val = np.array(val)
-        dset = f.create_dataset(f'/{phys}/{key}', 
+        dset = f.create_dataset(f'/pairs/{phys}/{key}', 
                                 shape=val.shape,
                                 dtype=val.dtype)
         dset.attrs[key] = units_dict[key]
