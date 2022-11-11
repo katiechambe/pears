@@ -8,7 +8,7 @@
 #SBATCH --partition=high_priority
 #SBATCH --account=gbesla  
 #SBATCH --qos=user_qos_gbesla
-#SBATCH --array 0-99
+#SBATCH --array 0-96
 
 module load python/3.8
 

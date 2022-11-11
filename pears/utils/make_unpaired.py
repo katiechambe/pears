@@ -40,7 +40,9 @@ units_dictionary = {"Group ID": "Group Number in Subfind Catalogs",
           "Sub1 BHMdot": "Instantaneous accretion rates of all blackholes -- 1e10 Msun / 0.978Gyr",
           "Sub1 SFR": "Sum of the individual SFRs of all gas cells in subhalo -- Msun / yr",
           "Sub1 SFRinRad": "Sum of SFRs of all gas cells within twice the stellar half mass radius -- Msun / yr",
-          "Sub1 GasMetallicity": "Mz/Mtot, where Z = any element above He within 2x stellar half mass radius -- unitless"}
+          "Sub1 GasMetallicity": "Mz/Mtot, where Z = any element above He within 2x stellar half mass radius -- unitless",
+          "Realization": "Stellar mass realization (0-1000)"
+}
 
 # header already exists since running this file after the pair creation file
 
@@ -71,7 +73,8 @@ for phys in ["dark","hydro"]:
                  "Sub1 BHMdot": [],
                  "Sub1 SFR": [],
                  "Sub1 SFRinRad": [],
-                 "Sub1 GasMetallicity": []}
+                 "Sub1 GasMetallicity": [],
+                 "Realization":[]}
 
     ## create a dictionary of arrays from subhalo data
     subhalo_dictionary = {}
@@ -126,7 +129,8 @@ for phys in ["dark","hydro"]:
                               "Sub1 BHMdot": subBHMdot,
                               "Sub1 SFR": subSFR,
                               "Sub1 SFRinRad": subSFRinRad,
-                              "Sub1 GasMetallicity": subGasMet}
+                              "Sub1 GasMetallicity": subGasMet,
+                              "Realization": realization}
                                      
                     for key in unpaired_data.keys():
                         unpaired_data[key].append(single[key])
@@ -139,14 +143,15 @@ for phys in ["dark","hydro"]:
 
 
     f = h5py.File(f"{paths.path_pairs}{savepath}", 'r+')
-
+    
     for key, val in unpaired_data.items():
         val = np.array(val)
         dset = f.create_dataset(f'/unpaired/{phys}/{key}', 
                                 shape=val.shape,
                                 dtype=val.dtype)
         dset.attrs[key] = units_dictionary[key]
-        dset[:] = val
+        dset[:] = val 
+    
     f.close()
     print(f"successfully wrote unpaired halos for {sim} {phys} to {savepath}")
     print(f"saved data for", unpaired_data.keys())
