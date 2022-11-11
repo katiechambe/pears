@@ -1,6 +1,5 @@
 \documentclass[twocolumn]{aastex631}
 
-
 % Packages
 \usepackage{microtype}  % ALWAYS!
 \usepackage{amsmath}
@@ -46,7 +45,7 @@
 \shortauthors{Chamberlain et al.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\graphicspath{{./}{figures/}}
+\graphicspath{{./}{../plots/pairs_plots/}}
 \input{math_definitions.tex}
 
 % Affiliations
@@ -96,7 +95,7 @@
 
 % selection criterion
 \begin{table*}[htb]
-  \begin{center}
+  \centering
     \begin{tabular}{lcc}
      & Dwarf Pairs & Massive Pairs \\\hline\hline
     Group Mass & $8\times10^{10} < \rm M_g < 5\times10^{11} M_\odot$ & $1\times10^{12} < \rm M_g < 4\times10^{12} M_\odot$  \\
@@ -105,7 +104,6 @@
     Primary &$1\times10^{8} < \rm M_* < 5\times10^{9} \Msun$ & $5\times10^{9} < \rm M_* < 1\times10^{11} \Msun$\\\hline
     \end{tabular}
     \caption{\label{table:mass}Selection criteria for dwarf and massive pairs.}
-  \end{center}
     \end{table*}
 
 % equivalent snapshot table
@@ -123,8 +121,24 @@
   \hline \hline
   \end{tabular}
   \caption{\label{tab:equiv-snapshot} The snapshot number of the original \ill\ and the \tng\ simulations at redshifts $z=0-4$.}
-\end{table}
+    \end{table}
 
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{counts_dwarfs.png}
+  \caption{Median counts of dwarf primaries in \ill{} and \tng{} \kc{add "dwarf" somewhere to plot}. The number of dwarf primaries peaks at $z~0.75$. TNG has higher halo count than Illustris. However, the difference between the number of halos in both dark simulations is substantial. Additionally, in Illustris, hydro halos outnumber dark halos. In TNG, the opposite is true, where dark halos outnumber hydro halos. In Illustris, this can be accounted for by the discrepant number of unpaired halos (dotted), while in TNG, the difference is dominated by pairs. 
+    }
+  \label{fig:counts-dwarfs}
+\end{figure*}
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{counts_massive.png}
+  \caption{No turn over, instead, monotonically increasing towards a peak at low z. No significant fraction of halos that are lone subhalos. The largest differences between the hydro and dark simulations in both cases are at low z, where the counts start to diverge. TNG has a higher number of massive halos primaries than Illustris. The difference between dark and hydro is large in TNG, and at low z, the main driver of this difference is in the pairs, as opposed to the lone halos. This is not the case in Illustris, where both the pairs and unpaired halos contribute equally to the difference between dark and hydro, in opposite way! Weird… \kc{add "massive" somewhere to plot}
+    }
+  \label{fig:counts-massive}
+\end{figure*}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
