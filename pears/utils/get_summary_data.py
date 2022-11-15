@@ -120,7 +120,7 @@ class compile_summary:
                         countarray.append(counts/numprims)
 
                     masks = {"primaries":primary_analog,
-                             "allpairs":primary_analog & minsep,
+                             "allpairs":primary_analog & minsep,  # this should be & pairs
                              "median": primary_analog & med_mask,
                              "major":majors & primary_analog & minsep, 
                              "minor":minors & primary_analog & minsep,
