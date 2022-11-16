@@ -58,7 +58,7 @@
 \begin{document}
 
 \title{
-  Frequency of galaxy pairs in the Illustris and Illustris TNG cosmological simulations
+  Frequency of galaxy pairs in the Illustris and IllustrisTNG cosmological simulations
 }
 
 \author[0000-0001-8765-8670]{Katie~Chamberlain}
@@ -72,13 +72,84 @@
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
-\label{sec:intro}
+\section{Introduction} \label{sec:intro}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Methods}
-\label{sec:methods}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sample selection}\label{sec:methods}
+Our sample data was obtained using a strict set of selection criteria, as outlined in this section.
+In Sec.~\ref{sec:methods-sims}, we provide motivation for and details of the simulations utilized in this study.
+Sec.~\ref{sec:methods-am} explains the abudance matching prescription used to associate stellar masses with the dark matter subhalos.
+Sec.~\ref{sec:methods-crit} provides a detailed outline of our selection criteria and process for picking pairs.
+Finally, Sec.~\ref{sec:methods-counts} gives an overview of the properties of our sample.
+
+%%%%%%%%%%%
+%%%%%%%%%%%
+\subsection{Simulation details}\label{sec:methods-sims}
+% what is it that we are trying to study? why use illustris?
+To understand the occurance rate and separations of typical galaxy pairs in a cosmological context, we require a simulation that provides a large statistical sample of pairs in both the dwarf and massive galaxy regime. 
+Thus, we are limited in our simulation choice to large-volume cosmological simulations. 
+However, we also require high resolution simulations such that the dwarf subhalos are resolved well enough to ensure robust statistics at the low mass end, and so we are not limited by our inability to resolve objects down to halo masses of $M_{\rm halo}\approx1\times 10^9\, \Msun$.
+
+% Baryonic processes
+Baryonic process are known to affect the dark matter halo structure of low mass ($M_*<1\times10^9\Msun$) subhalos in simulations~\citep[see e.g.][and references therein]{Sales:2022}.
+Additionally, the shallow potential well of dwarf galaxies compared to their massive counterparts may lend themselves more easily to disruption from baryonic processes such as supernova feedback, which could change the occurance rate of low mass subhalos in hydrodynamic simulations \kc{check and see if they looked at this in the TNG100 galaxy paper}.
+To study the effect of baryonic processes on the rate and separation of pairs, we require cosmological simulations which have both dark matter only runs and to full hydrodynamics.
+
+% details of Illustris and Illustris TNG
+The \textit{Illustris Project} ~\citep{vogelsberger14A,nelson15} and \textit{IllustrisTNG Project}~\citep{TNG1, TNG2, TNG3, TNG4, TNG5} are a set of N-body and hydrodynamic cosmological simulations which are perfectly suited for such a study. 
+We use the dark matter only and full hydrodynamic runs of both the \ill-1 and \tng100-1 simulations to explore the connection between pairs and baryonic processes. 
+Each of these simulations follows the dynamical evolution of $1820^3$ dark matter particles from $z=127$ to $z=0$ through a periodic volume of roughly $100^3$ Mpc$^3$. 
+The \ill{} simulations follow a cosmology consistent with \textit{WMAP-9}~\citep{hinshaw13}, while the \tng{} simulations are consistent with \textit{Planck2015}~\citep{Planck2015}.
+Specifically, we use the \textit{Illustris-1-Dark}, \textit{Illustris-1}, \textit{TNG100-1-Dark}, and \textit{TNG100-1} simulations (hereafter \illd, \illh, \tngd, and \tngh{} respectively, see Table~\ref{table:sim} for details).
+
+% deets on the hydrodynamics of 
+\kc{hydrodynamics details on the difference between the two hydro simulations. also include differences between the two dark simulations, if there are any besides the cosmology. }
+
+% subfind, sublink, and groups and subhalos
+We utilize the group catalogs produced by the \texttt{SUBFIND} algorithm ~\citep{springel01,dolag09}. 
+These catalogs consist of halos (or "groups"), defined using the Friends-of-Friends (FoF) algorithm~\citep{davis85} to link nearby particles, and their associated subhalos, which are over-dense and gravitationally bound dark matter structures.
+We also use the merger trees provided by the \texttt{SUBLINK} algorithm \citep{gomez15}, which tracks subhalos between snapshots using their particle data, in order to trace the mass growth and merger histories of our subhalos.
+
+
+\begin{table*}[htb]
+\begin{tabular}{l|llll}
+ & \illd & \illh & \tngd & \tngh\\\hline\hline
+ L$_{\rm Box}$ [Mpc] & 106.5 & 106.5 & 110.7 & 110.7 \\
+m$_{\rm DM}$ [M$_\odot$] & 7.5$\times10^6$ & 6.3$\times10^6$ & 8.9$\times10^6$ & $7.5\times10^6$\\
+m$_{\rm gas}$ & -- & $1.3\times 10^{6}$ & -- & $1.4\times 10^{6}$ \\\hline
+
+\end{tabular}
+\caption{\label{table:sim}Parameters of the Illustris simulations used in this analysis.}
+\end{table*}
+
+%%%%%%%%%%%
+%%%%%%%%%%%
+\subsection{Abundance matching prescription}\label{sec:methods-am}
+As our goal is to compare between dark matter only and full hydrodynamic
+simulations,
+
+\subsection{Selection criteria}\label{sec:methods-crit}
+\begin{enumerate}
+  \item Select groups in some group range that encompasses MCs and MW-M31
+  \item For every subhalo in every group with halo mass >1e9Msun, use merger trees to get the maximum masses.
+  \item Generate 1000 stellar mass realization using abundance matching so we can account for the spread in the relationship
+  \item Generate catalog at each redshift containing: 
+  \begin{itemize}
+    \item For each realization, and in each group with a single subhalo, add the subhalo and it's properties to a catalog of single halos.
+    \item For each realization, and in each group with 2+ halos, find most massive halo by stellar mass, and the second most massive halo by stellar mass, then add to pair catalog. 
+    \item If a group has 3+ halos, check the stellar mass of the third most massive object, and see if it is a major/minor companion of the secondary. If not, teritary flag = 0. Otherwise =1.
+  \end{itemize}
+  \item Select dwarf primaries: for full catalog, most massive halo (in "pairs") or single halos with stellar mass $1\times10^{8} < \msam < 5\times10^{9} \Msun$. 
+  \item Select dwarf pairs: for full pair catalog, any pair with stellar mass ratio between 1-1/4 (major pairs) or between 1/4-1/10 (minor pairs). All pairs is the union of these two sets. Any pair or single halo that is outside of these two sets is an "unpaired" halo. Note that unpaired can still have very minor companions. 
+\end{enumerate}
+
+The lower mass threshold for subhalos that constitute our dwarf pairs have a halo mass greater than $1\times10^9\Msun$, such that each of our halos are resolved into at least 100 particles in each simulation.  
+\kc{why 100?} 
+
+\subsection{Counts and distributions}\label{sec:methods-counts}
+
 \begin{itemize}
   \item Introduce simulations
   \item outline selection steps
@@ -98,32 +169,37 @@
   \centering
     \begin{tabular}{lcc}
      & Dwarf Pairs & Massive Pairs \\\hline\hline
-    Group Mass & $8\times10^{10} < \rm M_g < 5\times10^{11} M_\odot$ & $1\times10^{12} < \rm M_g < 4\times10^{12} M_\odot$  \\
+    % Group Mass & $8\times10^{10} < \rm M_g < 5\times10^{11} M_\odot$ & $1\times10^{12} < \rm M_g < 4\times10^{12} M_\odot$  \\
     % Subhalo Max Mass &  &  \\
-    Subhalo Current Mass & $>1\times10^{10} \Msun$ & $> 5\times10^{11} \Msun$ \\
-    Primary &$1\times10^{8} < \rm M_* < 5\times10^{9} \Msun$ & $5\times10^{9} < \rm M_* < 1\times10^{11} \Msun$\\\hline
+    % Subhalo Current Mass & $>1\times10^{10} \Msun$ & $> 5\times10^{11} \Msun$ \\
+    Primary &$1\times10^{8} < \msam < 5\times10^{9} \Msun$ & $5\times10^{9} < \msam < 1\times10^{11} \Msun$\\\hline
     \end{tabular}
     \caption{\label{table:mass}Selection criteria for dwarf and massive pairs.}
     \end{table*}
 
 % equivalent snapshot table
-\begin{table}[]
+\begin{table*}[]
   \centering
-  \begin{tabular}{l|cc}
+  \begin{tabular}{l|cc|cccc} % increase this to 7 columns
     \hline \hline
-   & Illustris & TNG  \\ 
+   & \multicolumn{2}{c|}{Snapshot number} & \multicolumn{4}{c}{Number of primaries}\\
+   & \ill & \tng  & \illd & \illh & \tngd & \tngh \\ 
   \hline
-  z = 0   &   135  &   99   \\
-  z = 1   &   85   &   50   \\
-  z = 2   &   68   &   33   \\
-  z = 3   &   60   &   25   \\
-  z = 4   &   54   &   21   \\
+  z = 0   &   135  &   99   &&&&\\
+  z = 1   &   85   &   50   &&&&\\
+  z = 2   &   68   &   33   &&&&\\
+  z = 3   &   60   &   25   &&&&\\
+  % z = 3.7   &   54   &   21   \\
   \hline \hline
   \end{tabular}
-  \caption{\label{tab:equiv-snapshot} The snapshot number of the original \ill\ and the \tng\ simulations at redshifts $z=0-4$.}
-    \end{table}
+  \caption{\label{tab:equiv-snapshot} The snapshot number of the original \ill\ and the \tng\ simulations at redshifts $z=0-3$, as well as the number of total dwarf (massive) primaries that were selected with $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$ ($5\times 10^{9} < \msam < 1\times 10^{11} \rm M_\odot$) in XX abundance matching realizations. \kc{fill in with numbers after doing more realizations} \kc{include takeaway}}
+  \end{table*}
 
 
+
+%%%%%%%%%%%%%%%%%%%
+%% dwarf figures %%
+%%%%%%%%%%%%%%%%%%%
 \begin{figure*}[htb]
   \centering
   \includegraphics[width=\textwidth]{counts_dwarfs.png}
@@ -134,14 +210,59 @@
 
 \begin{figure*}[htb]
   \centering
+  \includegraphics[width=\textwidth]{distributions_mass_dwarf.png}
+  \caption{Normalized distribution of the subhalo mass of dwarf primaries at four different redshifts. The subhalos in the dark and hydro simulations for both \ill{} (turquoise and light blue) and \tng{} (red and light pink) were chosen such that the stellar mass from the abundance matching prescription is $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$. The black dashed lines represent the distribution of halos chosen by \mssim.
+  The mass distributions for \illd{} and \illh{} are nearly identical at all redshifts, however, while the mass distribution for halos chosen by their simulation stellar mass closely match the \ill{} distribution at $z=0$, the \mssim{} distribution skews towards lower subhalo masses than the \msam{} distributions at $z=1,2,3$. Similarly, the \tngd{} and \tngh{} distrbutions are consistent at all redshifts, however the population of subhalos chosen by simulation stellar mass have higher masses at $z=0$ and lower masses at $z=1,2,3$ than the \msam{} distributions. 
+  The approximate equivalence of the dark and hydro distributions in both simulations confirm that we are investigating a similar population of halos between the dark and hydro runs of each simulation. Additionally, the distributions for \ill{} and \tng{} follow the same evolution over time, so the population of subhalos we are considering is consistent between simulations. 
+    }
+  \label{fig:dist-mass-dwarf}
+\end{figure*}
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{distributions_stellarmass_dwarf.png}
+  \caption{Normalized distribution of the stellar mass from abundance matching of dwarf primaries at four different redshifts. The subhalos in the dark and hydro simulations for both \ill{} (turquoise and light blue) and \tng{} (red and light pink) were chosen such that the stellar mass from the abundance matching prescription is $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$. 
+  The black solid lines represent the simulation values of the stellar mass for the same population of halos chosen by their abundance matching stellar mass. 
+  The black dashed lines represent the distribution of halos chosen by their simulation stellar mass, $1\times 10^{8} < \mssim < 5\times 10^{9} \rm M_\odot$.
+  The mass distributions for \illd{} and \illh{}, as well as \tngd{} and \tngh{}, are nearly identical at all redshifts. 
+  However, the distributions chosen by the simulation stellar mass differ drastically between the two simulations. At $z=0$, there are many more low \mssim{} halos in \tng{} than in \ill{}. In addition, the simulation stellar masses in the \ill{} simulation tend to be more massive than those from abundance matching at all redshifts. 
+  The abundance matching stellar mass and simulation stellar mass distributions in \tng{} are similar at $z=1,2,3$, with more low stellar mass halos in the abundance matching case, while at $z=0$, the simulation stellar masses are significantly lower than the distribution from abundance matching. 
+  \kc{what does this mean?? } 
+    }
+    \label{fig:dist-stellmass-dwarf}
+  
+\end{figure*}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%% massive figures %%
+%%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[htb]
+  \centering
   \includegraphics[width=\textwidth]{counts_massive.png}
   \caption{No turn over, instead, monotonically increasing towards a peak at low z. No significant fraction of halos that are lone subhalos. The largest differences between the hydro and dark simulations in both cases are at low z, where the counts start to diverge. TNG has a higher number of massive halos primaries than Illustris. The difference between dark and hydro is large in TNG, and at low z, the main driver of this difference is in the pairs, as opposed to the lone halos. This is not the case in Illustris, where both the pairs and unpaired halos contribute equally to the difference between dark and hydro, in opposite way! Weird… \kc{add "massive" somewhere to plot}
     }
   \label{fig:counts-massive}
 \end{figure*}
 
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{distributions_mass_massive.png}
+  \caption{There is little variation between dark and hydro, and Illustris and TNG. Like the dwarf primaries, the distribution of selected primaries by simulation mass at z=0 in Illustris nearly overlays the distribution from the am mass. In addition, the z=0 sim mass selection in TNG is a higher mass distribution than those selected by am mass. It appears that the mass distributions in both Illustris and TNG change significantly between z=3 and z=0, but the sim selected list in TNG does not change. However, for both simulation, at z=1,2,3, the am mass selected primaries have, on average, higher mass than the sim mass selected primaries. \kc{add takeaway} 
+    }
+  \label{fig:dist-mass-massive}
+\end{figure*}
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{distributions_stellarmass_massive.png}
+  \caption{The dark and hydro distributions, as well as the Illustris and TNG distributions, are all similar. There is also good agreement with the stellar mass of halos selected with the simulation stellar mass (this tells me that the AM relationship better matches what we see in sims at high mass but not at low mass). The black solid line does not match well, but I'll be removing it anyways. \kc{ add takeaway message}
+    }
+  \label{fig:dist-stellmass-massive}
+\end{figure*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Results}
 \label{sec:results}
 
