@@ -119,17 +119,43 @@ We also use the merger trees provided by the \texttt{SUBLINK} algorithm \citep{g
  L$_{\rm Box}$ [Mpc] & 106.5 & 106.5 & 110.7 & 110.7 \\
 m$_{\rm DM}$ [M$_\odot$] & 7.5$\times10^6$ & 6.3$\times10^6$ & 8.9$\times10^6$ & $7.5\times10^6$\\
 m$_{\rm gas}$ & -- & $1.3\times 10^{6}$ & -- & $1.4\times 10^{6}$ \\\hline
-
 \end{tabular}
 \caption{\label{table:sim}Parameters of the Illustris simulations used in this analysis.}
 \end{table*}
 
+
+
 %%%%%%%%%%%
 %%%%%%%%%%%
 \subsection{Abundance matching prescription}\label{sec:methods-am}
-As our goal is to compare between dark matter only and full hydrodynamic
-simulations,
+% Why do we need stellar masses?
+One of the goals of this study is to determine the impact of baryonic physics on the occurance rate and typical separations of galaxy \kc{subhalo?} pairs in cosmological simulations. 
+However, selecting halo pairs by stellar mass ratio using the stellar masses provided by the simulations is not possible in the dark matter only runs. 
+Thus, in order ensure the dark matter only and full hydrodynamic samples are self-consistent, we need to associate each of the selected subhalos with a realistic stellar mass.
 
+% What is abundance matching
+Abundance matching is one such method of associating a dark matter halo with a stellar mass, assuming a galaxy would form in a halo of that mass. 
+
+However, there is large scatter in the stellar-mass-halo-mass (SMHM) relationship, especially in the dwarf halo regime. 
+
+
+
+% How do we utilize it? 
+In particular, we use the abundance matching relationship presented in~\citet{moster13}, which provides an analytic recipe to paint stellar masses onto dark matter halos. 
+The~\citet{moster13} relationship is a redshift-evolving function of the halo mass, and includes terms to account for the systematic scatter in the SMHM relationship, with larger scatter at lower halo masses.
+\kc{why moster instead of another AM relationship? most closely represent data at lower mass? }
+
+To assign stellar masses to each of the dark matter halos, we assume that the stellar mass of both the primary and secondary halo can change as a function of redshift after the secondary has entered the primary's halo and do not immediately cease star formation.
+This assumption is consistent with findings from~\cite{Akins2021}, which found that massive dwarf satellites ($M_*\approx 10^8-10^9\, \Msun$) entering MW-mass host halos are rarely quenched, and with~\cite{geha13} which finds that isolated dwarfs ($>1\Mpc$ from a MW-type galaxy) are often star forming and rarely quenched.
+Additionally,~\citet{Munshi2021} found that the stellar mass of subhalos at $z=0$ in the XX simulations are more closely correlated with the peak halo mass than the $z=0$ halo mass for halos with peak halo mass $10^8<M_{\rm peak}<10^{11} \Msun$. 
+
+Thus, we treat each of the subhalos as centrals according to the~\citet{moster13} prescription, using the current snapshot redshift and the peak halo mass of the subhalo to calculate the stellar mass. 
+This additionally allows us remain robust to scenarios in which a secondary may have formed most of its stars, and then lost a significant portion of its dark matter content through tidal interactions with a primary, but will retain the bulk of its stellar content.
+
+We create 1000 stellar mass realizations from the SMHM relationship, thus accounting for the systematic uncerntainy in subhalo stellar masses, which will allow us to average our results over all 1000 realizations 
+
+%%%%%%%%%%%
+%%%%%%%%%%%
 \subsection{Selection criteria}\label{sec:methods-crit}
 \begin{enumerate}
   \item Select groups in some group range that encompasses MCs and MW-M31
