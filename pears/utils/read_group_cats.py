@@ -102,6 +102,7 @@ class ReadCats:
         self.rvirs = self.catalog.Group_R_TopHat200
         self.nsubs = self.catalog.GroupNsubs
         self.redshift = self.catalog.redshift
+        self.boxsize = self.catalog.boxsize
         self.inds = self.catalog.GroupFirstSub
         self.subgr = self.catalog.SubhaloGrNr
         self.submass = self.catalog.SubhaloMass

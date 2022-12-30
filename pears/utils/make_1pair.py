@@ -7,7 +7,7 @@ import h5py
 import numpy as np
 from utils.get_groups import GetGroups
 from utils.paths import SetupPaths
-from vectorCorrection import vectorCorrection as vector
+from utils.vectorCorrection import vectorCorrection as vector
 
 snapshot = int(sys.argv[1])
 sim = str(sys.argv[2])

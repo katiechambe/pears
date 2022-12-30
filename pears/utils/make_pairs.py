@@ -7,7 +7,7 @@ import h5py
 import numpy as np
 from utils.get_groups import GetGroups
 from utils.paths import SetupPaths
-from vectorCorrection import vectorCorrection as vector
+from utils.vectorCorrection import vectorCorrection as vector
 
 snapshot = int(sys.argv[1])
 sim = str(sys.argv[2])
@@ -20,7 +20,7 @@ paths = SetupPaths()
 subhalo_path = f"{sim}_{snapshot}.hdf5"
 subhalo_data = h5py.File(f"{paths.path_subhalos}{subhalo_path}", "r")
 
-savepath = f"{sim}_{snapshot}_10.hdf5"
+savepath = f"{sim}_{snapshot}_{num_reals}.hdf5"
 f = h5py.File(f"{paths.path_pairs}{savepath}", 'w')
 
 redshift = subhalo_data["Header"].attrs["Redshift"]
@@ -229,13 +229,16 @@ for phys in ["dark","hydro"]:
                     vel1 = shortlist['Subhalo Vel'][primary_loc][0]
                     vel2 = shortlist['Subhalo Vel'][secondary_loc][0]
 
-                    # note: box size is physical units!
                     if sim == "Illustris":
-                        boxsize = 106.5 # in Mpc!
-                    elif sim == "TNG":
-                        boxsize = 110.7 # in Mpc!
+                        little_h = 0.704
 
-                    sep = np.linalg.norm( np.array(vector(pos1,pos2,boxsize*1000) ) )
+                    elif sim == "TNG":
+                        little_h = 0.6774
+                        
+                    boxsize = 75000.0 # in cMpc/h
+                    boxsize_phys = boxsize * scale / little_h    
+
+                    sep = np.linalg.norm( np.array(vector(pos1,pos2,boxsize_phys) ) )
                     relvel = np.linalg.norm(vel1-vel2)
                     stlrt = stel2/stel1
                     

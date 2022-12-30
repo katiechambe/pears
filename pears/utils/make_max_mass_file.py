@@ -70,7 +70,7 @@ for phys in ["hydro","dark"]:
         else:
             max_mass.append(max_mass_info.maxmass[0])
             max_mass_snapshot.append(max_mass_info.maxmass[1])
-            current_mass.append(max_mass_info.masses[0])
+            current_mass.append(max_mass_info.masses_phys[0])
 
     save_path = f"{groups.path_data}max_masses/{sim}_{phys}_{snap}.hdf5"
     

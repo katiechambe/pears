@@ -144,6 +144,7 @@ class subfind_catalog:
                 self.nids = hdf5lib.GetAttr(f, "Header", "Nids_Total")
                 self.nsubs = hdf5lib.GetAttr(f, "Header", "Nsubgroups_Total")
                 self.redshift = hdf5lib.GetAttr(f, "Header", "Redshift")
+                self.boxsize = hdf5lib.GetAttr(f, "Header", "BoxSize")
                 #GROUPS
                 if grpcat:
                     for key in keysel:

@@ -7,7 +7,7 @@ import h5py
 import numpy as np
 from utils.get_groups import GetGroups
 from utils.paths import SetupPaths
-from vectorCorrection import vectorCorrection as vector
+from utils.vectorCorrection import vectorCorrection as vector
 
 snapshot = int(sys.argv[1])
 sim = str(sys.argv[2])
@@ -20,7 +20,7 @@ paths = SetupPaths()
 subhalo_path = f"{sim}_{snapshot}.hdf5"
 subhalo_data = h5py.File(f"{paths.path_subhalos}{subhalo_path}", "r")
 
-savepath = f"{sim}_{snapshot}_10.hdf5"
+savepath = f"{sim}_{snapshot}_{num_reals}.hdf5"
 # f = h5py.File(f"{paths.path_pairs}{savepath}", 'w')
 
 redshift = subhalo_data["Header"].attrs["Redshift"]
