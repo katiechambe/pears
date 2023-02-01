@@ -45,7 +45,7 @@
 \shortauthors{Chamberlain et al.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\graphicspath{{./}{../plots/pairs_plots/}}
+\graphicspath{{./}{../plots/paper1/}}
 \input{math_definitions.tex}
 
 % Affiliations
@@ -58,7 +58,7 @@
 \begin{document}
 
 \title{
-  Frequency of galaxy pairs in the Illustris and IllustrisTNG cosmological simulations
+  Frequency of dwarf and massive galaxy pairs in the IllustrisTNG cosmological simulation
 }
 
 \author[0000-0001-8765-8670]{Katie~Chamberlain}
@@ -69,6 +69,8 @@
 
 
 \begin{abstract}
+  \todo{REMEMBER TO USE 100-1000 REALS IN PLOTS}
+  \todo{Include ticks on top and right axis as well}
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -152,11 +154,28 @@ Additionally,~\citet{Munshi2021} found that the stellar mass of subhalos at $z=0
 Thus, we treat each of the subhalos as centrals according to the~\citet{moster13} prescription, using the current snapshot redshift and the peak halo mass of the subhalo to calculate the stellar mass. 
 This additionally allows us remain robust to scenarios in which a secondary may have formed most of its stars, and then lost a significant portion of its dark matter content through tidal interactions with a primary, but will retain the bulk of its stellar content.
 
-We create 1000 stellar mass realizations from the SMHM relationship, thus accounting for the systematic uncerntainy in subhalo stellar masses, which will allow us to average our results over all 1000 realizations 
-
+We create 1000 stellar mass realizations from the SMHM relationship, thus accounting for the systematic uncerntainy in subhalo stellar masses. Each realization is treated as an independent sample, such that computed properties (pair frequency, separations, etc) are given as the median each realization. We report the mean of all realizations and error bars indicate the 1$\sigma$ dispersion across the realizations.
 %%%%%%%%%%%
 %%%%%%%%%%%
 \subsection{Selection criteria}\label{sec:methods-crit}
+In this section, we outline the selection criteria used to select dwarf and massive subhalo pairs. 
+The same selection criteria is utilized for all four simulations (\illd, \illh, \tngd, and \tngh)
+In short, blah. 
+Detailed steps are as follows. 
+
+\subsubsection{Isolation}
+As we are interested in the frequency and separations of galaxy pairs that are undisturbed by nearby massive perturbers, we select subhalo pairs as the most massive subhalos of their group halos. 
+We have confirmed that nearly 100\% of the the most massive subhalos in each group are outside of the Hill radius of any nearby subhalo with greater mass, and are thus a rough isolation criteria is inherent in our selection.
+
+\textbf{Definitions:} each of these defines the subhalo at a single snapshot and for a single realization.
+\begin{itemize}
+  \item Primary - Most massive subhalo in a group by stellar mass
+  \item Secondary - 
+  \item Major pair - A pair of subhalos consisting of a primary and secondary with stellar mass ratio $1/4 < \rm M_{*,sec}/M_{*, prim} < 1$
+  \item Minor pair - A pair of subhalos consisting of a primary and secondary with stellar mass ratio $1/10 < \rm M_{*,sec}/M_{*, prim} < 1/4$
+\end{itemize}
+Note that the subhalo that is assigned as primary or secondary may change between stellar mass realizations. 
+
 \begin{enumerate}
   \item Select groups in some group range that encompasses MCs and MW-M31
   \item For every subhalo in every group with halo mass >1e9Msun, use merger trees to get the maximum masses.
@@ -173,6 +192,13 @@ We create 1000 stellar mass realizations from the SMHM relationship, thus accoun
 
 The lower mass threshold for subhalos that constitute our dwarf pairs have a halo mass greater than $1\times10^9\Msun$, such that each of our halos are resolved into at least 100 particles in each simulation.  
 \kc{why 100?} 
+
+\subsubsection{Primary subhalos}\label{sec:methods-crit-prims}
+
+\subsubsection{Primary subhalos}\label{sec:methods-crit-pairs}
+
+\subsubsection{Stellar masses from the hydro sims}
+
 
 \subsection{Counts and distributions}\label{sec:methods-counts}
 
@@ -211,86 +237,105 @@ The lower mass threshold for subhalos that constitute our dwarf pairs have a hal
    & \multicolumn{2}{c|}{Snapshot number} & \multicolumn{4}{c}{Number of primaries}\\
    & \ill & \tng  & \illd & \illh & \tngd & \tngh \\ 
   \hline
-  z = 0   &   135  &   99   &&&&\\
-  z = 1   &   85   &   50   &&&&\\
-  z = 2   &   68   &   33   &&&&\\
-  z = 3   &   60   &   25   &&&&\\
+  z = 0   &   135  &   99   & $11431.5_{-24.42}^{68.38}$ & $12650.0_{-25.84}^{46.84}$ & $13255.0_{-32.60}^{56.72}$ & $12035.0_{-69.24}^{20.36}$\\
+  z = 1   &   85   &   50   &  $14769.0_{-30.24}^{47.28}$ & $16568.0_{-32.20}^{69.60}$ & $17445.5_{-40.86}^{51.90}$ & $15946.5_{-59.38}^{39.22}$ \\
+  z = 2   &   68   &   33   &  $12602.5_{-31.98}^{45.94}$ & $14174.0_{-12.48}^{62.32}$ & $15413.5_{-34.62}^{28.86}$ & $14334.0_{-29.44}^{45.24}$ \\
+  z = 3   &   60   &   25   &     $8533.5_{-54.50}^{39.46}$ & $9390.0_{-63.40}^{41.32}$ & $10901.0_{-44.64}^{46.56}$ & $10106.5_{-47.90}^{39.74}$  \\
   % z = 3.7   &   54   &   21   \\
   \hline \hline
   \end{tabular}
-  \caption{\label{tab:equiv-snapshot} The snapshot number of the original \ill\ and the \tng\ simulations at redshifts $z=0-3$, as well as the number of total dwarf (massive) primaries that were selected with $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$ ($5\times 10^{9} < \msam < 1\times 10^{11} \rm M_\odot$) in XX abundance matching realizations. \kc{fill in with numbers after doing more realizations} \kc{include takeaway}}
+  \caption{\label{tab:equiv-snapshot} The snapshot number of the original \ill\ and the \tng\ simulations at redshifts $z=0-3$, as well as the median number dwarf (massive) primaries that were selected with $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$ ($5\times 10^{9} < \msam < 1\times 10^{11} \rm M_\odot$) in XX abundance matching realizations. \kc{fill in with numbers after doing more realizations} \kc{include takeaway}}
   \end{table*}
+
+  \begin{figure*}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{counts.png}
+    \caption{Median number of dwarf and massive primaries and pairs per abundance matching realization as a function of redshift, with shaded regions showing the $1^{\rm st}$ and 99$^{\rm th}$ percentiles. There are approximately 8 times as many dwarf primaries as massive primaries. There are fewer primaries and pairs at higher redshift, and the number of dwarf and massive primaries peaks around $z=1$. The evolution of the number of primaries is roughly similar between dwarf and massive galaxies, though the number of dwarf primaries drops steeply from $z=1$ to $z=0$. \textbf{However, the behaviour of the pair counts differs drastically between dwarf and massive pairs.} The number of dwarf pairs peaks around $z=2$, while the number of massive pairs increases nearly monotonically from $z=4-0$. Thus, the rate of dwarf pairs and massive pairs \textit{per primary} will evolve distinctly in the dwarf and massive pair case. 
+      }
+    \label{fig:counts}
+  \end{figure*}
 
 
 
 %%%%%%%%%%%%%%%%%%%
 %% dwarf figures %%
 %%%%%%%%%%%%%%%%%%%
-\begin{figure*}[htb]
-  \centering
-  \includegraphics[width=\textwidth]{counts_dwarfs.png}
-  \caption{Median counts of dwarf primaries in \ill{} and \tng{} \kc{add "dwarf" somewhere to plot}. The number of dwarf primaries peaks at $z~0.75$. TNG has higher halo count than Illustris. However, the difference between the number of halos in both dark simulations is substantial. Additionally, in Illustris, hydro halos outnumber dark halos. In TNG, the opposite is true, where dark halos outnumber hydro halos. In Illustris, this can be accounted for by the discrepant number of unpaired halos (dotted), while in TNG, the difference is dominated by pairs. 
-    }
-  \label{fig:counts-dwarfs}
-\end{figure*}
 
-\begin{figure*}[htb]
-  \centering
-  \includegraphics[width=\textwidth]{distributions_mass_dwarf.png}
-  \caption{Normalized distribution of the subhalo mass of dwarf primaries at four different redshifts. The subhalos in the dark and hydro simulations for both \ill{} (turquoise and light blue) and \tng{} (red and light pink) were chosen such that the stellar mass from the abundance matching prescription is $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$. The black dashed lines represent the distribution of halos chosen by \mssim.
-  The mass distributions for \illd{} and \illh{} are nearly identical at all redshifts, however, while the mass distribution for halos chosen by their simulation stellar mass closely match the \ill{} distribution at $z=0$, the \mssim{} distribution skews towards lower subhalo masses than the \msam{} distributions at $z=1,2,3$. Similarly, the \tngd{} and \tngh{} distrbutions are consistent at all redshifts, however the population of subhalos chosen by simulation stellar mass have higher masses at $z=0$ and lower masses at $z=1,2,3$ than the \msam{} distributions. 
-  The approximate equivalence of the dark and hydro distributions in both simulations confirm that we are investigating a similar population of halos between the dark and hydro runs of each simulation. Additionally, the distributions for \ill{} and \tng{} follow the same evolution over time, so the population of subhalos we are considering is consistent between simulations. 
-    }
-  \label{fig:dist-mass-dwarf}
-\end{figure*}
-
-\begin{figure*}[htb]
-  \centering
-  \includegraphics[width=\textwidth]{distributions_stellarmass_dwarf.png}
-  \caption{Normalized distribution of the stellar mass from abundance matching of dwarf primaries at four different redshifts. The subhalos in the dark and hydro simulations for both \ill{} (turquoise and light blue) and \tng{} (red and light pink) were chosen such that the stellar mass from the abundance matching prescription is $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$. 
-  The black solid lines represent the simulation values of the stellar mass for the same population of halos chosen by their abundance matching stellar mass. 
-  The black dashed lines represent the distribution of halos chosen by their simulation stellar mass, $1\times 10^{8} < \mssim < 5\times 10^{9} \rm M_\odot$.
-  The mass distributions for \illd{} and \illh{}, as well as \tngd{} and \tngh{}, are nearly identical at all redshifts. 
-  However, the distributions chosen by the simulation stellar mass differ drastically between the two simulations. At $z=0$, there are many more low \mssim{} halos in \tng{} than in \ill{}. In addition, the simulation stellar masses in the \ill{} simulation tend to be more massive than those from abundance matching at all redshifts. 
-  The abundance matching stellar mass and simulation stellar mass distributions in \tng{} are similar at $z=1,2,3$, with more low stellar mass halos in the abundance matching case, while at $z=0$, the simulation stellar masses are significantly lower than the distribution from abundance matching. 
-  \kc{what does this mean?? } 
-    }
-    \label{fig:dist-stellmass-dwarf}
-  
-\end{figure*}
-
-
-%%%%%%%%%%%%%%%%%%%%%
-%% massive figures %%
-%%%%%%%%%%%%%%%%%%%%%
-\begin{figure*}[htb]
-  \centering
-  \includegraphics[width=\textwidth]{counts_massive.png}
-  \caption{No turn over, instead, monotonically increasing towards a peak at low z. No significant fraction of halos that are lone subhalos. The largest differences between the hydro and dark simulations in both cases are at low z, where the counts start to diverge. TNG has a higher number of massive halos primaries than Illustris. The difference between dark and hydro is large in TNG, and at low z, the main driver of this difference is in the pairs, as opposed to the lone halos. This is not the case in Illustris, where both the pairs and unpaired halos contribute equally to the difference between dark and hydro, in opposite way! Weird… \kc{add "massive" somewhere to plot}
-    }
-  \label{fig:counts-massive}
-\end{figure*}
-
-\begin{figure*}[htb]
-  \centering
-  \includegraphics[width=\textwidth]{distributions_mass_massive.png}
-  \caption{There is little variation between dark and hydro, and Illustris and TNG. Like the dwarf primaries, the distribution of selected primaries by simulation mass at z=0 in Illustris nearly overlays the distribution from the am mass. In addition, the z=0 sim mass selection in TNG is a higher mass distribution than those selected by am mass. It appears that the mass distributions in both Illustris and TNG change significantly between z=3 and z=0, but the sim selected list in TNG does not change. However, for both simulation, at z=1,2,3, the am mass selected primaries have, on average, higher mass than the sim mass selected primaries. \kc{add takeaway} 
-    }
-  \label{fig:dist-mass-massive}
-\end{figure*}
-
-\begin{figure*}[htb]
-  \centering
-  \includegraphics[width=\textwidth]{distributions_stellarmass_massive.png}
-  \caption{The dark and hydro distributions, as well as the Illustris and TNG distributions, are all similar. There is also good agreement with the stellar mass of halos selected with the simulation stellar mass (this tells me that the AM relationship better matches what we see in sims at high mass but not at low mass). The black solid line does not match well, but I'll be removing it anyways. \kc{ add takeaway message}
-    }
-  \label{fig:dist-stellmass-massive}
-\end{figure*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Results}
 \label{sec:results}
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{pairratio.png}
+  \caption{Median fraction (and 1-99 percentile shaded regions) of dwarf (green) or massive (pink) primaries with a major (left) or minor (right) companion. The fraction of massive primaries with a major or minor companion remains approximately constant for $z>1$, while at $z<\sim0.5$ the pair fraction increases sharply to $z=0$. However, the pair fraction for dwarf pairs evolves significantly differently to massive galaxy pairs. The fraction of dwarf primaries with a companion is approximately constant for $z>2$, but decreases monotonically from $z=2$ to $z=0$. The vast difference between the dwarf and massive pair fractions suggests \todo{XX - that pairs at different mass scales evolve differently ? Thus, can't just assume a massive pair fraction for a lower mass regime}. 
+    }
+  \label{fig:pairratio}
+\end{figure*}
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{separations.png}
+  \caption{Median physical separation (in kpc) and 1-99 percentile shaded regions of 1000 abundance matching realizations as a function of redshift for dwarf pairs (left, green), and massive pairs (right, pink). Major pairs (high stellar mass ratio) are shown in solid lines, while minor pairs are depicted with dashed lines. Minor dwarf pairs tend to be $\sim10-20\kpc$ closer than major dwarf pairs, while minor massive pairs are between $10-50\kpc$ closer than major pairs. In general, as the redshift \textit{decreases} toward $z=0$, the average physical separation of a dwarf or massive pair \textit{increases}. The increase in low redshift median separations suggests that low separation pairs undergo mergers that remove them from the sample at later snapshots, thus increasing the median separation over time. The evolution of massive pair separations is approximately linear for $z>1$, increasing sharply for $z<0$, while the evolution of the dwarf pairs closely resembles a power law distrbution across the whole redshift range from $z=0-4$.
+    }
+  \label{fig:sep}
+\end{figure*}
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{separations_distributions.png}
+  \caption{Normalized physical separation distribution for dwarf and massive pairs (top/green and bottom/pink, respectively) from $z=0$ (left) to $z=3$ (right). Major pairs are shown as solid lines, while minor pairs are dashed. 
+  Both dwarf and massive pairs have narrow distributions about low separations at high redshifts, and a wider distribution of separations at lower redshift. 
+  \todo{would it be instructive to make this plot, unnormalized, with z=0-3 on same plot to see if low sep pop numbers change drastically}
+  \textbf{Takeaway from this plot?}. The number of widely separated pairs at low redshift is much greater than at high redshift, so these pairs either form late, or move apart from each other. Also note than many of the close pairs at high z may merge by $z=0$.
+    }
+  \label{fig:sep-dist}
+\end{figure*}
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{separations_scaled.png}
+  \caption{Median scaled separation (separation of a pair divided by the virial radius of its group) as a function of redshift. Dwarf pairs (major (solid) and minor (dashed)) tend to have smaller scaled separations at lower redshifts, leveling out between $z=0-1$. In particular, the secondaries of dwarf major pairs at $z>2$ tend to live more than one virial radius away from the primary. Massive major pairs at low redshift tend to have smaller scaled separations  at $z<\sim2$, but vary significantly at higher redshifts. 
+  Minor pairs (right), both dwarf and massive, tend to have smaller separations, tending to live closer than one virial radius between the primary and secondary. Massive minor pairs tend to have smaller scaled separations compared to dwarf pairs at all redshifts. 
+  \textbf{The difference between the scaled separations of dwarf and massive pairs highlights the mass dependence of the physical distribution of halo pairs, i.e., dwarf pairs are not simply a smaller scale version of massive pairs.}
+    }
+  \label{fig:sep-scaled}
+\end{figure*}
+
+
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{velocities.png}
+  \caption{Median relative velocity (in \kms) and 1-99 percentile shaded regions of 1000 abundance matching realizations as a function of redshift for dwarf pairs (left, green) and massive pairs (right, pink). Major pairs (high stellar mass ratio) are shown in solid lines, while minor pairs are depicted with dashed lines. Major and minor pairs (in both the dwarf and massive regime) tend to have approximately the same median relative velocity. In addition, as the redshift \textit{decreases} toward $z=0$, the average relative velocity of a pair \textit{decreases} as well. The overall behavior of the redshift evolution is nearly identical for dwarf and massive pairs (though note that the massive pairs have \textit{much} higher relative velocities than the dwarf pairs at all redshifts.)
+    }
+  \label{fig:vel}
+\end{figure*}
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{velocities_distributions.png}
+  \caption{
+  Normalized velocity distribution for dwarf and massive pairs (top/green and bottom/pink, respectively) from $z=0$ (left) to $z=3$ (right). Major pairs are shown as solid lines, while minor pairs are dashed. 
+  The distribution of relative velocities for dwarf and massive pairs move to slightly lower velocities at lower redshifts. The distribution of velocities for major and minor pairs is roughly equivalent. 
+  \textbf{Takeaway from this plot?}. 
+  \kc{caption}
+    }
+  \label{fig:vel-dist}
+\end{figure*}
+
+\begin{figure*}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{velocities_scaled.png}
+  \caption{Median scaled velocity (relative velocity of a pair divided by the virial velocity, defined as the circular velocity at the virial radius of the group \todo{need to remove the 2 in the virial radius calc!}) as a function of redshift. 
+  Major pairs are on the left (solid lines), minor pairs are on the right in dashed lines.
+  All sets of pairs show an increase in scaled velocity at lower redshifts. 
+  \textbf{Despite the difference between dwarf and massive pairs in physical distribution as indicated by the plot of scaled separations (Figure~\ref{fig:sep-scaled}), the scaled velocity distribution of pairs indicates that dwarf and massive galaxy pairs operate similarly in velocity space. There is little to no mass dependence on the scaled velocity of dwarf or massive pairs.}
+    }
+  \label{fig:vel-scaled}
+\end{figure*}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
