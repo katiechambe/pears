@@ -13,7 +13,7 @@ snapshot = int(sys.argv[1])
 sim = str(sys.argv[2])
 num_reals = int(sys.argv[3])
 
-realNumbs = np.arange(-1,num_reals+1,1)
+realNumbs = np.arange(-1,num_reals,1)
 paths = SetupPaths()
 
 ## find subhalos for this simulation and snapshot #
@@ -44,6 +44,7 @@ units_dict = {
     "Sub1 MassType": "Mass of bound particles - gas, DM, empty, tracers, stars, BHs -- in 1e10 Msun",
     "Sub2 MassType": "Mass of bound particles - gas, DM, empty, tracers, stars, BHs -- in 1e10 Msun",
     "Separation": "Physical separation between primary and secondary in kpc",
+    "Comoving Separation":"Comoving separation between primary and secondary in ckpc",
     "RelVel": "Relative velocity between primary and secondary in km/s",
     "Stellar Mass Ratio": "Stellar mass ratio of secondary over primary", # in this case- it's by primary subhalo mass
     "Realization": "Stellar mass realization (0-1000)",
@@ -100,6 +101,8 @@ def testthird(shortlist, stells, stel2, real):
 
 ## ensure that the dark and/or hydro file exists before operating
 for phys in ["dark","hydro"]:
+    if phys == "dark":
+        continue
     try: 
         subhalo_data[phys]
 
@@ -126,6 +129,7 @@ for phys in ["dark","hydro"]:
                  "Sub1 Vel": [],
                  "Sub2 Vel": [],
                  "Separation": [],
+                 "Comoving Separation": [],
                  "RelVel": [],
                  "Stellar Mass Ratio": [],
                  "Realization": [],
@@ -226,6 +230,9 @@ for phys in ["dark","hydro"]:
                     
                     pos1 = shortlist['Subhalo Pos'][primary_loc][0]
                     pos2 = shortlist['Subhalo Pos'][secondary_loc][0]
+                    copos1 = shortlist['Subhalo Pos'][primary_loc][0]/scale
+                    copos2 = shortlist['Subhalo Pos'][secondary_loc][0]/scale
+                    
                     vel1 = shortlist['Subhalo Vel'][primary_loc][0]
                     vel2 = shortlist['Subhalo Vel'][secondary_loc][0]
 
@@ -237,8 +244,11 @@ for phys in ["dark","hydro"]:
                         
                     boxsize = 75000.0 # in cMpc/h
                     boxsize_phys = boxsize * scale / little_h    
+                    boxsize_co = boxsize / little_h    
 
                     sep = np.linalg.norm( np.array(vector(pos1,pos2,boxsize_phys) ) )
+                    cosep = np.linalg.norm( np.array(vector(copos1,copos2,boxsize_co) ) )
+                    
                     relvel = np.linalg.norm(vel1-vel2)
                     stlrt = stel2/stel1
                     
@@ -262,15 +272,28 @@ for phys in ["dark","hydro"]:
                         sub1bhm, sub2bhm, sub1bhmdot, sub2bhmdot = 0, 0, 0, 0
                         sub1sfr, sub2sfr, sub1sfrrad, sub2sfrrad, sub1gasmet, sub2gasmet = 0, 0, 0, 0, 0, 0
                     
-                    pairlist = np.array([groupNum, groupmass, groupradius, numPassingSubs, 
-                                id1, id2, mass1, mass2, stel1, stel2, 
-                                pos1, pos2, vel1, vel2, sep, relvel, stlrt,
-                                realization, tripleflag, sub1masstype, sub2masstype,
-                                sub1bhm, sub2bhm, sub1bhmdot, sub2bhmdot,
-                                sub1sfr, sub2sfr, sub1sfrrad, sub2sfrrad, sub1gasmet, sub2gasmet])
+                    single = {"Group ID": groupNum,
+                             "Group Mass": groupmass,
+                             "Group Radius": groupradius,
+                             "Group Nsubs": numPassingSubs,
+                             "Sub1 ID": id1, "Sub2 ID": id2,
+                             "Sub1 Mass": mass1, "Sub2 Mass": mass2,
+                             "Sub1 Stellar Mass": stel1, "Sub2 Stellar Mass": stel2,
+                             "Sub1 Pos": pos1, "Sub2 Pos": pos2,
+                             "Sub1 Vel": vel1, "Sub2 Vel": vel2,
+                             "Separation": sep, "Comoving Separation": cosep,
+                             "RelVel": relvel, "Stellar Mass Ratio": stlrt,
+                             "Realization": realization, "TripleFlag": tripleflag,
+                             "Sub1 MassType": sub1masstype, "Sub2 MassType": sub2masstype,
+                             "Sub1 BHMass": sub1bhm, "Sub2 BHMass": sub2bhm,
+                             "Sub1 BHMdot": sub1bhmdot, "Sub2 BHMdot": sub2bhmdot,
+                             "Sub1 SFR": sub1sfr, "Sub2 SFR": sub2sfr,
+                             "Sub1 SFRinRad": sub1sfrrad, "Sub2 SFRinRad": sub2sfrrad,
+                             "Sub1 GasMetallicity": sub1gasmet, "Sub2 GasMetallicity": sub2gasmet
+                             }
 
-                    for ind, key in enumerate(pair_data.keys()):
-                        pair_data[key].append(pairlist[ind])
+                    for key in pair_data.keys():
+                        pair_data[key].append(single[key])
 
         except SkipFragmentedSubhalo:
             print(f"Skipping group {groupNum}")

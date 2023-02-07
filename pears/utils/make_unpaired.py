@@ -13,7 +13,7 @@ snapshot = int(sys.argv[1])
 sim = str(sys.argv[2])
 num_reals = int(sys.argv[3])
 
-realNumbs = np.arange(-1,num_reals+1,1)
+realNumbs = np.arange(-1,num_reals,1)
 paths = SetupPaths()
 
 ## find subhalos for this simulation and snapshot #
@@ -50,6 +50,8 @@ class SkipFragmentedSubhalo(Exception): pass
 
 ## ensure that the dark and/or hydro file exists before operating
 for phys in ["dark","hydro"]:
+    if phys=="dark":
+        continue
     try: 
         subhalo_data[phys]
 
