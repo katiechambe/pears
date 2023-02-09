@@ -36,6 +36,10 @@ class SetupPaths:
         self.path_illustrishydro_trees = self.path_illustris + "Illustris-1-MergerTree/"
         self.path_tngdark_trees = self.path_tngdark + "postprocessing/"
         self.path_tnghydro_trees = self.path_tnghydro + "postprocessing/"
+        # matched catalogs
+        self.path_tngmatch_V = self.path_illustristng + "TNG100-Matched-V/"
+        self.path_tngmatch_N = self.path_illustristng + "TNG100-Matched-Nelson/subhalo_matching_to_dark.hdf5"
+      
 
         # pears directories
         self.path_data = self.path_pears + "data/"
