@@ -292,7 +292,7 @@ We collect dwarf pairs and massive pairs at all snapshots from the TNG100-1 simu
 At each snapshot, we generate 1000 different realizations of the pair catalog, where each realization represents one instance of the abundance matching technique to assign stellar masses to dark matter halos (see methods). 
 In each of the following plots, the median and a percentile spread each value are calculated by finding the median from each of the 1000 AM realizations, and taking the median and spread of that set of median values.
 
-In Sec.~\ref{sec:results-frac}, we show the redshift evolution of the fraction of primaries with a major or minor companion/secondary, and compare the "pair fractions" of dwarf pairs and massive pairs.
+In Sec.~\ref{sec:results-frac}, we show the redshift evolution of the fraction of primaries with a major or minor companion and compare the "pair fractions" of dwarf pairs to massive pairs.
 In Sec.~\ref{sec:results-kinematics}, we look at the redshift evolution of the median separations and relative velocities between primary and secondary halos on a snapshot-by-snapshot basis.
 
 
@@ -321,20 +321,42 @@ The primary and secondary halos of each pair at each individual snapshot/redshif
 
 We separate the population of dwarf and massive pairs into "major" and "minor" pairs (as defined in Sec.~\ref{sec:methods-crit-pairs}) to show how the stellar mass ratio between the primary and secondary may affect the kinematics. 
 
-At each individual snapshot, we find the median separation 
+At each individual snapshot, we find the instantaneous median separation and relative velocity of every pair that was selected in that snapshot. 
 
-\subsubsection{Physical Separations}
-The median separations of dwarf and massive pairs increases with lower redshift, regardless of pair type. 
+\subsubsection{Separations}
+% separation vs. redshift plot
+The median separations of dwarf pairs and massive pairs smoothly increases with lower redshift, regardless of pair type. 
 Fig.~\ref{fig:sep} shows the median and 1-99\% range of separations for dwarf pairs and massive pairs, as well as the subtracted difference between the median separation of major pairs and of minor pairs of both mass type. 
-Both dwarf and massive pairs have smoothly evolving medians that increase with decreasing redshift. 
 There is a small offset in the median separations of major and minor dwarf pairs (between $10-25\,\kpc$ from  $z=0-1$ and approximately $5\,\kpc$ from $z=1-4$), and a larger median separation offset for major and minor massive pairs (between $25-100\,\kpc$ from  $z=0-1$ and approximately $10-40\,\kpc$ from $z=1-4$). 
 Thus, apart from the overall scale of the separations between primary and secondary, dwarf and massive pairs exhibit similar trends as a function of time. 
 
-Fig.~\ref{fig:sep-dist} shows the full distribution of separations for major and minor dwarf and massive pairs at $z=\{0,1,2,3,4\}$ for all 1000 AM realizations. 
+% separation distribution plot
+Fig.~\ref{fig:sep-dist} shows the full distribution of separations for major and minor dwarf and massive pairs at $z=\{0,1,2,3,4\}$, and includes all 1000 AM realizations. 
+For reference, the median at each corresponding redshift from Fig.~\ref{fig:sep} (that is, the median of the medians of each realization) are shown in light black vertical lines.
+Each plot is normalized such that the area under an individual curve is 1.
+    % the redshift evolution
+All pair types (dwarf and massive, major and minor) have narrow distributions that pile up around 0 $\kpc$ at $z=4$, but the distributions become more and more broad as $z\to0$ (note that only pairs with separations $>10\kpc$ are included in this analysis, see Sec.~\ref{sec:methods-crit-pairs}).
+
+The distribution profiles are similar when the scale of the x-axis for massive pair separations is twice that of the dwarf pairs. 
+Pair separations at $z=0$ tend to primarily fall between $10-\sim400\,\kpc$ for dwarf pairs and   between $10-\sim1000\,\kpc$ for massive pairs. 
+At $z=4$, these ranges decrease to $10-150\,\kpc$ for dwarf pairs and $10-300\,\kpc$ for massive pairs. 
+    % comparing major and minor
+Major and minor pairs (both dwarf pairs and massive pairs) have roughly equivalent distributions, though the distribution of minor pairs with low separations is slightly higher than the major pairs. Thus, secondary halo of minor pairs tend to live slightly closer to their primaries than the  major secondaries.
+
+\todo{here maybe include a table? what are some values?  z=0,1,2,3,4 and pair frac, sep, vel. ?}
+
 
 
 \subsubsection{Relative Velocities}
-Fig.~\ref{fig:vel}
+% velocity vs. redshift plot
+We also consider the snapshot-by-snapshot instantaneous relative velocity between each primary and secondary.
+We find that the median relative velocity of all pairs (dwarf and massive, major and minor) decreases with decreasing redshift, reaching a minimum at $z=0$ as seen in Fig.~\ref{fig:vel}. 
+Though the velocity scales are different, the bulk behavior of dwarf pairs and massive pairs is identical. 
+
+The median velocity of a major dwarf pair decreases approximately linearly from $xx$ at $z=4$ to $xx$ at $z=0$. Likewise, the median velocity for major massive pairs decreases.
+Fig.~\ref{fig:vel} also includes a panel showing the subtracted median difference at each snapshot of the minor pair from the major pair. Since minor pairs typically have slightly higher velocities than their major pair counterparts, this difference is usually $<\sim0$. 
+
+% velocity distribution plot
 Fig.~\ref{fig:vel-dist}
 
 
@@ -372,7 +394,7 @@ Fig.~\ref{fig:vel-dist}
 
 \begin{figure*}[htb]
   \centering
-  \includegraphics[width=\textwidth]{velocity.png}
+  \includegraphics[width=\textwidth]{velocity_1000.png}
   \caption{
     (Top) Median relative velocity (in \kms) between the primary and secondary halos of: dwarf pairs (left, green), and massive pairs (right, pink) as a function of redshift. 
     Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations. Major pairs (high stellar mass ratio) are shown in solid lines, while minor pairs are depicted with dashed lines.
