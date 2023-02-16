@@ -8,6 +8,7 @@
 \usepackage{multirow}
 \usepackage{tikz}
 \usepackage{xcolor}
+\usepackage{soul}
 
 \definecolor{pink}{RGB}{232,132,161}
 \definecolor{yellow}{RGB}{255,213,0}
@@ -78,7 +79,10 @@
 
 \begin{abstract}
   \todo{REMEMBER TO USE 100-1000 REALS IN PLOTS}
+  
   \todo{Include ticks on top and right axis as well}
+  
+  \todo{Remove all instances of "we find" to "we compute" or "we calculate"}
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,8 +96,8 @@
   \begin{figure*}[htp]
     \centering
     \includegraphics[width=\textwidth]{counts_1000.png}
-    \caption{(Top) Median number of dwarf (left) and massive (right) primaries and pairs per abundance matching realization as a function of redshift.
-    Shaded regions show the $1^{\rm st}$ and 99$^{\rm th}$ percentile spread of the medians of all realizations. 
+    \caption{(Top) \kc{correct wording: Median number of dwarf (left) and massive (right) primaries and pairs per abundance matching realization as a function of redshift.} 
+    Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations, as described in Sec.~\ref{sec:methods-err}.
     There are approximately 8 times as many dwarf primaries as massive primaries. 
     % dwarf galaxies
     The dwarf primary count (green solid line in top left panel) is at a minimum at $z=4$, rises to a maximum of $\sim15000$ halos per realization by $z=1$, then decreases by $\sim16\%$ to 12000 halos at $z=0$. The dwarf pair count (green dashed line), on the other hand, peaks at $z\sim2$ with 3000 pairs, and decreases to a minimum of about 1000 pairs at $z=0$.
@@ -164,7 +168,7 @@ We also use the merger trees provided by the \texttt{SUBLINK} algorithm \citep{g
 %%%%%%%%%%%
 \subsection{Abundance matching prescription}\label{sec:methods-am}
 % Why do we need stellar masses?
-One of the goals of this study is to determine the impact of baryonic physics on the occurance rate and typical separations of galaxy \kc{subhalo?} pairs in cosmological simulations. 
+One of the goals of this study is to determine the impact of baryonic physics on the occurrence rate and typical separations of galaxy \kc{subhalo?} pairs in cosmological simulations. 
 However, selecting halo pairs by stellar mass ratio using the stellar masses provided by the simulations is not possible in the dark matter only runs. 
 Thus, in order ensure the dark matter only and full hydrodynamic samples are self-consistent, we need to associate each of the selected subhalos with a realistic stellar mass.
 
@@ -188,6 +192,10 @@ Thus, we treat each of the subhalos as centrals according to the~\citet{Moster20
 This additionally allows us remain robust to scenarios in which a secondary may have formed most of its stars, and then lost a significant portion of its dark matter content through tidal interactions with a primary, but will retain the bulk of its stellar content.
 
 We create 1000 stellar mass realizations from the SMHM relationship, thus accounting for the systematic uncerntainy in subhalo stellar masses. Each realization is treated as an independent sample, such that computed properties (pair frequency, separations, etc) are given as the median each realization. We report the mean of all realizations and error bars indicate the 1$\sigma$ dispersion across the realizations.
+
+\subsubsection{Error calculations}\label{sec:methods-err}
+
+
 %%%%%%%%%%%
 %%%%%%%%%%%
 \subsection{Selection criteria}\label{sec:methods-crit}
@@ -302,7 +310,17 @@ In Sec.~\ref{sec:results-kinematics}, we look at the redshift evolution of the m
 
 \subsection{Pair fraction}\label{sec:results-frac}
 %% text on pair fraction plot
-\kc{WIP} Thus, the rate of dwarf pairs and massive pairs \textit{per primary} will evolve distinctly in the dwarf and massive pair case.
+The pair fraction is defined here as the fraction of identified dwarf or massive primaries with a major or minor companion (see Sec.~\ref{sec:methods-crit} for more info on selection criteria for major and minor pairs). 
+Fig.~\ref{fig:pairratio} shows the calculated pair fractions for massive and dwarf pairs (including both major and minor pairs separately) as a function of time for $z=0-4$. 
+
+    % differences between major and minor pairs? 
+The minor pair fraction of both massive and dwarf pairs tends to be smaller than that of major pairs of the same mass range at all redshifts. This is likely because of the lower stellar mass ratio limit we put on our pairs. \kc{take away -- why? what does the difference between major and minor mean? check g's 2018 paper for discussion} 
+
+    % differences between massive and dwarf pairs? 
+Additionally, dwarf and massive pair fractions evolve distinctly over this redshift range -- the mass pair fraction is roughly flat/constant, while the dwarf pair fraction declines from $z=\sim 2-3$ to a minimum at $z=0$.  
+The subtracted difference between the pair fractions of massive and dwarf pairs (respectively) is low and flat at high z (z=$2-4$), but increases up to $\sim0.12-0.18$ by $z=0$. 
+Thus, our expectations for massive and dwarf pair counts should evolve very differently at low redshift, despite being roughly equivalent at higher z. 
+The implications of the difference in the evolution of pair fractions for dwarf and massive pairs across time is discussed in detail in Sec.~\ref{sec:discussion}.
 
 %% pair fraction plot
 \label{sec:results}
@@ -312,13 +330,13 @@ In Sec.~\ref{sec:results-kinematics}, we look at the redshift evolution of the m
   \caption{
     % Top plots ~
     (Top) Median fraction of dwarf or massive primaries with a major or minor companion by stellar mass. 
-    Shaded regions show the $1$-$99$ percentile range of the median pair fractions of each realization. 
+    Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations. 
       % massive pairs
     The fraction of massive primaries (pink) with a major (left) or minor (right) companion remains approximately constant for $z>1$, with an average pair fraction of 0.16-0.17 and 0.14-0.15 respectively. Between $z=0.25$ and $z=0$, the massive major pair fraction increases sharply from 0.165 to 0.207, a 25\% increase, while the minor pair fraction increases from 0.127 to 0.152, a 20\% increase.
       % dwarf pairs
     Dwarf pairs (green), on the other hand, have pair fractions that are approximately constant from $z=3-4$, but the fraction of major(minor) pairs declines monotonically from 0.126(0.111) at x=3 to just 0.041(0.034) at x=0, a 67(70)\% decrease. 
     % Bottom plots ~
-  (Bottom) The median subtracted difference between the massive pair fraction and the dwarf pair fraction, with the shaded $1$-$99$ percentile range of the difference of each realization. The difference between the massive pair fraction and dwarf pair fraction increases with decreasing redshift, peaking at $z=0$ with a difference of 0.166 for major pairs and 0.111 for minor pairs. This shows that the redshift evolution of the pair fractions of massive pairs and dwarf pairs proceed differently, particularly in the low redshift regime.}
+  (Bottom) The median subtracted difference between the massive pair fraction and the dwarf pair fraction, with the shaded $1$-$99$ percentile range of the difference of each realization. The difference between the massive pair fraction and dwarf pair fraction increases with decreasing redshift, peaking at $z=0$ with a difference of 0.166 for major pairs and 0.111 for minor pairs. This shows that the redshift evolution of the pair fractions of massive pairs and dwarf pairs proceed differently, particularly in the low redshift regime.\todo{remove "difference" label, explain in capt. what "diff" means}}
   \label{fig:pairratio}
 \end{figure*}
 
@@ -337,6 +355,15 @@ Fig.~\ref{fig:sep} shows the median and 1-99\% range of separations for dwarf pa
 There is a small offset in the median separations of major and minor dwarf pairs (between $10-25\,\kpc$ from  $z=0-1$ and approximately $5\,\kpc$ from $z=1-4$), and a larger median separation offset for major and minor massive pairs (between $25-100\,\kpc$ from  $z=0-1$ and approximately $10-40\,\kpc$ from $z=1-4$). 
 Thus, apart from the overall scale of the separations between primary and secondary, dwarf and massive pairs exhibit similar trends as a function of time. 
 
+\kc{key takeaways}
+\kc{what do I want to say about this figure? This makes sense because as the universe evolves, structures become bigger and you start increasing the material accreted in the outer regions of the halo, so it not surprising to see an increasing median separation towards lower redshifts. }
+\kc{halo mass sets the scale of the typical separations of objects.}
+\kc{We leave the discussion on the implications of the evolution of median separations on pair selection criteria for sec.~\ref{sec:discussion}}
+\kc{This begs the question: what does this mean for selection criteria for pairs at different mass scales and at different redshifts?}
+\kc{The general trend for pairs of all mass types is for higher seps at lower z. Also, minor pairs tend to live at closer separations than their major counterparts. This is likely because close major pairs are more likely to merge more quickly than minor pairs, so you aren't left with many close major pairs since they have merged at higher z.}
+
+
+
 %% text on separation distribution plot
 Fig.~\ref{fig:sep-dist} shows the full distribution of separations for major and minor dwarf and massive pairs at $z=\{0,1,2,3,4\}$, and includes all 1000 AM realizations. 
 For reference, the median at each corresponding redshift from Fig.~\ref{fig:sep} (that is, the median of the medians of each realization) are shown in light black vertical lines.
@@ -350,9 +377,8 @@ At $z=4$, these ranges decrease to $10-150\,\kpc$ for dwarf pairs and $10-300\,\
     % comparing major and minor
 Major and minor pairs (both dwarf pairs and massive pairs) have roughly equivalent distributions, though the distribution of minor pairs with low separations is slightly higher than the major pairs. Thus, secondary halo of minor pairs tend to live slightly closer to their primaries than the  major secondaries.
 
-\todo{quick final conclusions on separations}
 
-\kc{here maybe include a table? what are some values?  z=0,1,2,3,4 and pair frac, sep, vel. ?}
+\kc{table? z=0,1,2,3,4 and pair frac, sep, vel. ?}
 
 
 %% separation plots
@@ -364,13 +390,13 @@ Major and minor pairs (both dwarf pairs and massive pairs) have roughly equivale
   Major pairs (high stellar mass ratio) are shown in solid lines, while minor pairs are depicted with dashed lines.
   In general, as the redshift decreases from $z=4$ to $z=0$, the average physical separation of a pair increases for both dwarf and massive pairs. 
   % Dwarf pairs
-  The redshift evolution of the dwarf pairs closely resembles a power law distribution across the whole redshift range from $z=0-4$.
+  The redshift evolution of the dwarf pairs \remove{\st{closely resembles a power law distribution}} across the whole redshift range from $z=0-4$.
   At $z=4$, the typical separation between major (minor) dwarf pairs is $42(38)\,\kpc$, and peaks at $z=0$ with a median separation of $128(109)\,\kpc$.
   % Massive Pairs
   The separation between massive pairs, on the other hand, increases approximately linearly from $z=4$, where the median separations of major (minor) pairs is $81(71)\,\kpc$, to $z=1$, where median separations are $171(124)\,\kpc$. The median separation rises more steeply from z=1 to z=0, peaking around $z=\sim0$ at $288\,\kpc$ and $205\,\kpc$ for major and minor massive pairs respectively.
   % Difference plots
   (Bottom) The median subtracted separation difference between major and minor pairs, and 1-99\% shaded region.
-  Minor dwarf pairs tend to be $\sim10-20\kpc$ closer to their primary than major dwarf pairs, while minor massive pairs are between $10-50\kpc$ closer than major pairs. 
+  Minor dwarf pairs tend to be $\sim10-20\kpc$ closer to their primary than major dwarf pairs, while minor massive pairs are between $10-50\kpc$ closer than major pairs. \todo{remove "difference" legend, explain in capt. what "Maj-Min" means}
     }
   \label{fig:sep}
 \end{figure*}
@@ -394,6 +420,9 @@ Though the velocity scales are different, the bulk behavior of dwarf pairs and m
 The median velocity of a major dwarf pair decreases approximately linearly from $130$ at $z=4$ to $70\,\kms$ at $z=0$. Likewise, the median velocity for major massive pairs decreases from $260$ at $z=4$ to $170\,\kms$ at $z=0$, albeit less smoothly. 
 Fig.~\ref{fig:vel} also includes a panel showing the subtracted median difference at each snapshot of the minor pair from the major pair. Since minor pairs typically have slightly higher velocities than their major pair counterparts, this difference is usually $<\sim0$. The offsets between the relative velocities of dwarf major and minor pairs is between $0-5\,\kms$, and between $0-25\,\kms$ for massive major and minor pairs.
 
+\kc{key takeaways}
+
+
 %% text on velocity distribution plot
 \kc{left off here\~}
 Fig.~\ref{fig:vel-dist}
@@ -413,6 +442,7 @@ Fig.~\ref{fig:vel-dist}
     (Bottom) The median subtracted relative velocity difference between major and minor pairs, and 1-99\% shaded region.
     The is little difference between major and minor dwarf pairs (bottom left), with minor pairs having a relative velocity of $0-5\,\kms$ higher than major pairs. 
     Major and minor massive pairs also have very little median velocity difference at low redshift (bottom right), with minor pairs having a relative velocity between $1-20\,\kms$ faster than major pairs.
+    \todo{remove "difference" legend, explain in capt. what "Maj-Min" means}
     }
   \label{fig:vel}
 \end{figure*}
@@ -455,7 +485,7 @@ Also note than many of the close pairs at high z may merge by $z=0$.
   \includegraphics[width=\textwidth]{scaledsep_1000.png}
   \caption{Median scaled separation (separation of a pair divided by the virial radius of its group) as a function of redshift. Dwarf pairs (major (solid) and minor (dashed)) tend to have smaller scaled separations at lower redshifts, leveling out between $z=0-1$. In particular, the secondaries of dwarf major pairs at $z>2$ tend to live more than one virial radius away from the primary. Massive major pairs at low redshift tend to have smaller scaled separations  at $z<\sim2$, but vary significantly at higher redshifts. 
   Minor pairs (right), both dwarf and massive, tend to have smaller separations, tending to live closer than one virial radius between the primary and secondary. Massive minor pairs tend to have smaller scaled separations compared to dwarf pairs at all redshifts.
-  \todo{finish caption}
+  \todo{finish caption} \todo{remove "difference" legend, explain in capt. what "Ma-Dw" means}
     }
   \label{fig:sep-scaled}
 \end{figure*}
@@ -474,7 +504,7 @@ Also note than many of the close pairs at high z may merge by $z=0$.
   \caption{Median scaled velocity (relative velocity of a pair divided by the virial velocity), defined as the circular velocity at the virial radius of the group as a function of redshift. 
   Major pairs are on the left (solid lines), minor pairs are on the right in dashed lines.
   All sets of pairs show an increase in scaled velocity at lower redshifts.
-  \todo{finish caption}
+  \todo{finish caption} \todo{remove "difference" legend, explain in capt. what "Maj-Min" means}
   }
   \label{fig:vel-scaled}
 \end{figure*} 
@@ -491,11 +521,18 @@ Also note than many of the close pairs at high z may merge by $z=0$.
 \subsection{Dwarf and massive pair kinematic differences}
 \subsection{Comparison to literature}
 \subsection{Implications for observations}
+\subsection{Implications for observational pair selection criteria}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary and Conclusions}
 \label{sec:summary}
+Findings:
+\begin{itemize}
+    \item Pair fraction for dwarfs and massives does not proceed identically throughout cosmic time. Opposite behavior at low z. 
+    \item Median pair separations increase and relative velocities decrease from high to low redshift. 
+    \item Minor dwarf and massive pairs exhibit 
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
