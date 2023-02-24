@@ -110,7 +110,7 @@
 
   \begin{figure*}[htp]
     \centering
-    \includegraphics[width=\textwidth]{stellarmass_distribution_1000.png}
+    \includegraphics[width=\textwidth]{smrdist_1000.png}
     \caption{Stellar mass ratio distribution of all dwarf (top) and massive (bottom) pairs. Major pairs (solid lines) are defined as pairs with mass ratio $\ms{2}/\ms{1} > 1/4$, while minor pairs (dotted lines) are defined as pairs with stellar mass ratio $1/10<\ms{2}/\ms{1}<1/4$. Overall, the stellar mass ratio distribution of major and minor pairs of dwarf and massive galaxies show little evolution from $z=4$ (right) to $z=0$ (left). 
     Major pairs make up $51-55\%$ of the full sample of pairs at every redshift for both dwarf and massive pairs.}
     \label{fig:massratio}
@@ -326,7 +326,7 @@ The implications of the difference in the evolution of pair fractions for dwarf 
 \label{sec:results}
 \begin{figure*}[htp]
   \centering
-  \includegraphics[width=\textwidth]{pairratio_1000.png}
+  \includegraphics[width=\textwidth]{pairfrac_1000.png}
   \caption{
     % Top plots ~
     (Top) Median fraction of dwarf or massive primaries with a major or minor companion by stellar mass. 
@@ -387,7 +387,7 @@ Major and minor pairs (both dwarf pairs and massive pairs) have roughly equivale
 %% separation plots
 \begin{figure*}[htp]
   \centering
-  \includegraphics[width=\textwidth]{separation_1000.png}
+  \includegraphics[width=\textwidth]{sep_1000.png}
   \caption{(Top) Median physical separation (in kpc) of dwarf pairs (left, green) and massive pairs (right, pink) as a function of redshift. 
   Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations. 
   Major pairs (high stellar mass ratio) are shown in solid lines, while minor pairs are depicted with dashed lines.
@@ -405,7 +405,7 @@ Major and minor pairs (both dwarf pairs and massive pairs) have roughly equivale
 
 \begin{figure*}[htp]
   \centering
-  \includegraphics[width=\textwidth]{separation_distribution_1000.png}
+  \includegraphics[width=\textwidth]{sepdist_1000.png}
   \caption{Normalized physical separation distribution for dwarf (top) and massive (bottom) pairs from $z=0$ (left) to $z=4$ (right). Major pairs are shown as solid lines, while minor pairs are dotted. The median separation of each pair type from the previous plot is shown in solid (major) and dotted (minor) vertical black lines. 
   At higher redshift $z=3-4$, a large fraction of both dwarf and massive pairs have low separations ($<$ 125 \& 250 $\kpc$ respectively). However, at low redshift, the separation distribution tends to spread out more evenly across a large range of separations, thus increasing the median.
     }
@@ -432,7 +432,7 @@ Fig.~\ref{fig:vel-dist}
 %% velocity plots 
 \begin{figure*}[htp]
   \centering
-  \includegraphics[width=\textwidth]{velocity_1000.png}
+  \includegraphics[width=\textwidth]{vel_1000.png}
   \caption{
     (Top) Median relative velocity (in \kms) between the primary and secondary halos of: dwarf pairs (left, green), and massive pairs (right, pink) as a function of redshift. 
     Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations. Major pairs (high stellar mass ratio) are shown in solid lines, while minor pairs are depicted with dashed lines.
@@ -451,7 +451,7 @@ Fig.~\ref{fig:vel-dist}
 
 \begin{figure*}[htp]
   \centering
-  \includegraphics[width=\textwidth]{velocity_distribution_1000.png}
+  \includegraphics[width=\textwidth]{veldist_1000.png}
   \caption{
   Normalized distribution of relative velocities between primary and secondary halos for dwarf (top) and massive (bottom) pairs from $z=0$ (left) to $z=4$ (right). Major pairs are shown as solid lines, while minor pairs are dotted. The median relative velocity of each pair type from Fig.~\ref{fig:vel} is shown in solid (major) and dotted (minor) vertical black lines. 
   %
@@ -484,38 +484,24 @@ Also note than many of the close pairs at high z may merge by $z=0$.
 
 \begin{figure*}[htp]
   \centering
-  \includegraphics[width=\textwidth]{scaledsep_1000.png}
+  \includegraphics[width=\textwidth]{scaledcombo_1000.png}
   \caption{Median scaled separation (separation of a pair divided by the virial radius of its group) as a function of redshift. Dwarf pairs (major (solid) and minor (dashed)) tend to have smaller scaled separations at lower redshifts, leveling out between $z=0-1$. In particular, the secondaries of dwarf major pairs at $z>2$ tend to live more than one virial radius away from the primary. Massive major pairs at low redshift tend to have smaller scaled separations  at $z<\sim2$, but vary significantly at higher redshifts. 
   Minor pairs (right), both dwarf and massive, tend to have smaller separations, tending to live closer than one virial radius between the primary and secondary. Massive minor pairs tend to have smaller scaled separations compared to dwarf pairs at all redshifts.
   \todo{finish caption} \todo{remove "difference" legend, explain in capt. what "Ma-Dw" means}
-    }
-  \label{fig:sep-scaled}
-\end{figure*}
-
-\begin{figure*}[htp]
-  \centering
-  \includegraphics[width=\textwidth]{scaledsep_distribution_1000.png}
-  \caption{\todo{finish caption}}
-  \label{fig:sep-scaled-dist}
-\end{figure*} 
-
-
-\begin{figure*}[htp]
-  \centering
-  \includegraphics[width=\textwidth]{scaledvel_1000.png}
-  \caption{Median scaled velocity (relative velocity of a pair divided by the virial velocity), defined as the circular velocity at the virial radius of the group as a function of redshift. 
+  Median scaled velocity (relative velocity of a pair divided by the virial velocity), defined as the circular velocity at the virial radius of the group as a function of redshift. 
   Major pairs are on the left (solid lines), minor pairs are on the right in dashed lines.
   All sets of pairs show an increase in scaled velocity at lower redshifts.
   \todo{finish caption} \todo{remove "difference" legend, explain in capt. what "Maj-Min" means}
-  }
-  \label{fig:vel-scaled}
-\end{figure*} 
+    }
+  \label{fig:scaled}
+\end{figure*}
+
 
 \begin{figure*}[htp]
   \centering
-  \includegraphics[width=\textwidth]{scaledvel_distribution_1000.png}
+  \includegraphics[width=\textwidth]{scaledcombodist_1000.png}
   \caption{\todo{finish caption}}
-  \label{fig:vel-scaled-dist}
+  \label{fig:scaled-dist}
 \end{figure*} 
 
 
