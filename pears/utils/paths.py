@@ -51,3 +51,8 @@ class SetupPaths:
         self.path_pairs = self.path_data + "pairs/"
         self.path_median = self.path_data + "median_realization/"
         self.path_simstars = self.path_data + "simulation_mstar/"
+        
+        # pears paper and plots
+        self.path_plots = self.path_pears + "plots/paper1/"
+        self.path_plotdata = self.path_plots + "plotdata/"
+        self.path_paper = self.path_pears + "pears/"
