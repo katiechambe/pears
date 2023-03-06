@@ -43,6 +43,8 @@
 \newcommand{\mwouter}{\ensuremath{\textrm{MW}_\textrm{halo}}}
 \newcommand{\mwdisk}{\ensuremath{\textrm{MW}_\textrm{disk}}}
 \newcommand{\reflabel}[1]{\ensuremath{^{\mbox{\scriptsize{#1}}}}}
+\newcommand{\scsep}{\ensuremath{\rm r_{sep}/r_{vir}}}
+\newcommand{\scvel}{\ensuremath{\rm v_{rel}/v_{vir}}}
 
 % Style tweaks
 % \renewcommand{\twocolumngrid}{\onecolumngrid}
@@ -459,23 +461,37 @@ We separate the population of pairs into "major" and "minor" pairs (as defined i
 
 % scaled results %
     \subsection{Scaled Kinematics}\label{sec:results-scaled}
-    %% introduction to section
-    For brevity we show results for the major dwarf and massive pairs. Minor pairs show the same trends 
+    %% intro to scaled kin. evolution & bulk results
+    In Sec.~\ref{sec:results-kinematics}, we show that the separations and relative velocities of dwarf and massive pairs evolve similarly as a function of redshift. 
+    However, the magnitude of pair separations and velocities are set by the mass scale of the pair. 
+    For example, a dwarf pair at $z=0$ has a median relative velocity of $70\kms$, while a massive pair will have a median velocity of $175\kms$ at $z=0$.
     
-    %% text on scaled kins evlution
-    basically talk about how we find that the scaled versions of dwarfs and massives behave very similarly.
-    so, the scaled versins of all of these pairs behave VERY similarly in sc. velocity space, a bit different in sc. separation space but still kinda the same. also, can talk about how at z>2.5, dwarf pairs tend to live ooutside of their host's virial mass which is wildin -> maybe not bound at high z, though could become bound by low z by mass accretion ? 
+    To explore the impact of halo growth and mass scale the kinematics pairs, we study the relative separation of a primary and secondary halo scaled by the virial radius of the FoF group (\scsep), and the relative velocity divided by the circular speed of the group at the virial radius (\scvel).     
+    In Fig.~\ref{fig:scaled}, we show the median scaled separation and scaled velocity for dwarf and massive major pairs as a function of time. 
+    Minor pairs show the same trends, so we've omitted them here for brevity.
     
-    %% text on scaled kins distributions 
-    dwarf and massive distributioons look very similar, and also do not show a ton of evolution with redshift. for scaled separation, and velocity both, this is due to the growth of halos, so while the separation increases, the halo radius also increases. Since v inversely proportional to $R^1/2$, the increasing virial radius leads to lower circular velocitries given same mass, and thus, the higher separation pairs will allso have lower velocities. 
-    
-    Scaled vel fig. --   Despite the difference between dwarf and massive pairs in physical distribution as indicated by the plot of scaled separations (Figure~\ref{fig:sep-scaled}), the scaled velocity distribution of pairs indicates that dwarf and massive galaxy pairs operate similarly in velocity space. There is little to no mass dependence on the scaled velocity of dwarf or massive pairs., and is thus independent of the mass scale , meaning dwarf and massive scaled velocities evolve is nearly identically for $z=0-4$.
+    %% the behavior of massive and dwarf pairs
+    Overall, the median scaled separation of dwarf pairs and massive pairs do not evolve significantly differently from $z=4\to0$.
+    In fact, the median separation of halos in a pair is smaller than the group virial radius for at $z<2.5$, but is larger than the virial radius at $z>2.5$.
+    %maybe not bound at high z, though could become bound by low z by mass accretion ? 
+    Dwarf pairs tend to have slightly larger separations relative to their virial radius than massive pairs at almost all redshifts, though the spread of median scaled separations is large for massive pairs at $z>2$. 
+
+    The median scaled velocities of dwarf pairs and massive pairs increase at lower redshift (see right panel of Fig.~\ref{fig:scaled}). In fact, dwarf and massive pairs evolve almost identically for $z=0-4$, and thus, the redshift evolution of a pair at either of these mass scales is independent of the total mass of the system. 
+    We also find that pairs at $z<0.5$ have relative velocities in excess of their virial velocity, but are smaller than the virial velocity for $z=0.5-4$.
+     
+    %% distributions of scaled kinematics
+    In Fig.~\ref{fig:scaled-dist}, we show the distribution of scaled separations and velocities at redshifts $z=0,1,2,3,4$. 
+    The distributions show roughly equivalent shape and extent for both dwarf and massive scaled kinematics, and do not vary significantly with redshift. 
+    scaled separation, and velocity both, this is due to the growth of halos, so while the separation increases, the halo radius also increases.
+    % behavior of massive vs. dwarf 
+    Overall, our results imply that there is little to no mass dependence on the redshift evolution of pair velocities, though pair separations seem to have a weak dependence on the total system mass. 
+
 
     %% scaled evolution plot
     \begin{figure*}[htp]
       \centering
       \includegraphics[width=\textwidth]{scaledcombo_1000.png}
-      \caption{
+      \caption{ \label{fig:scaled}
       %  Left
       (Left) Median scaled separation as a function of redshift (see Sec.~\ref{sec:methods} for the definitions of scaled separation and velocity). All shaded regions show $X-XX\%$ percentile spread from 1000 abundance matching realizations. 
         % any overall trends?
@@ -484,13 +500,12 @@ We separate the population of pairs into "major" and "minor" pairs (as defined i
       % Right 
       (Right) Median scaled velocity as a function of redshift.
         % any overall trends?
-      All pairs show a peak in scaled velocity at $z=0$. From $z=0-0.5$, a majority of both dwarf and massive pairs have relative velocities larger than the circular velocity of their group at the virial radius. At $z>0.5$, however, the majority of pairs have $v_{rel}<v_{vir}$. The scaled velocity evolves nearly identically for dwarf and massive pairs.
+      All pairs show a peak in scaled velocity around $z=0$. From $z=0-0.5$, a majority of both dwarf and massive pairs have relative velocities larger than the circular velocity of their group at the virial radius. At $z>0.5$, however, the majority of pairs have $v_{rel}<v_{vir}$. The scaled velocity evolves nearly identically for dwarf and massive pairs.
       % Bottom 
       (Bottom) The scaled separation/velocity of dwarf major pairs subtracted from that of massive major pairs, indicated by ``M-D".
-      The scaled separation difference shows minor differences between the dwarf and massive population, with dwarf pairs having slightly higher scaled separation for $z<1$. The scaled velocity difference is $\sim0$ at all redshifts.
+      The scaled separation difference shows small differences between the dwarf and massive population, with dwarf pairs having slightly higher scaled separation for $z<1$. The scaled velocity difference is $\sim0$ at all redshifts.
       Minor pairs (not shown here) follow the same trends as major pairs in both the massive and dwarf regime.
-        }
-      \label{fig:scaled}
+\kc{maybe it'd be helpful to add horizontal lines at 1 }        }
     \end{figure*}
 
     %% scaled distribution plot
