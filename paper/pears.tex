@@ -91,19 +91,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \section{Methodology}\label{sec:methods}
-We use a run of the \tngh\ simulation to select halo pairs according to a strict set of selection criteria as outlined in this section. 
+We aim to quantify and characterize the frequency (or occurrence rate) and bulk kinematic properties of galaxy pairs in a cosmologically consistent way a function of cosmic time. 
+In particular, we study dwarf galaxy pairs and massive galaxy pairs that are of similar stellar and halo mass to a variety of pairs in the Local Group. 
+We categorize these pairs into one of four pair types: massive major pairs, such as the MW+M31; massive minor pairs, such as M31+M33 or MW+LMC; dwarf major pairs, such as M33+LMC; and finally, dwarf minor pairs, such as the LMC+SMC. 
+
+To this end, we use a run of the \tngh\ simulation to select halo pairs at each snapshot according to a strict set of selection criteria as outlined in the remainder of this section. 
 In Sec.~\ref{sec:methods-sims}, we provide motivation for and details of the simulation utilized in this study.
-Sec.~\ref{sec:methods-halos} outlines the initial mass cuts used to define our full sample of primary halos about which we will search for secondary companions.
+Sec.~\ref{sec:methods-halos} outlines the initial mass cuts used to define our full sample of halos, from which we will select pairs.
 Sec.~\ref{sec:methods-am} outlines the abundance matching prescription we used to associate dark matter subhalos with stellar masses.
-Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria we apply to obtain the full sample of dwarf and massive pairs.
+Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria we apply to obtain the full sample of pairs.
 In Sec.~\ref{sec:methods-props}, we show some of the properties of our entire pair sample, including the total number of pairs and stellar mass ratios.
 Finally, Sec.~\ref{sec:methods-analysis} gives an overview of our analysis methods and a description of the parameters of interest in this study. 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%
+% Sim details section %
     \subsection{Simulation details} \label{sec:methods-sims}
         % Brief description of TNG hydro and which run we use.
     The \tng\ project ~\citep{TNG1, TNG2, TNG3, TNG4, TNG5} consists of a suite of dark-matter-only $N$-body as well as full physics cosmological simulations consistent with the \textit{Planck2015} \lcdm/  cosmology~\citep{Planck2015}.
-    In this study we utilize data from the main high resolution full physics run of the (110.7\Mpc)$^3$ volume simulation, \textsl{TNG100-1}, which includes dark matter and baryonic particles and follows the evolution of $1820^3$ dark matter particles from $z=127$ to $z=0$.
+    In this study we utilize data from the main high resolution full physics run of the (110.7\Mpc)$^3$ volume simulation, \textsl{TNG100-1}, which includes dark matter and baryonic particles and follows the evolution of $1820^3$ dark matter particles in 100 snapshots from $z=127$ to $z=0$. 
 
       % subfind, sublink, and groups and subhalos
     We utilize the group catalogs produced by the \texttt{SUBFIND} algorithm~\citep{springel2001,dolag09}. 
@@ -117,26 +122,114 @@ Finally, Sec.~\ref{sec:methods-analysis} gives an overview of our analysis metho
     Baryonic process are known to affect the structure and formation of dark matter halos of low mass ($M_*\lesssim 1\times10^9\Msun$) subhalos in simulations~\citep[see e.g.][and references therein]{Sales:2022}.
     Additionally, the shallow potential well of dwarf galaxies compared to their massive counterparts may lend themselves more easily to disruption from baryonic processes such as supernova feedback and reionization~\citep{}, resulting in fewer low mass halos ($\lesssim 5\times10^{10}$) in hydrodynamic simulations~\citep{vogelsberger14B}.
     % Thus, the number of primaries  we expect that our choice of simulation will result in 
+% End sim details     %
+%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%    
+% Choosing halos section %
+    \subsection{Choosing dwarf and massive halos in TNG} \label{sec:methods-halos}
+    % start off with group selection 
+        % brief explanation of FoF groups in sim
+    Each snapshot from the TNG100 group catalogs consist of FoF groups, large halos of closely associated DM particles, and the subhalos they contain, which are smaller bound structures of DM and the gas and star particles nearest to them. 
+    We will refer to these two structures as "groups" and either "halos" or "subhalos" respectively, from here on. 
+    Galaxies form in these subhalos, so our pair sample will consist of pairs of subhalos within these larger group structures.
+
+    We are interested in the inherent dynamics and properties of pairs of halos in the field.
+    Thus, we want our pairs to consist of some of the most massive halos in each group, and ensure that the pair is not dynamically influenced by nearby massive groups. 
+    By selecting pairs from the most massive halos of a group, a rough isolation criteria is inherent in our selection due to the nature of the FoF algorithm, which groups together nearby particles. 
+    To confirm that our sample , we have confirmed that nearly 100\% of the the most massive subhalos in each group are outside of the Hill radius of any nearby group or subhalo with greater mass.
+
+    The first selection criteria that we invoke is a cut on the total group mass, $M_{G}$ (i.e., a mass cut on the FoF group mass, given by \texttt{Group\_M\_TopHat200} in the \tng\ group catalogs). 
+    We define the group mass range for dwarf groups as $8\times 10^{10} < M_{G,d} < 5\times 10^{11}\Msun$, which will host mass analogs of the LMC+SMC and LMC+M33 pairs. 
+    Massive group a massive group mass range from $1\times10^{12} < M_{G,m} < 6.5\times10^{12}$, which at the lower mass end will host MW+LMC pairs, and MW+M31 pairs at the higher mass end. 
+    The group mass criteria is fixed for all redshifts, so at high z, the dwarf pairs we select may be the progenitors of higher mass systems at $z=0$.
+    Note that all masses used in this analysis are physical units, such that masses from the group catalogs are divided by $h$ to get units of \Msun. 
+
+    Selecting dwarf pairs from the dwarf group mass range also ensures that we are not selecting satellite systems in the halos of more massive systems. 
+    The LMC+SMC, for example, are highly perturbed by the influence of the MW, and thus we do not pick dwarf pairs from high mass groups that may contain large nearby MW-mass analogs.
     
+        % explain what halos we will move forward with. 
+    For each group that passes the group mass cut, we create a catalog of all subhalos that pass a ``current mass" criteria: current (same snapshot) halo mass must be $M_h > 1\times10^{9}\Msun$ (the \texttt{SubhaloMass} field in the group catalogs).\footnote{Note that for the TNG100 hydro run, the halo mass is the total sum of all bound dark matter \textit{and} baryonic particles.}
+    This lower mass threshold ensures that our halos are resolved into $>100$ particles, and thus should be robust to the SUBFIND and SUBLINK algorithms even at the lowest mass end.  
     
-      
+    We then utilize the merger tree catalogs to determine the maximum halo mass ever achieved by each halo. 
+    The set of all subhalos at each snapshot that pass the group mass and current mass cuts constitutes our entire subhalo sample. 
+    From here, we will use further selection criteria to narrow our sample down to pairs.
+
+% End choosing halos     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%    
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%    
+% Choosing halos section %
+    \subsection{Abundance matching} \label{sec:methods-am}
+        % what is abundance matching
+    Abundance matching is a technique used to associate dark matter halo mass with specific galaxy properties.
+    This allows us to associate dark matter halos from the \tng\ simulation with observationally motivated galaxy properties. % maybe observationally constrained, instead? 
+    In particular, we will be utilizing a stellar mass to halo mass (SMHM) relationship to assign stellar masses to each of the subhalos in our sample. 
 
+    % few details about the msoter relationship. how was it determined?
+        % why are we using abundance matching 
+    The \tng100-1 subhalo catalogs do already contain a stellar mass field as computed in the simulation by simulating star formation and  AGN feedback, stellar feedback, galactic winds, etc.    
+    However, there are a couple reasons we opt to assign stellar masses to our halos, rather than use those from the simulation. 
+    
+    Primarily, applying an abundance matching prescription to assign stellar masses to each of the dark matter halos allows us to account for the observed spread in the stellar mass-halo mass relationship. 
+    This is particularly important in the low mass regime ($M_h \lesssim 10^{11}\Msun$) where the spread in the SMHM function is large. 
+    In addition, using stellar masses as calculated from abundance matching allows us to side step any simulation-dependent stellar mass effects.
+    In the case of \tng100 specifically, it is known that the stellar masses of low mass galaxies are often overestimated compared to the galaxy luminosity function at the low mass end\cite{}. 
+    Using an observationally-calibrated abundance matching prescription will thus lead to a more robust result for comparison with and predictions for observations. 
+    Finally, utilizing an abundance matching prescription allows us to directly compare results between dark matter only and hydro simulations, since the stellar masses are assigned the same way. 
+    We make brief note of results from dark matter only simulations in Sec.~\ref{sec:results}.
+    
+        % what am prescription are we using? 
+    We use the abundance matching relationship presented in~\citet{Moster2013}, which provides an analytic recipe to assign stellar masses to dark matter halos. 
+    The~\citet{Moster2013} relationship is a function of the halo mass, evolves with redshift, and includes terms to account for the systematic scatter in the SMHM relationship, with larger scatter at lower halo masses.
+    Additionally, stellar mass is defined separately for central halos (``hosts") and for infalling satellites (``subhalos"), where the first is a function of the virial mass of the halo and its redshift, $M_{vir}$ and $z$, and the second is a function of the mass and redshift at the time of infall, $M_{inf}$ and $z_{inf}$. 
+    This assumes that the satellite halos are at the peak of their stellar mass before infall, and neglects the affect of star formation or stellar stripping within the host halo. 
+
+        % what do we use for the mass ~ 
+    In this work, we will use the peak halo mass \Mpeak\ from the \sublink\ merger trees to calculate subhalo stellar masses. 
+    \citet{Munshi2021} found that the stellar mass of subhalos at $z=0$ in the ``Marvel-ous Dwarfs" and ``DC Justice League" zoom simulations are more closely correlated with the peak halo mass ($M_{peak}$) than the $z=0$ halo mass for halos with peak halo mass $10^8<M_{\rm peak}<10^{11} \Msun$. 
+    % separate citation for peak halo mass and stellar mass relatiosnhip for M > 1e11Msun 
+    Using the peak halo mass additionally allows us to remain robust to scenarios in which a secondary has formed most of its stars, then loses a significant portion of its dark matter content through tidal interactions with a primary, but retains the bulk of its stellar content.
         
-    
-\subsection{Choosing dwarf and massive halos in TNG} \label{sec:methods-halos}
-    
+        % regarding the redshift dependence ~
+    We additionally assume that the stellar mass of both the primary and secondary halo can change as a function of redshift after the secondary has entered the primary's halo and do not immediately cease star formation. 
+    This assumption is consistent with findings from~\cite{Akins2021}, which found that massive dwarf satellites ($M_*\approx 10^8-10^9\, \Msun$) entering MW-mass host halos are rarely quenched, and with~\cite{geha13} which finds that dwarfs $>1\Mpc$ from a MW-type galaxy are often star forming and rarely quenched.
+    Additionally, the SAGA survey has found that large satellites of MW-type galaxies are often very blue, with infall into the halo spurring high rates of star formation due to the large gas fraction in dwarfs~\citep{saga}. 
+    Thus, we calculate stellar masses for our subhalos using $M_{\rm peak}$ and the redshift of the current snapshot to calculate the stellar mass of each subhalo, to account for the additional stellar mass that can form after infall. 
 
-\subsection{Abundance matching} \label{sec:methods-am}
-    \begin{itemize}
-        \item what is abudance matching
-        \item why are we using it?
-        \item what method and how do we use it? 
-    \end{itemize} 
+    As mentioned in a footnote in Sec.~\ref{sec:methods-halos}, the total halo mass of subhalos in the hydro simulation includes the mass of both dark matter and baryonic particles. 
+    In TNG100-1, the DM particle mass is decreased XX\% compared to the DM particle mass in \tng100-1 Dark to account for the additional mass of baryons, such that the total mass of the halo will remain roughly the same between the dark matter only and hydro simulations. 
+    Since the~\citet{Moster2013} AM relation was calibrated using DM subhalos from the \texttt{MilleniumII} dark matter only simulation, we will use the total subhalo mass from the TNG100-1 hydro simulation as a proxy for the corresponding DM halo mass in the TNG100-1 Dark run. 
 
+        % realizations? 
+    For each subhalo at each snapshot in our full subhalo sample (see Sec.~\ref{sec:methods-halos}), we create a set of 1000 stellar mass values from the SMHM relationship to account for the systematic uncertainty in subhalo stellar masses.
+    Each realization is treated as an independent sample of galaxy stellar masses, which allows us to report realistic spreads of pair properties.
+    Thus, we create 1000 separate pair catalogs, and compute pair properties (pair frequency, separations, etc) for each individual abundance matching realization.
+
+% End choosing halos     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%      
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%    
+% Pair selection section %
 \subsection{Pair selection}\label{sec:methods-pairs}
+(Note that the LMC+SMC pair would not be selected by our selection criteria since they are a system of satellites in a halo containing much more massive galaxies that would instead by selected as the primary and secondary galaxies of a pair.)
+
+% \begin{enumerate}
+%   \item Select groups in some group range that encompasses MCs and MW-M31
+%   \item For every subhalo in every group with halo mass >1e9Msun, use merger trees to get the maximum masses.
+%   \item Generate 1000 stellar mass realization using abundance matching so we can account for the spread in the relationship
+%   \item Generate catalog at each redshift containing: 
+%   \begin{itemize}
+%     \item For each realization, and in each group with a single subhalo, add the subhalo and it's properties to a catalog of single halos.
+%     \item For each realization, and in each group with 2+ halos, find most massive halo by stellar mass, and the second most massive halo by stellar mass, then add to pair catalog. 
+%     \item If a group has 3+ halos, check the stellar mass of the third most massive object, and see if it is a major/minor companion of the secondary. If not, teritary flag = 0. Otherwise =1.
+%   \end{itemize}
+%   \item Select dwarf primaries: for full catalog, most massive halo (in "pairs") or single halos with stellar mass $1\times10^{8} < \msam < 5\times10^{9} \Msun$. 
+%   \item Select dwarf pairs: for full pair catalog, any pair with stellar mass ratio between 1-1/4 (major pairs) or between 1/4-1/10 (minor pairs). All pairs is the union of these two sets. Any pair or single halo that is outside of these two sets is an "unpaired" halo. Note that unpaired can still have very minor companions. 
+% \end{enumerate}
+
     \begin{itemize}
         \item what types of pairs are we looking for? 
         \item why do we pick the mass range we are looking at?
@@ -153,6 +246,10 @@ Finally, Sec.~\ref{sec:methods-analysis} gives an overview of our analysis metho
                 \item explain pairing method for each realization
                 \item minimum separation of 15kpc so that we can be more confident about the mass associated with each halo (at smaller seps, more mass will be attributed to the central, also though why we use the stellar mass associated with the max mass isntead of the current mass) 
             \end{itemize}
+            
+% Pair selection end %
+%%%%%%%%%%%%%%%%%%%%%%
+
     
 \subsection{Overview of pair properties} \label{sec:methods-props}
     \begin{itemize}
@@ -197,40 +294,6 @@ Table should include the median number of primaries and of pairs (major and mino
 % However, we also require high resolution simulations such that the dwarf subhalos are resolved well enough to ensure robust statistics at the low mass end, and so we are not limited by our inability to resolve objects down to halo masses of $M_{\rm halo}\approx1\times 10^9\, \Msun$.
 
 
-
-
-
-
-
-% %%%%%%%%%%%
-%%%%%%%%%%%
-% \subsection{Abundance matching prescription}
-% % Why do we need stellar masses?
-% One of the goals of this study is to determine the impact of baryonic physics on the occurrence rate and typical separations of galaxy \kc{subhalo?} pairs in cosmological simulations. 
-% However, selecting halo pairs by stellar mass ratio using the stellar masses provided by the simulations is not possible in the dark matter only runs. 
-% Thus, in order ensure the dark matter only and full hydrodynamic samples are self-consistent, we need to associate each of the selected subhalos with a realistic stellar mass.
-
-% % What is abundance matching
-% Abundance matching is one such method of associating a dark matter halo with a stellar mass, assuming a galaxy would form in a halo of that mass. 
-
-% However, there is large scatter in the stellar-mass-halo-mass (SMHM) relationship, especially in the dwarf halo regime. 
-
-
-
-% % How do we utilize it? 
-% In particular, we use the abundance matching relationship presented in~\citet{Moster2013}, which provides an analytic recipe to paint stellar masses onto dark matter halos. 
-% The~\citet{Moster2013} relationship is a redshift-evolving function of the halo mass, and includes terms to account for the systematic scatter in the SMHM relationship, with larger scatter at lower halo masses.
-% \kc{why moster instead of another AM relationship? most closely represent data at lower mass? }
-
-% To assign stellar masses to each of the dark matter halos, we assume that the stellar mass of both the primary and secondary halo can change as a function of redshift after the secondary has entered the primary's halo and do not immediately cease star formation.
-% This assumption is consistent with findings from~\cite{Akins2021}, which found that massive dwarf satellites ($M_*\approx 10^8-10^9\, \Msun$) entering MW-mass host halos are rarely quenched, and with~\cite{geha13} which finds that isolated dwarfs ($>1\Mpc$ from a MW-type galaxy) are often star forming and rarely quenched.
-% Additionally,~\citet{Munshi2021} found that the stellar mass of subhalos at $z=0$ in the XX simulations are more closely correlated with the peak halo mass than the $z=0$ halo mass for halos with peak halo mass $10^8<M_{\rm peak}<10^{11} \Msun$. 
-
-% Thus, we treat each of the subhalos as centrals according to the~\citet{Moster2013} prescription, using the current snapshot redshift and the peak halo mass of the subhalo to calculate the stellar mass. 
-% This additionally allows us remain robust to scenarios in which a secondary may have formed most of its stars, and then lost a significant portion of its dark matter content through tidal interactions with a primary, but will retain the bulk of its stellar content.
-
-% We create 1000 stellar mass realizations from the SMHM relationship, thus accounting for the systematic uncerntainy in subhalo stellar masses. Each realization is treated as an independent sample, such that computed properties (pair frequency, separations, etc) are given as the median each realization. We report the mean of all realizations and error bars indicate the 1$\sigma$ dispersion across the realizations.
-
 % \subsubsection{Error calculations}\label{sec:methods-err}
 
 
@@ -255,22 +318,7 @@ Table should include the median number of primaries and of pairs (major and mino
 % \end{itemize}
 % Note that the subhalo that is assigned as primary or secondary may change between stellar mass realizations. Also note\kc{that this method may yield pairs where the secondary has a higher subhalo mass than the primary. This one happens ~XX\% of the time.}
 
-% \begin{enumerate}
-%   \item Select groups in some group range that encompasses MCs and MW-M31
-%   \item For every subhalo in every group with halo mass >1e9Msun, use merger trees to get the maximum masses.
-%   \item Generate 1000 stellar mass realization using abundance matching so we can account for the spread in the relationship
-%   \item Generate catalog at each redshift containing: 
-%   \begin{itemize}
-%     \item For each realization, and in each group with a single subhalo, add the subhalo and it's properties to a catalog of single halos.
-%     \item For each realization, and in each group with 2+ halos, find most massive halo by stellar mass, and the second most massive halo by stellar mass, then add to pair catalog. 
-%     \item If a group has 3+ halos, check the stellar mass of the third most massive object, and see if it is a major/minor companion of the secondary. If not, teritary flag = 0. Otherwise =1.
-%   \end{itemize}
-%   \item Select dwarf primaries: for full catalog, most massive halo (in "pairs") or single halos with stellar mass $1\times10^{8} < \msam < 5\times10^{9} \Msun$. 
-%   \item Select dwarf pairs: for full pair catalog, any pair with stellar mass ratio between 1-1/4 (major pairs) or between 1/4-1/10 (minor pairs). All pairs is the union of these two sets. Any pair or single halo that is outside of these two sets is an "unpaired" halo. Note that unpaired can still have very minor companions. 
-% \end{enumerate}
 
-% The lower mass threshold for subhalos that constitute our dwarf pairs have a halo mass greater than $1\times10^9\Msun$, such that each of our halos are resolved into at least 100 particles in each simulation.  
-% \kc{why 100?} 
 
 
 
