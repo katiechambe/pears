@@ -213,34 +213,65 @@ Finally, Sec.~\ref{sec:methods-analysis} gives an overview of our analysis metho
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%    
 % Pair selection section %
-\subsection{Pair selection}\label{sec:methods-pairs}
-(Note that the LMC+SMC pair would not be selected by our selection criteria since they are a system of satellites in a halo containing much more massive galaxies that would instead by selected as the primary and secondary galaxies of a pair.)
+    \subsection{Pair selection}\label{sec:methods-pairs}
+    The full pair sample is constructed from the set of all subhalos and their abundance matching realizations. Each pair will consist of a ``primary," the more massive object, and a ``secondary," which is the less massive companion. 
 
+    % justify why we want to use stellar mass to define things
+    A majority of the literature uses the definition of "major" and "minor" pairs based on the stellar mass of the objects. This is true as well for observational pair samples, such as Lotz 2011, wherein the halo mass of the objects is unknown, and thus the stellar mass is used to define the mass ratio of the pair. In order to reproduce statistics that can be meaningfully compared to observations/can be used to inform observations, we opt to define our pair sample via the stellar masses from the abundance matching prescription given in Sec.~\ref{sec:methods-am}. 
+
+    \begin{itemize}
+    \item what types of pairs are we looking for? 
+    \item why do we pick the mass range we are looking at?
+    \end{itemize}
+
+    
 % \begin{enumerate}
-%   \item Select groups in some group range that encompasses MCs and MW-M31
-%   \item For every subhalo in every group with halo mass >1e9Msun, use merger trees to get the maximum masses.
-%   \item Generate 1000 stellar mass realization using abundance matching so we can account for the spread in the relationship
-%   \item Generate catalog at each redshift containing: 
-%   \begin{itemize}
-%     \item For each realization, and in each group with a single subhalo, add the subhalo and it's properties to a catalog of single halos.
-%     \item For each realization, and in each group with 2+ halos, find most massive halo by stellar mass, and the second most massive halo by stellar mass, then add to pair catalog. 
-%     \item If a group has 3+ halos, check the stellar mass of the third most massive object, and see if it is a major/minor companion of the secondary. If not, teritary flag = 0. Otherwise =1.
-%   \end{itemize}
 %   \item Select dwarf primaries: for full catalog, most massive halo (in "pairs") or single halos with stellar mass $1\times10^{8} < \msam < 5\times10^{9} \Msun$. 
 %   \item Select dwarf pairs: for full pair catalog, any pair with stellar mass ratio between 1-1/4 (major pairs) or between 1/4-1/10 (minor pairs). All pairs is the union of these two sets. Any pair or single halo that is outside of these two sets is an "unpaired" halo. Note that unpaired can still have very minor companions. 
 % \end{enumerate}
 
-    \begin{itemize}
-        \item what types of pairs are we looking for? 
-        \item why do we pick the mass range we are looking at?
-        \item how do we pick out the groups we'll use (group crit)
-    \end{itemize}
+
+    
     \subsubsection{Selecting primaries}
-            \begin{itemize}
-                \item definition of prims
-                \item how we use single-halo groups. 
-            \end{itemize}
-    \subsubsection{Selecting companions}
+    Primary galaxies (equivalently, ``primary subhalos") are the most massive galaxy of their group, i.e., each group can have at most one primary galaxy.  
+    We perform mass cuts on the stellar mass of the primary to define our sample of dwarf primaries and massive primaries. Each stellar mass realization is treated independently, such that the primary of a group may change between stellar mass realizations. Additionally, some groups may not have a ``primary" in one realization, but will in others. 
+
+    For each stellar mass realization, we rank order the subhalos of each group by stellar mass, then perform a mass cut specific to the type of group: dwarf primaries from dwarf mass groups, and massive primaries from massive mass groups (see Sec.~\ref{sec:methods-halos} for group mass criteria). 
+    We define the stellar mass range for dwarf primaries and massive primaries as:
+    \begin{align*} 
+    \mbox{\textbf{dwarf primaries:}}&\, 1\times 10^{8}< \rm M_{*} < 5\times10^{9}\Msun \\ 
+    \mbox{\textbf{massive primaries:}}&\, 5\times 10^{9}< \rm M_{*} < 1\times 10^{11}\Msun
+    \end{align*}
+    The stellar mass criteria is fixed, and does not change as a function of redshift. 
+    The median number of primaries in a single stellar mass realization at $z=0$ is XX dwarf primaries and XX massive primaries (see Sec.~\ref{sec:methods-props} for more info). 
+    This range was chosen to replicate a set of pairs with masses similar to LMC+SMC and MW-M31 mass pairs. The abundance matching prescription has a spread of $\sim 1$dex at $M_{h}\sim 10^{10}\Msun$, thus the set of selected primaries in each realization is unique. 
+
+    A subhalo will not be selected as a primary if it is not the first most massive halo in the group, i.e., there is no more massive subhalo (by stellar mass) in the group. However, since our selection is based on stellar mass, and there is a large spread in the SMHM relation, the most massive object by stellar mass may not be the most massive subhalo in terms of subhalo mass. 
+    This is by design, since our selection criteria are meant to roughly align with observational pair selection criteria which use the stellar mass ratio between the primary and companion to define a major or minor pair, rather than the DM halo mass. 
+    
+    Additional cases:
+    \begin{itemize}
+        \item In the case that a group hosts no galaxy in this stellar mass range in any realization, the group is removed from the sample. 
+        \item If a subhalo passes the stellar mass cut for a primary, but does not have an associated companion from the selection criteria for a secondary (see next subsection), the subhalo will still be considered a primary. We refer to all primaries without companions as ``isolated primaries."
+        \item If the most massive object by stellar mass is more or less massive than our 
+    \end{itemize}
+
+    
+    
+
+    
+    \subsubsection{Selecting secondary companions}
+    The secondary companion galaxies are selected via their stellar mass ratio
+    The second most massive galaxy by stellar mass in each group is then used 
+
+    \begin{align*} 
+    \mbox{\textbf{major pair:}}&\, \frac{1}{4}\leq \frac{\rm M_{*,2}}{\rm M_{*,1}}< 1 \\ 
+    \mbox{\textbf{minor pair:}}&\, \frac{1}{10}\leq \frac{\rm M_{*,2}}{\rm M_{*,1}} < \frac{1}{4}\Msun
+    \end{align*}
+
+    Note that in this selection routine, the LMC+SMC pair would not be selected, as they are a system of satellites in a massive group. Rather, the MW-M31 pair would be selected and identified as a ``massive major pair."
+
+    
             \begin{itemize}
                 \item companions selected by mass ratio
                 \item explain pairing method for each realization
