@@ -214,152 +214,98 @@ Finally, Sec.~\ref{sec:methods-analysis} gives an overview of our analysis metho
 %%%%%%%%%%%%%%%%%%%%%%%%%%    
 % Pair selection section %
     \subsection{Pair selection}\label{sec:methods-pairs}
-    The full pair sample is constructed from the set of all subhalos and their abundance matching realizations. Each pair will consist of a ``primary," the more massive object, and a ``secondary," which is the less massive companion. 
+    The full pair sample is constructed from the set of all subhalos and their abundance matching realizations. Each pair will consist of a ``primary" more massive object, and a ``secondary" less massive companion. 
 
     % justify why we want to use stellar mass to define things
     A majority of the literature uses the definition of "major" and "minor" pairs based on the stellar mass of the objects. This is true as well for observational pair samples, such as Lotz 2011, wherein the halo mass of the objects is unknown, and thus the stellar mass is used to define the mass ratio of the pair. In order to reproduce statistics that can be meaningfully compared to observations/can be used to inform observations, we opt to define our pair sample via the stellar masses from the abundance matching prescription given in Sec.~\ref{sec:methods-am}. 
 
-    \begin{itemize}
-    \item what types of pairs are we looking for? 
-    \item why do we pick the mass range we are looking at?
-    \end{itemize}
-
-    
-% \begin{enumerate}
-%   \item Select dwarf primaries: for full catalog, most massive halo (in "pairs") or single halos with stellar mass $1\times10^{8} < \msam < 5\times10^{9} \Msun$. 
-%   \item Select dwarf pairs: for full pair catalog, any pair with stellar mass ratio between 1-1/4 (major pairs) or between 1/4-1/10 (minor pairs). All pairs is the union of these two sets. Any pair or single halo that is outside of these two sets is an "unpaired" halo. Note that unpaired can still have very minor companions. 
-% \end{enumerate}
-
-
-    
+    %%% 
+    % begin subsubsection
     \subsubsection{Selecting primaries}
-    Primary galaxies (equivalently, ``primary subhalos") are the most massive galaxy of their group, i.e., each group can have at most one primary galaxy.  
+    Primary galaxies (equivalently, ``primary subhalos") are the most massive galaxy of their group by stellar mass. Thus, each group can have at most one primary galaxy.  
+    
     We perform mass cuts on the stellar mass of the primary to define our sample of dwarf primaries and massive primaries. Each stellar mass realization is treated independently, such that the primary of a group may change between stellar mass realizations. Additionally, some groups may not have a ``primary" in one realization, but will in others. 
 
     For each stellar mass realization, we rank order the subhalos of each group by stellar mass, then perform a mass cut specific to the type of group: dwarf primaries from dwarf mass groups, and massive primaries from massive mass groups (see Sec.~\ref{sec:methods-halos} for group mass criteria). 
     We define the stellar mass range for dwarf primaries and massive primaries as:
     \begin{align*} 
     \mbox{\textbf{dwarf primaries:}}&\, 1\times 10^{8}< \rm M_{*} < 5\times10^{9}\Msun \\ 
-    \mbox{\textbf{massive primaries:}}&\, 5\times 10^{9}< \rm M_{*} < 1\times 10^{11}\Msun
+    \mbox{\textbf{massive primaries:}}&\, 5\times 10^{9}< \rm M_{*} < 1\times 10^{11}\Msun.
     \end{align*}
+    
     The stellar mass criteria is fixed, and does not change as a function of redshift. 
     The median number of primaries in a single stellar mass realization at $z=0$ is XX dwarf primaries and XX massive primaries (see Sec.~\ref{sec:methods-props} for more info). 
-    This range was chosen to replicate a set of pairs with masses similar to LMC+SMC and MW-M31 mass pairs. The abundance matching prescription has a spread of $\sim 1$dex at $M_{h}\sim 10^{10}\Msun$, thus the set of selected primaries in each realization is unique. 
+    The primary stellar mass range is chosen to replicate a set of pairs with masses similar to LMC+SMC and MW-M31. 
+    
+    The abundance matching prescription has a spread of $\sim 1$dex at $M_{h}\sim 10^{10}\Msun$~\citep{Moster2013}, thus the set of selected primaries in each realization is typically unique. 
 
-    A subhalo will not be selected as a primary if it is not the first most massive halo in the group, i.e., there is no more massive subhalo (by stellar mass) in the group. However, since our selection is based on stellar mass, and there is a large spread in the SMHM relation, the most massive object by stellar mass may not be the most massive subhalo in terms of subhalo mass. 
-    This is by design, since our selection criteria are meant to roughly align with observational pair selection criteria which use the stellar mass ratio between the primary and companion to define a major or minor pair, rather than the DM halo mass. 
-    
-    Additional cases:
-    \begin{itemize}
-        \item In the case that a group hosts no galaxy in this stellar mass range in any realization, the group is removed from the sample. 
-        \item If a subhalo passes the stellar mass cut for a primary, but does not have an associated companion from the selection criteria for a secondary (see next subsection), the subhalo will still be considered a primary. We refer to all primaries without companions as ``isolated primaries."
-        \item If the most massive object by stellar mass is more or less massive than our 
-    \end{itemize}
+    % explain special cases that people might wonder about.
+    A subhalo will not be selected as a primary if it is not the first most massive halo in the group, i.e., there are no subhalos in the group that are more massive than the primary (by stellar mass). However, since our selection is based on stellar mass, and there is a large spread in the SMHM relation, the most massive object by stellar mass may not be the most massive subhalo in terms of subhalo mass. 
+    This is by design, since our selection criteria are meant to more closely replicate observational pair selection criteria which use the stellar mass ratio between the primary and companion to define a major or minor pair, rather than the DM halo mass. 
 
+    If a subhalo passes the stellar mass cut for a primary, but does not have an associated companion from the selection criteria for a secondary (see next subsection), the subhalo will still be considered a primary. We refer to all primaries without companions as ``isolated primaries."
+    The total set of primaries includes both paired primaries and isolated primaries.
+    % end  primary subsubsection
+    %%% 
     
-    
-
-    
+    %%% 
+    % begin secondary subsubsection
     \subsubsection{Selecting secondary companions}
-    The secondary companion galaxies are selected via their stellar mass ratio
-    The second most massive galaxy by stellar mass in each group is then used 
-
+    The second most massive galaxy by stellar mass in each group is then used to define the secondary companions for each primary. 
+    As before, the selection of secondary companions occurs independently for each stellar mass realization, and for each snapshot, such that we collect 1000 different sets of pairs for each redshift.
+    
+    We create two categories of pairs: 
+    major pairs and minor pairs, such that the secondary companion galaxies are selected via the stellar mass ratio between the secondary and primary.     
+    Since we have already rank ordered the halos in each stellar mass realization by their stellar mass, the stellar mass ratio will never exceed 1.   
+    The stellar mass ratio criteria for major and minor pairs are:
     \begin{align*} 
-    \mbox{\textbf{major pair:}}&\, \frac{1}{4}\leq \frac{\rm M_{*,2}}{\rm M_{*,1}}< 1 \\ 
-    \mbox{\textbf{minor pair:}}&\, \frac{1}{10}\leq \frac{\rm M_{*,2}}{\rm M_{*,1}} < \frac{1}{4}\Msun
+    \mbox{\textbf{major pair:}}&\, \frac{1}{4}\leq \frac{\rm M_{*2}}{\rm M_{*1}}< 1 \\ 
+    \mbox{\textbf{minor pair:}}&\, \frac{1}{10}\leq \frac{\rm M_{*2}}{\rm M_{*1}} < \frac{1}{4}
     \end{align*}
+    In addition, we require that each pair have a minimum separation of $15\kpc$ between the primary and secondary, which is XX times the smoothing length of the simulation. 
+    At smaller separations, more and more mass will be attributed to the central subhalo, which can lead to confusion in the merger tree histories. \kc{fix the wording here}.
+  
+    If a primary subhalo does not have a companion that meets the stellar mass ratio criteria, separation criteria, or lower subhalo mass criteria (see Sec.~\ref{sec:methods-halos}), the subhalo will still be considered a primary. 
+    We refer to all primaries without companions as ``isolated primaries."
 
     Note that in this selection routine, the LMC+SMC pair would not be selected, as they are a system of satellites in a massive group. Rather, the MW-M31 pair would be selected and identified as a ``massive major pair."
-
+    % end secondary subsubsection
+    %%% 
     
-            \begin{itemize}
-                \item companions selected by mass ratio
-                \item explain pairing method for each realization
-                \item minimum separation of 15kpc so that we can be more confident about the mass associated with each halo (at smaller seps, more mass will be attributed to the central, also though why we use the stellar mass associated with the max mass isntead of the current mass) 
-            \end{itemize}
-            
 % Pair selection end %
 %%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%
+% Pair prop. start %
+    \subsection{Overview of selected pair sample} \label{sec:methods-props}
+        The full pair sample contains 1000 individual sets of pairs at each snapshot, for all 100 snapshots of the \tng100-1 simulation. 
+        For each snapshot, we calculate the median number of primaries and pairs in each of the 1000 stellar mass realizations. 
+        The data shown is the median and 1-99\% range of the set of medians from the realizations.
     
-\subsection{Overview of pair properties} \label{sec:methods-props}
-    \begin{itemize}
-        \item what are properties of our sample?
-    \end{itemize}
-    \subsubsection{Description of counts plot}
-            \begin{itemize}
-                \item general behavior of dwarf primaries
-                \item general behavior of dwarf pairs
-                \item general behavior of massive prims
-                \item general behavior of massive pairs
-                \item brief explanation of bottom panel
-            \end{itemize}
-    \subsubsection{Description of stellar mass ratio plot}
-            \begin{itemize}
-                \item what is being shown?
-                \item what is the general behavior?
-                \item comparison: dwarfs vs. massive galaxies 
-                \item comparison: major vs. minor pairs
-            \end{itemize}
-    
-\subsection{Analysis method/defs} \label{sec:methods-analysis}
-    \begin{itemize}
-        \item Pair fractions
-        \item separations
-        \item velocities
-        \item scaled units
-        \item data presented (median def and spread)
-    \end{itemize}
+        Fig.~\ref{fig:counts} shows the redshift evolution of the number of dwarf and massive primaries and pairs we identify over the redshift range $z=0-4$. 
+        The number of identified primaries is smallest at $z=4$, and rises to a maximum around $z=1$ for both dwarf and massive primaries.        
+        There are approximately 8 times as many dwarf primaries as massive primaries. 
+        
+        The dwarf primary count (green solid line in top left panel) reaches a maximum median of $\sim15000$ halos (in one realization) at $z\sim0.6$, then decreases by $\sim16\%$ to 12000 halos at $z=0$. 
+        The dwarf pair count (green dashed line) peaks much earlier at $z\sim2$ with $\sim3000$ pairs, and decreases to $\sim1000$ pairs at $z=0$.
+        The massive primary count (pink solid line in top right panel) reaches a maximum median of $\sim2000$ halos (in one realization) at $z\sim1$, then remains approximately constant to $z=0$. 
+        The pair count for massive galaxies (pink dashed line) behaves similarly to the primary count, increasing from $z=4$ to $z\sim1$, then leveling off to $z=0$.
 
-\subsection{Table}
-Table should include the median number of primaries and of pairs (major and minor) at a variety of redshifts. 
+        The bottom panel of Fig.~\ref{fig:counts} shows the number of pairs divided by the number of primaries, or the fraction of pairs per primary as a function of redshift. 
+        Dwarf and massive pair fractions are roughly flat for $z=2.5-4$, but display opposite behavior for $z=0-2.5$. The dwarf pair fraction decreases steadily from $\sim0.24$ to $\sim0.08$, a decrease of roughly $65\%$, while the massive pair fraction is roughly flat between $z=1-2.5$ with an average of $0.31$, before spiking sharply from $\sim 0.29$ to $\sim 0.36$ between $z=0-0.25$, an increase of $25\%$.
+
+        We show the distribution of stellar mass ratios between the secondary and primary of each dwarf and massive pair in Fig.~\ref{fig:massratio}.
+        % Major pairs make up $51-55\%$ of the full sample of pairs at every redshift for both dwarf and massive pairs.
+        In general, the shape of the distribution remains constant from $z=0-4$ for both dwarfs and massive pairs, and between the dwarf and massive pairs at each redshift. 
+        Thus, the typical stellar mass ratio of pairs in our sample is independent of mass scale and of redshift.
 
 
+            
+% Pair prop. end %
+%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%
-%%%%%%%%%%%
-% \subsection{Simulation details}
-% % what is it that we are trying to study? why use illustris?
-% To understand the occurance rate and separations of typical galaxy pairs in a cosmological context, we require a simulation that provides a large statistical sample of pairs in both the dwarf and massive galaxy regime. 
-% Thus, we are limited in our simulation choice to large-volume cosmological simulations. 
-% However, we also require high resolution simulations such that the dwarf subhalos are resolved well enough to ensure robust statistics at the low mass end, and so we are not limited by our inability to resolve objects down to halo masses of $M_{\rm halo}\approx1\times 10^9\, \Msun$.
-
-
-% \subsubsection{Error calculations}\label{sec:methods-err}
-
-
-%%%%%%%%%%%
-%%%%%%%%%%%
-% \subsection{Selection criteria}
-% In this section, we outline the selection criteria used to select dwarf and massive subhalo pairs. 
-% The same selection criteria is utilized for all four simulations (\illd, \illh, \tngd, and \tngh)
-% In short, blah. 
-% Detailed steps are as follows. 
-
-% \subsubsection{Isolation}
-% As we are interested in the frequency and kinematics of galaxy pairs that are undisturbed by nearby massive perturbers, we select subhalo pairs as the most massive subhalos of their group halos. 
-% We have confirmed that nearly 100\% of the the most massive subhalos in each group are outside of the Hill radius of any nearby subhalo with greater mass, and are thus a rough isolation criteria is inherent in our selection.
-
-% \textbf{Definitions:} each of these defines the subhalo at a single snapshot and for a single realization.
-% \begin{itemize}
-%   \item Primary - Most massive subhalo in a group by stellar mass
-%   \item Secondary - 
-%   \item Major pair - A pair of subhalos consisting of a primary and secondary with stellar mass ratio $1/4 < \rm M_{*,sec}/M_{*, prim} < 1$
-%   \item Minor pair - A pair of subhalos consisting of a primary and secondary with stellar mass ratio $1/10 < \rm M_{*,sec}/M_{*, prim} < 1/4$
-% \end{itemize}
-% Note that the subhalo that is assigned as primary or secondary may change between stellar mass realizations. Also note\kc{that this method may yield pairs where the secondary has a higher subhalo mass than the primary. This one happens ~XX\% of the time.}
-
-
-
-
-
-
-
-
-
-
-
-% methods plots
+%%%%%%%%%%%%%%%%%%%%%%
+% begin method plots %
   \begin{figure*}[htp]
     \centering
     \includegraphics[width=\textwidth]{counts_1000.png}
@@ -367,7 +313,8 @@ Table should include the median number of primaries and of pairs (major and mino
     Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations, as described in Sec.~\ref{sec:methods-err}.
     There are approximately 8 times as many dwarf primaries as massive primaries. 
     % dwarf galaxies
-    The dwarf primary count (green solid line in top left panel) is at a minimum at $z=4$, rises to a maximum of $\sim15000$ halos per realization by $z=1$, then decreases by $\sim16\%$ to 12000 halos at $z=0$. The dwarf pair count (green dashed line), on the other hand, peaks at $z\sim2$ with 3000 pairs, and decreases to a minimum of about 1000 pairs at $z=0$.
+    The dwarf primary count (solid) is at a minimum at $z=4$, rises to a maximum by $z\sim1$, then decreases from $z=1\to0$. 
+    The dwarf pair count (dashed) peaks at $z\sim2$.
     % Massive galaxies (right)
     The massive primary count (pink solid line in top right panel) behaves similarly to the dwarf primary count, with a minimum count at $z=4$ which rises to a maximum of $\sim2000$ halos per realization at $z\sim1$, then decreases slightly by $\sim5\%$ to $\sim$1800 halos by $z=0$. 
     Unlike dwarf pairs whose pair count peaks at $z=2$, pair count for massive galaxies (pink dashed line) follows similar behavior to the total massive primary count, with a minimum at $z=4$, and increasing to $z=\sim 1$ before leveling off. At very low redshift, the pair count and primary count have opposite behavior, with the pair count \textit{increasing} at very low redshifts of $z=0-0.25$ and \textit{peaking} at $z=0$.
@@ -382,49 +329,80 @@ Table should include the median number of primaries and of pairs (major and mino
     Major pairs make up $51-55\%$ of the full sample of pairs at every redshift for both dwarf and massive pairs.}
     \label{fig:massratio}
   \end{figure*}
+
+% end method plots %  
+%%%%%%%%%%%%%%%%%%%%%%
   
-\begin{table*}[htb]
-  \centering
-    \begin{tabular}{lcc}
-     & Dwarf Pairs & Massive Pairs \\\hline\hline
-    % Group Mass & $8\times10^{10} < \rm M_g < 5\times10^{11} M_\odot$ & $1\times10^{12} < \rm M_g < 4\times10^{12} M_\odot$  \\
-    % Subhalo Max Mass &  &  \\
-    % Subhalo Current Mass & $>1\times10^{10} \Msun$ & $> 5\times10^{11} \Msun$ \\
-    Primary &$1\times10^{8} < \msam < 5\times10^{9} \Msun$ & $5\times10^{9} < \msam < 1\times10^{11} \Msun$\\\hline
-    \end{tabular}
-    \caption{\label{table:mass}Selection criteria for dwarf and massive pairs.}
-    \end{table*}
+% \begin{table*}[htb]
+%   \centering
+%     \begin{tabular}{lcc}
+%      & Dwarf Pairs & Massive Pairs \\\hline\hline
+%     % Group Mass & $8\times10^{10} < \rm M_g < 5\times10^{11} M_\odot$ & $1\times10^{12} < \rm M_g < 4\times10^{12} M_\odot$  \\
+%     % Subhalo Max Mass &  &  \\
+%     % Subhalo Current Mass & $>1\times10^{10} \Msun$ & $> 5\times10^{11} \Msun$ \\
+%     Primary &$1\times10^{8} < \msam < 5\times10^{9} \Msun$ & $5\times10^{9} < \msam < 1\times10^{11} \Msun$\\\hline
+%     \end{tabular}
+%     \caption{\label{table:mass}Selection criteria for dwarf and massive pairs.}
+%     \end{table*}
 
 % equivalent snapshot table
-\begin{table*}[tbp]
-  \centering
-  \begin{tabular}{l|cc|cccc} % increase this to 7 columns
-    \hline \hline
-   & \multicolumn{2}{c|}{Snapshot number} & \multicolumn{4}{c}{Number of primaries}\\
-   & \ill & \tng  & \illd & \illh & \tngd & \tngh \\ 
-  \hline
-  z = 0   &   135  &   99   & $11431.5_{-24.42}^{68.38}$ & $12650.0_{-25.84}^{46.84}$ & $13255.0_{-32.60}^{56.72}$ & $12035.0_{-69.24}^{20.36}$\\
-  z = 1   &   85   &   50   &  $14769.0_{-30.24}^{47.28}$ & $16568.0_{-32.20}^{69.60}$ & $17445.5_{-40.86}^{51.90}$ & $15946.5_{-59.38}^{39.22}$ \\
-  z = 2   &   68   &   33   &  $12602.5_{-31.98}^{45.94}$ & $14174.0_{-12.48}^{62.32}$ & $15413.5_{-34.62}^{28.86}$ & $14334.0_{-29.44}^{45.24}$ \\
-  z = 3   &   60   &   25   &     $8533.5_{-54.50}^{39.46}$ & $9390.0_{-63.40}^{41.32}$ & $10901.0_{-44.64}^{46.56}$ & $10106.5_{-47.90}^{39.74}$  \\
-  % z = 3.7   &   54   &   21   \\
-  \hline \hline
-  \end{tabular}
-  \caption{\label{tab:equiv-snapshot} The snapshot number of the original \ill\ and the \tng\ simulations at redshifts $z=0-3$, as well as the median number dwarf (massive) primaries that were selected with $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$ ($5\times 10^{9} < \msam < 1\times 10^{11} \rm M_\odot$) in XX abundance matching realizations. \kc{fill in with numbers after doing more realizations} \kc{include takeaway}}
-  \end{table*}
+% \begin{table*}[tbp]
+%   \centering
+%   \begin{tabular}{l|cc|cccc} % increase this to 7 columns
+%     \hline \hline
+%    & {Snapshot} & {Number of primaries} & {Number of pairs}\\
+%    & \ill & \tng  & \illd & \illh & \tngd & \tngh \\ 
+%   \hline
+%   z = 0   &   135  &   99   & $11431.5_{-24.42}^{68.38}$ & $12650.0_{-25.84}^{46.84}$ & $13255.0_{-32.60}^{56.72}$ & $12035.0_{-69.24}^{20.36}$\\
+%   z = 1   &   85   &   50   &  $14769.0_{-30.24}^{47.28}$ & $16568.0_{-32.20}^{69.60}$ & $17445.5_{-40.86}^{51.90}$ & $15946.5_{-59.38}^{39.22}$ \\
+%   z = 2   &   68   &   33   &  $12602.5_{-31.98}^{45.94}$ & $14174.0_{-12.48}^{62.32}$ & $15413.5_{-34.62}^{28.86}$ & $14334.0_{-29.44}^{45.24}$ \\
+%   z = 3   &   60   &   25   &     $8533.5_{-54.50}^{39.46}$ & $9390.0_{-63.40}^{41.32}$ & $10901.0_{-44.64}^{46.56}$ & $10106.5_{-47.90}^{39.74}$  \\
+%   % z = 3.7   &   54   &   21   \\
+%   \hline \hline
+%   \end{tabular}
+%   \caption{\label{tab:equiv-snapshot} The snapshot number of the original \ill\ and the \tng\ simulations at redshifts $z=0-3$, as well as the median number dwarf (massive) primaries that were selected with $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$ ($5\times 10^{9} < \msam < 1\times 10^{11} \rm M_\odot$) in XX abundance matching realizations. \kc{fill in with numbers after doing more realizations} \kc{include takeaway}}
+%   \end{table*}
 
 % % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %
 \section{Results}
-We collect dwarf pairs and massive pairs at all snapshots from the TNG100-1 simulation and analyze the occurrence rate and kinematic behavior of the pairs across cosmic time. 
-At each snapshot, we generate 1000 different realizations of the pair catalog, where each realization represents one instance of the abundance matching technique to assign stellar masses to dark matter halos (see methods). 
-In each of the following plots, the median and a percentile spread each value are calculated by finding the median from each of the 1000 AM realizations, and taking the median and spread of that set of median values (see Sec.~\ref{sec:methods-err} for more detail).
+We collect dwarf pairs and massive pairs at all snapshots from the TNG100-1 simulation. 
+We analyze the occurrence rate and kinematic behavior of the pairs across cosmic time, and .... 
 
+In Sec.~\ref{sec:results-defs}, we define each of the parameters we will be considering and provide a brief explanation of how we calculate the data we show \kc{oof help}.
 In Sec.~\ref{sec:results-frac}, we show the redshift evolution of the fraction of primaries with a major or minor companion (the ``pair fraction") and compare dwarf pairs and massive pairs.
 In Sec.~\ref{sec:results-kinematics}, we look at the redshift evolution of the separations and relative velocities between primary and secondary halos of each pair. % need to specify this is snapshot by snapshot?
 In Sec.~\ref{sec:results-scaled}, we compare the ``scaled" separations and velocities of dwarf and massive pairs.
+
+%%%%%%%%%%%%%%%%%%%%%   
+% Definitions start %
+\subsection{Definitions} \label{sec:results-defs}
+    The pair sample consists of 1000 sets of pairs at each snapshot, each set representing a different realization of the abundance matching prescription. 
+    In each of the following plots, the median and a percentile spread each value are calculated by finding the median from each of the 1000 AM realizations, and taking the median and spread of that set of median values.
+    
+    \begin{itemize}
+        \item[-] \textbf{Pair fractions:} the major pair fraction is the ratio of the number of major pairs to the total number of primaries (isolated + paired). 
+        The minor pair fraction is defined in a similar way. 
+
+        \item[-] \textbf{Separations:} pair separations are defined as the relative separation between the primary and secondary of each pair. 
+        Pair separations are computed in physical units, not comoving. 
+        
+        \item[-] \textbf{Velocities:} relative velocities are defined as the relative velocity difference between the primary and secondary of each pair. 
+        This can be interpreted as the velocity of a secondary with respect to a stationary primary. 
+        Relative velocities are computed in physical $\kms$. 
+        
+        \item[-] \textbf{Scaled velocities and separations:} scaled 
+        
+        \item data presented (median def and spread)
+
+
+    \end{itemize}
+
+% Definitions end %
+%%%%%%%%%%%%%%%%%%% 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Pair fraction section %
@@ -458,7 +436,7 @@ The implications for the difference in the evolution of pair fractions for dwarf
   \includegraphics[width=\textwidth]{pairfrac_1000.png}
   \caption{
     % Top plots ~
-    (Top) Median pair fraction, defined as the fraction of dwarf or massive primaries with a major (left) or minor (right) companion by stellar mass (see Sec.~\ref{sec:methods-crit}). 
+    (Top) Median pair fraction, defined as the fraction of dwarf or massive primaries with a major (left) or minor (right) companion by stellar mass (see Sec.~\ref{sec:methods-pairs}). 
     Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations. 
       % massive pairs
     The massive pair fraction (pink) remains approximately constant for $z>1$, with an average pair fraction of 0.16-0.17 for major pairs and 0.14-0.15 for minor pairs. Between $z=0.25$ and $z=0$, the massive major pair fraction increases to 0.207, while the minor pair fraction increases to 0.152.
@@ -477,7 +455,7 @@ The implications for the difference in the evolution of pair fractions for dwarf
 At each individual snapshot, we find the instantaneous separation and relative velocity of the primary and secondary halo of every pair that was selected in the snapshot. 
 This is done separately for all 1000 different abundance matching realizations at each snapshot, as described in Sec.~\ref{sec:methods-am}, then we explore the properties of the set of median separations and velocities for each realization. 
 In this section, we compute the median relative separations and velocities of all 1000 realizations of dwarf and massive pairs, and show their behavior as a function of redshift.
-We separate the population of pairs into "major" and "minor" pairs (as defined in Sec.~\ref{sec:methods-crit-pairs}) to show how the stellar mass ratio between the primary and secondary may affect the kinematics. 
+We separate the population of pairs into "major" and "minor" pairs (as defined in Sec.~\ref{sec:methods-pairs}) to show how the stellar mass ratio between the primary and secondary may affect the kinematics. 
 
 
 % separations %
@@ -485,7 +463,7 @@ We separate the population of pairs into "major" and "minor" pairs (as defined i
     %% text on separation vs. redshift plot
     %% intro to separations & bulk results
     We calculate the median relative separations between the primary and secondary halos of the pairs identified in our dwarf pair sample and massive pair sample. 
-    We split the results by the stellar mass ratio of each pair, dividing the sample into "major" pairs and minor pairs, which allows us to compare the behavior of different mass ratio systems individually in the dwarf and massive mass range (see details for pair collecting in Sec.~\ref{deets}).
+    We split the results by the stellar mass ratio of each pair, dividing the sample into "major" pairs and minor pairs, which allows us to compare the behavior of different mass ratio systems individually in the dwarf and massive mass range.
     Our results are collected in Fig.~\ref{fig:sep}, which shows the redshift evolution of the median relative separations for dwarf pairs and massive pairs. 
     
     %% the behavior of massive and dwarf pairs
