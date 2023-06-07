@@ -109,9 +109,6 @@ ngc 4490/4485 as another low z example (minor dwarf pair)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \section{Methodology}\label{sec:methods}
 We aim to quantify and characterize the frequency, or occurrence rate, of low mass ($\rm\ms{}=10^{9}-5\times 10^{10}\Msun$) and high mass ($\rm\ms{}=5\times10^{10}-10^{12}\Msun$) galaxy pairs in cosmological simulations as a function of cosmic time. 
-% In particular, we study dwarf galaxy pairs and massive galaxy pairs that are of similar stellar and halo mass to a variety of galaxy pairs in the Local Group. 
-% We categorize these pairs into one of four pair types: massive major pairs, such as the MW+M31; massive minor pairs, such as M31+M33 or MW+LMC; dwarf major pairs, such as M33+LMC; and finally, dwarf minor pairs, such as the LMC+SMC.
-% \kc{can maybe move these two sentences to a discussion section}
 To this end, we utilize the IllustrisTNG simulation to select halo pairs at each snapshot according to a strict set of selection criteria as outlined in the remainder of this section. 
 In Sec.~\ref{sec:methods-sims}, we provide motivation for and details of the simulation utilized in this study.
 Sec.~\ref{sec:methods-halos} outlines the initial mass cuts used to define our \subcat, to which we will 
@@ -143,69 +140,67 @@ Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%    
 % Choosing halos section %
-    \subsection{Choosing dwarf and massive halos in TNG} \label{sec:methods-halos}
+    \subsection{Choosing dwarf and massive subhalos in TNG} \label{sec:methods-halos}
     Galaxies form in dark matter subhalos, so our pair sample will consist of pairs of subhalos within these larger group structures.
     In this section, we've outlined the steps to create the \subcat, which we will utilize to assign stellar masses to each of the dark matter subhalos. 
  
     We are interested in the inherent frequency of galaxy pairs in the field. 
     The largest perturbers of a subhalo are typically part of the same group, as a consequence of the FoF algorithm. 
     Thus, selecting from the most massive subhalos of a group ensures that the pairs are roughly isolated. 
-    In addition, we have confirmed that over 99\% of halos are isolated from large perturbers within 1Mpc.
+    In addition, we have confirmed that over 99\% of subhalos are isolated from large perturbers within 1 \Mpc.
     This isolation criteria, which is a feature of our selection process, ensures that the final selected pairs are not dynamically influenced by nearby massive groups. 
 
-    We begin by selecting subhalos from snapshots covering a redshift range of $z=0-\sim4$, at which point the population of massive galaxy pairs falls off rapidly.
-    The following selection process is repeated for each snapshot.
+    The following selection process is repeated for each snapshot of the simulation over a redshift range of $z=0-\sim4$, at which point the population of massive subhalo pairs falls off rapidly (see Sec.~\ref{sec:pairprops} for more details).
 
-    First, at each snapshot, we invoke a cut on the total group mass, $M_{G}$ (i.e., a mass cut on the FoF group mass, given by \texttt{Group\_M\_TopHat200} in the \tng\ group catalogs). 
+    First, at each snapshot, we invoke a cut on the total FoF group mass, \MG{}, given by \texttt{Group\_M\_TopHat200} in the TNG100 group catalogs. 
     We define the group mass range for low mass and high mass groups as 
     \begin{align*}
-        \mbox{\textbf{low mass groups:}}&\,\rm M_{G} = 8\times 10^{10}-- 5\times 10^{11}\,\Msun \\ 
-        \mbox{\textbf{high mass groups:}}&\, \rm M_{G}=10^{12}-- 6.5\times10^{12}\,\Msun.
+        \mbox{\textbf{low mass:}}&\,\rm M_{G} = 8\times 10^{10}- 5\times 10^{11}\,\Msun \\ 
+        \mbox{\textbf{high mass:}}&\, \rm M_{G}=10^{12}- 6.5\times10^{12}\,\Msun.
     \end{align*}
-    The group mass criteria is fixed for all redshifts, so at high z, the dwarf pairs we select may be the progenitors of higher mass systems at $z=0$.
+    The group mass criteria is fixed for all redshifts, which means that some low mass groups at high $z$ may be the progenitors of high mass systems at $z=0$.
     Note that all masses used in this analysis are physical units, such that masses from the group catalogs are divided by $h$ to get units of \Msun. 
 
-    Selecting dwarf pairs from the dwarf group mass range also ensures that we are not selecting satellite systems in the halos of more massive systems. 
-    The LMC+SMC, for example, are highly perturbed by the influence of the MW, and thus we do not pick dwarf pairs from high mass groups that may contain large nearby MW-mass analogs.
+    Selecting low mass pairs from the low group mass range ensures that we are not selecting satellite systems in the halos of more massive systems, nor low mass pairs in a large group. 
+    Additionally, $z\sim0$ groups of high mass will host isolated mass analogs of the MW--M31 and MW--LMC systems, while the low mass groups will host isolated mass analogs of an LMC--LMC or LMC--SMC pair. 
     
         % explain what halos we will move forward with. 
-    For each group that passes the group mass cut, we create a catalog of all subhalos that pass a ``current mass" criteria: the subhalo mass at the given snapshot (same snapshot) halo mass must be $M_h > 1\times10^{9}\Msun$ (the \texttt{SubhaloMass} field in the group catalogs).\footnote{Note that for the TNG100 hydro run, the halo mass is the total sum of all bound dark matter \textit{and} baryonic particles.}
-    This lower mass threshold ensures that our halos are resolved into $>100$ particles, and thus should be robust to the SUBFIND and SUBLINK algorithms even at the lowest mass end.  
+    From the set of groups that pass the group mass cut, we create a catalog of all subhalos within each group that pass a ``current mass" threshold: the subhalo mass at the given snapshot, given by \texttt{SubhaloMass} field in the group catalogs, must be $M_h > 1\times10^{9}\Msun$.\footnote{Note that for the TNG100 hydro run, the subhalo mass is the total sum of all bound dark \textit{and} baryonic matter.}
+    This lower mass threshold ensures that our halos are resolved into $>100$ particles, and thus should be robust to the SUBFIND and SUBLINK algorithms, even at the low mass end.  
     
-    We then utilize the merger tree catalogs to determine the maximum halo mass ever achieved by each halo. 
-    The set of all subhalos at each snapshot that pass the group mass and current mass cuts constitutes our entire subhalo sample. 
-    From here, we will use further selection criteria to narrow our sample down to pairs.
-    \kc{at this stage, this "Isolated Group" catalog contains XX }
-
+    The set of all subhalos at each snapshot that pass the group mass and current mass cuts constitutes our entire subhalo sample, which we call the \subcat. 
+    At this stage, the \subcat{} consists of all subhalos which pass the
+    group mass and current mass criteria, and contains the subhalo ID and associated FoF group number of each subhalo.
+    From here, we will use further selection criteria to narrow down this large sample and to match pairs of subhalos in each group.
 % End choosing halos     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%    
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 % Abundance matching section %
     \subsection{Abundance matching} \label{sec:methods-am}
-        % what is abundance matching
-    Abundance matching is a technique used to associate dark matter halo mass with specific galaxy properties.
-    This allows us to associate dark matter halos from the \tng\ simulation with observationally motivated galaxy properties. % maybe observationally constrained, instead? 
-    In particular, we will be utilizing a stellar mass to halo mass (SMHM) relationship to assign stellar masses to each of the subhalos in our sample. 
+    We will be utilizing a stellar mass to halo mass (SMHM) relationship to assign stellar masses to each of the subhalos in our \subcat.  
+    There are a few reasons we opt to assign stellar masses to our subhalos, rather than use those computed by the simulation. 
 
-    % few details about the msoter relationship. how was it determined?
-        % why are we using abundance matching 
-    The \tng100-1 subhalo catalogs do already contain a stellar mass field as computed in the simulation by simulating star formation and  AGN feedback, stellar feedback, galactic winds, etc.    
-    However, there are a couple reasons we opt to assign stellar masses to our halos, rather than use those from the simulation. 
-    
-    Primarily, applying an abundance matching prescription to assign stellar masses to each of the dark matter halos allows us to account for the observed spread in the stellar mass-halo mass relationship. 
-    This is particularly important in the low mass regime ($M_h \lesssim 10^{11}\Msun$) where the spread in the SMHM function is large. 
+    Primarily, applying an abundance matching prescription to assign stellar masses to each of the dark matter halos allows us to account for the observed spread in the SMHM relationship. 
+    This is particularly important in the low mass regime ($M_h \lesssim 10^{11}\Msun$) where the scatter in the SMHM function is large. 
     In addition, using stellar masses as calculated from abundance matching allows us to side step any simulation-dependent stellar mass effects.
-    In the case of \tng100 specifically, it is known that the stellar masses of low mass galaxies are often overestimated compared to the galaxy luminosity function at the low mass end\cite{}. 
+    In the case of TNG100 specifically, it is known that the stellar masses of low mass galaxies are often overestimated compared to the galaxy luminosity function at the low mass end\cite{}. 
     Using an observationally-calibrated abundance matching prescription will thus lead to a more robust result for comparison with and predictions for observations. 
     Finally, utilizing an abundance matching prescription allows us to directly compare results between dark matter only and hydro simulations, since the stellar masses are assigned the same way. 
-    We make brief note of results for our equivalent analysis using the dark matter only TNG100-1-Dark simulation as well in Sec.~\ref{sec:results}.
+    We make brief note of results for our equivalent analysis using the dark matter only, TNG100-Dark simulation as well in Sec.~\ref{sec:discussion}.\kc{need to specify section once written}
     
         % what am prescription are we using? 
-    We use the abundance matching relationship presented in~\citet{Moster2013}, which provides an analytic prescription to assign stellar masses to dark matter halos. 
+    In particular, we use the abundance matching relationship presented in~\citet{Moster2013}, which provides an analytic prescription to assign stellar masses to dark matter halos. 
     The~\citet{Moster2013} relationship is a function of the halo mass, evolves with redshift, and includes terms to account for the systematic scatter in the SMHM relationship, with larger scatter at lower halo masses.
     Additionally, stellar mass is defined separately for central halos (``hosts") and for infalling satellites (``subhalos"), where the first is a function of the virial mass of the halo and its redshift, $M_{vir}$ and $z$, and the second is a function of the mass and redshift at the time of infall, $M_{inf}$ and $z_{inf}$. 
     This assumes that the satellite halos are at the peak of their stellar mass before infall, and neglects the affect of star formation or stellar stripping within the host halo. 
+
+
+
+    
+    
+    
+
 
         % what do we use for the mass ~ 
     In this work, we will use the peak halo mass \Mpeak\ from the \sublink\ merger trees to calculate subhalo stellar masses. 
@@ -351,7 +346,7 @@ Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that
 %%%%%%%%%%%%%%%%%%%%
 % Pair prop. start %
 \section{Sample: Overview of pair properties} \label{sec:pairprops}
-    Utilizing the pair catalog, We compute the # of prims in each realization of the 
+    Utilizing the pair catalog, We compute the \# of prims in each realization of the 
     The full pair sample contains 1000 individual sets of pairs at each snapshot, for all 100 snapshots of the \tng100-1 simulation. 
    
 
@@ -673,6 +668,13 @@ put in plots~
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Begin Discussion section %
 \section{Discussion}\label{sec:discussion}
+
+% In particular, we study dwarf galaxy pairs and massive galaxy pairs that are of similar stellar and halo mass to a variety of galaxy pairs in the Local Group. 
+% We categorize these pairs into one of four pair types: massive major pairs, such as the MW+M31; massive minor pairs, such as M31+M33 or MW+LMC; dwarf major pairs, such as M33+LMC; and finally, dwarf minor pairs, such as the LMC+SMC.
+% \kc{can maybe move these two sentences to a discussion section}
+    
+    \kc{ make a subsection about the equivalence of our findings with the dark matter simulation) We make brief note of results for our equivalent analysis using the dark matter only TNG100-Dark simulation as well in Sec.~\ref{sec:results}.}
+
 \subsection{Implications for the differences in pair fractions of dwarf and massive pairs}
 In Sec.~\ref{sec:results-frac}, we presented the pair fraction of massive and dwarf galaxy pairs and found that the relative frequency of the two populations evolve distinctly from $z=0-4$. 
 While the frequency of massive pairs compared to the number of massive primaries is roughly constant and become more common at low redshift, dwarf major and minor pairs become more than 50\% less common at $z=0$ compared to $z=2$. 
