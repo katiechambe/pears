@@ -31,12 +31,20 @@
 \newcommand{\vtan}{\ensuremath{v_\textrm{tan}}}
 \newcommand{\vrad}{\ensuremath{v_\textrm{rad}}}
 \newcommand{\ms}[1]{\ensuremath{M_{*{#1}}}}
+\newcommand{\mud}{\ensuremath{\mu_\delta}}
+\newcommand{\mua}{\ensuremath{\mu_\alpha^*}}
+\newcommand{\bov}{\ensuremath{\boldsymbol{v}}}
+\newcommand{\boldx}{\ensuremath{\boldsymbol{x}}}
+\newcommand{\vtrav}{\ensuremath{\bov_{\rm travel}}}
+\newcommand{\xtrav}{\ensuremath{\boldx_{\rm travel}}}
+\newcommand{\pos}[2]{\ensuremath{\boldx_{\rm #1 \to #2}}}
+\newcommand{\vel}[2]{\ensuremath{\bov_{\rm #1 \to #2}}}
+\newcommand{\mwbary}{\ensuremath{\textrm{MW}_\textrm{bary}}}
+\newcommand{\mwouter}{\ensuremath{\textrm{MW}_\textrm{halo}}}
+\newcommand{\mwdisk}{\ensuremath{\textrm{MW}_\textrm{disk}}}
 \newcommand{\reflabel}[1]{\ensuremath{^{\mbox{\scriptsize{#1}}}}}
 \newcommand{\scsep}{\ensuremath{\rm r_{sep}/r_{vir}}}
 \newcommand{\scvel}{\ensuremath{\rm v_{rel}/v_{vir}}}
-\newcommand{\subcat}{\textit{Subhalo Catalog}}
-\newcommand{\starcat}{\textit{Subhalo + Stellar Mass Catalog}}
-\newcommand{\paircat}{\textit{Full Pair Catalog}}
 
 % Style tweaks
 % \renewcommand{\twocolumngrid}{\onecolumngrid}
@@ -82,16 +90,16 @@
 \begin{itemize}
     \item Galaxy mergers are a feature of LCDM and support the growth of galaxies across cosmic time.
     \item The frequency of finding pairs tells us about how often we might expect: starbursts, SMBH mergers, the importance/role of mergers in building stellar mass/morphologies of galaxies today, SFHs, etc. 
-    \item pair fraction at high masses has been well studied both obs and theoretically. There are studies of high mass (Mstar = 5e9-1e11Msun) pairs. These studies are typically done in projection for comparison to observational campaigns.
-    \item There are studies of low mass pairs (define what you mean by this), but only at low z, or as satellites of more massive systems (analogs of LG). 
-    \item in the era of jwst, these studies will be pushed to lower masses and high z, however, from a theory perspective, pair fractions at low masses have been under-studied (first 2 ish paragraphs ~ )
+    \item pair fraction at high masses has been well studied both obs and theoretically.
+    \item in the era of jwst, these studies will be pushed to lower masses and high z, however, from a theory persp[ective, pair fractions at low masses have been under-studied (first 2 ish paragraphs ~ )
+    \item in this study, we'll be quantifying the pair fraction of low mass pairs, and self consistently comparing to the pair fraction of high mass systems
     \item There are reasons to believe that high and low mass (Mstar = 1e8-5e9Msun) pairs might evolve differently, so it's important to study the low mass end too. 
-
     \item Also, major and minor mergers are important for different reasons, so studying them as separate systems is well motivated.
         - is major high mass vs major low mass different, etc since these two types of mass ratios lead to different things 
         - importance of mergers in high vs low mass galaxies (major mergers may be less important to SFH of Universe etc - look at sabrina's papers)
     \item Systematically understanding the underlying difference between low and high mass pairs, Projected vs. physical 3D separations/pairs Two routes of studying galaxy pairs are through observations and simulations, but simulations allow us to fully understand the 3D position and velocity of objects. 
-    \item in this study, we'll be quantifying the pair fraction of low mass pairs, and self consistently comparing to the pair fraction of high mass systems
+    \item There are studies of high mass (Mstar = 5e9-1e11Msun) pairs. These studies are typically done in projection for comparison to observational campaigns.
+    \item There are studies of low mass pairs, but only at low z, or as satellites of more massive systems (analogs of LG). 
     \item In this work, we aim to characterize the pair fraction of both high and low mass galaxies, major and minor pairs, consistently as a function of time. 
 \end{itemize}
 cite Stierwalt for low mass pairs 4485/4490 (iso vs non iso pairs) 
@@ -108,60 +116,60 @@ ngc 4490/4485 as another low z example (minor dwarf pair)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \section{Methodology}\label{sec:methods}
-We aim to quantify and characterize the frequency, or occurrence rate, of low mass ($\rm\ms{}=10^{9}-5\times 10^{10}\Msun$) and high mass ($\rm\ms{}=5\times10^{10}-10^{12}\Msun$) galaxy pairs in cosmological simulations as a function of cosmic time. 
-% In particular, we study dwarf galaxy pairs and massive galaxy pairs that are of similar stellar and halo mass to a variety of galaxy pairs in the Local Group. 
-% We categorize these pairs into one of four pair types: massive major pairs, such as the MW+M31; massive minor pairs, such as M31+M33 or MW+LMC; dwarf major pairs, such as M33+LMC; and finally, dwarf minor pairs, such as the LMC+SMC.
-% \kc{can maybe move these two sentences to a discussion section}
-To this end, we utilize the IllustrisTNG simulation to select halo pairs at each snapshot according to a strict set of selection criteria as outlined in the remainder of this section. 
+We aim to quantify and characterize the frequency (or occurrence rate) and bulk kinematic properties of galaxy pairs in cosmological simulations as a function of cosmic time. 
+In particular, we study dwarf galaxy pairs and massive galaxy pairs that are of similar stellar and halo mass to a variety of galaxy pairs in the Local Group. 
+We categorize these pairs into one of four pair types: massive major pairs, such as the MW+M31; massive minor pairs, such as M31+M33 or MW+LMC; dwarf major pairs, such as M33+LMC; and finally, dwarf minor pairs, such as the LMC+SMC.
+\kc{can maybe move these two sentences to a discussion section}
+
+To this end, we utilize the IllustrisTNG simulations to select halo pairs at each snapshot according to a strict set of selection criteria as outlined in the remainder of this section. 
 In Sec.~\ref{sec:methods-sims}, we provide motivation for and details of the simulation utilized in this study.
-Sec.~\ref{sec:methods-halos} outlines the initial mass cuts used to define our \subcat, to which we will 
-add stellar mass information. %consist of the set of subhalos from which we will select pairs.
-Sec.~\ref{sec:methods-am} outlines the abundance matching prescription used to associate dark matter subhalos with stellar masses, and the creation of the \starcat, from which we will select pairs.
-Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that we use to finally construct the \paircat. 
-% Finally, Sec.~\ref{sec:pairprops} details some of the properties of our entire pair sample, including the total number of pairs and stellar mass ratios. -- Note: created new section
+Sec.~\ref{sec:methods-halos} outlines the initial mass cuts used to define our full sample of halos, from which we will select pairs.
+Sec.~\ref{sec:methods-am} outlines the abundance matching prescription we used to associate dark matter subhalos with stellar masses.
+Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria we apply to obtain the full sample of pairs.
+Finally, Sec.~\ref{sec:pairprops} details some of the properties of our entire pair sample, including the total number of pairs and stellar mass ratios.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Sim details section %
     \subsection{Simulation details} \label{sec:methods-sims}
         % Brief description of TNG hydro and which run we use.
-    The \tng\ project~\citep{TNG1, TNG2, TNG3, TNG4, TNG5} consists of a suite of dark-matter-only $N$-body as well as full physics cosmological simulations consistent with the \textit{Planck2015} \lcdm\  cosmology~\citep{Planck2015}.
-    In this study we utilize data from the main high resolution, full physics run of the (110.7\Mpc)$^3$ volume simulation, \textsl{TNG100-1}, which follows the evolution of baryons and $1820^3$ dark matter particles from $z=127$ to $z=0$. 
+    The \tng\ project ~\citep{TNG1, TNG2, TNG3, TNG4, TNG5} consists of a suite of dark-matter-only $N$-body as well as full physics cosmological simulations consistent with the \textit{Planck2015} \lcdm\  cosmology~\citep{Planck2015}.
+    In this study we utilize data from the main high resolution, full physics run of the (110.7\Mpc)$^3$ volume simulation, \textsl{TNG100-1}, which includes dark matter and baryons and follows the evolution of $1820^3$ dark matter particles in 100 snapshots from $z=127$ to $z=0$. 
 
       % subfind, sublink, and groups and subhalos
     We utilize the group catalogs produced by the \texttt{SUBFIND} algorithm~\citep{springel2001,dolag09}. 
-    This catalog was created using the Friends-of-Friends (FoF) algorithm~\citep{davis1985}, which links nearby particles to define large halos of associated particles, from which subhalos are identified as over-dense and gravitationally bound dark matter structures.
-    In addition, we utilize the merger trees provided by the \texttt{SUBLINK} algorithm~\citep{rg15}, which tracks subhalos between snapshots using their DM particle data in order to trace mass growth and merger histories of subhalos between snapshots.
+    These catalogs consist of halos, defined using the Friends-of-Friends (FoF) algorithm~\citep{davis1985} to link nearby particles, and their associated subhalos, which are over-dense and gravitationally bound dark matter structures compared to the background. (From here, we will refer to FoF halos as "groups" and their subhalos as )
+      % We also use merger catalogs generated by XX for YY purpose. 
+    We also use merger trees provided by the \texttt{SUBLINK} algorithm~\citep{rg15}, which tracks subhalos between snapshots using their DM particle data, in order to trace subhalo mass growth and merger histories.
     
-    The high resolution of the TNG100-1 simulation permits a direct comparison of low mass and high mass galaxy pair fractions without concern for incompleteness at the low mass end from unresolved low mass pairs (details in~\ref{sec:methods-halos}).
-    Additionally, the volume of this simulation provides a large enough sample of massive halo pairs to allow for a statistically significant comparison. 
+    The large volume of this simulation offers a large statistical sample of halos to study in a cosmological context, but is also high enough resolution ($m_{\rm DM} = 7.5\times10^6\Msun$, $m_{\rm gas} = 1.4\times10^6\Msun$) that dwarf halos ($\sim1\times10^{9-10.5}\Msun$) halos are resolved into roughly hundreds or more particles, well above the resolution limit of 32 DM particles for halos identified with \texttt{SUBFIND} \kc{fix this} 20 gas and star particles used to construct baryonic merger trees.  
 
-    % Baryonic process are known to affect the structure and formation of dark matter halos of low mass ($M_*\lesssim 1\times10^9\Msun$) subhalos in simulations~\citep[see e.g.][and references therein]{Sales:2022}.
-    % Additionally, the shallow potential well of dwarf galaxies compared to their massive counterparts may lend themselves more easily to disruption from baryonic processes such as supernova feedback and reionization~\citep{}, resulting in fewer low mass halos ($\lesssim 5\times10^{10}$) in hydrodynamic simulations~\citep{vogelsberger14B}.
+        %  this MIGHT go in a different section? am I talking about this because I want to show why we use hydro instead of dark? 
+    Baryonic process are known to affect the structure and formation of dark matter halos of low mass ($M_*\lesssim 1\times10^9\Msun$) subhalos in simulations~\citep[see e.g.][and references therein]{Sales:2022}.
+    Additionally, the shallow potential well of dwarf galaxies compared to their massive counterparts may lend themselves more easily to disruption from baryonic processes such as supernova feedback and reionization~\citep{}, resulting in fewer low mass halos ($\lesssim 5\times10^{10}$) in hydrodynamic simulations~\citep{vogelsberger14B}.
+    % Thus, the number of primaries  we expect that our choice of simulation will result in 
 % End sim details     %
 %%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%    
 % Choosing halos section %
     \subsection{Choosing dwarf and massive halos in TNG} \label{sec:methods-halos}
-    Galaxies form in dark matter subhalos, so our pair sample will consist of pairs of subhalos within these larger group structures.
-    In this section, we've outlined the steps to create the \subcat, which we will utilize to assign stellar masses to each of the dark matter subhalos. 
- 
-    We are interested in the inherent frequency of galaxy pairs in the field. 
-    The largest perturbers of a subhalo are typically part of the same group, as a consequence of the FoF algorithm. 
-    Thus, selecting from the most massive subhalos of a group ensures that the pairs are roughly isolated. 
-    In addition, we have confirmed that over 99\% of halos are isolated from large perturbers within 1Mpc.
-    This isolation criteria, which is a feature of our selection process, ensures that the final selected pairs are not dynamically influenced by nearby massive groups. 
+    % start off with group selection 
+        % brief explanation of FoF groups in sim
+    Each snapshot from the TNG100 group catalogs consist of FoF groups, large halos of closely associated DM particles, and the subhalos they contain, which are smaller bound structures of DM and the gas and star particles nearest to them. 
+    We will refer to these two structures as "groups" and either "halos" or "subhalos" respectively, from here on. 
+    Galaxies form in these subhalos, so our pair sample will consist of pairs of subhalos within these larger group structures.
 
-    We begin by selecting subhalos from snapshots covering a redshift range of $z=0-\sim4$, at which point the population of massive galaxy pairs falls off rapidly.
-    The following selection process is repeated for each snapshot.
+    \kc{be more prescriptive. }
+    We are interested in the inherent dynamics and frequency of pairs of halos in the field.
+    Thus, we want our pairs to consist of some of the most massive halos in each group, and ensure that the pair is not dynamically influenced by nearby massive groups. 
+    By selecting pairs from the most massive halos of a group, a rough isolation criteria is inherent in our selection due to the nature of the FoF algorithm, which groups together nearby particles. 
+    To confirm that our sample , we have confirmed that nearly 100\% of the most massive subhalos in each group are outside of the Hill radius of any nearby group or subhalo with greater mass.
 
-    First, at each snapshot, we invoke a cut on the total group mass, $M_{G}$ (i.e., a mass cut on the FoF group mass, given by \texttt{Group\_M\_TopHat200} in the \tng\ group catalogs). 
-    We define the group mass range for low mass and high mass groups as 
-    \begin{align*}
-        \mbox{\textbf{low mass groups:}}&\,\rm M_{G} = 8\times 10^{10}-- 5\times 10^{11}\,\Msun \\ 
-        \mbox{\textbf{high mass groups:}}&\, \rm M_{G}=10^{12}-- 6.5\times10^{12}\,\Msun.
-    \end{align*}
+    The first selection criteria that we invoke is a cut on the total group mass, $M_{G}$ (i.e., a mass cut on the FoF group mass, given by \texttt{Group\_M\_TopHat200} in the \tng\ group catalogs). 
+    We define the group mass range for dwarf groups as $8\times 10^{10} < M_{G,d} < 5\times 10^{11}\Msun$
+    %, which will host mass analogs of the LMC+SMC and LMC+M33 pairs. 
+    Massive groups range from $1\times10^{12} < M_{G,m} < 6.5\times10^{12}$, which at the lower mass end will host MW+LMC pairs, and MW+M31 pairs at the higher mass end. 
     The group mass criteria is fixed for all redshifts, so at high z, the dwarf pairs we select may be the progenitors of higher mass systems at $z=0$.
     Note that all masses used in this analysis are physical units, such that masses from the group catalogs are divided by $h$ to get units of \Msun. 
 
