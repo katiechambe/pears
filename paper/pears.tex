@@ -37,6 +37,7 @@
 \newcommand{\subcat}{\textit{Subhalo Catalog}}
 \newcommand{\starcat}{\textit{Subhalo + Stellar Mass Catalog}}
 \newcommand{\paircat}{\textit{Full Pair Catalog}}
+\newcommand{\Rvir}{\ensuremath{\rm R_{vir}}}
 
 % Style tweaks
 % \renewcommand{\twocolumngrid}{\onecolumngrid}
@@ -73,7 +74,6 @@
 
 \begin{abstract}
   
-  \todo{Name data sets and refer to their names }
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,7 +90,7 @@
     \item Also, major and minor mergers are important for different reasons, so studying them as separate systems is well motivated.
         - is major high mass vs major low mass different, etc since these two types of mass ratios lead to different things 
         - importance of mergers in high vs low mass galaxies (major mergers may be less important to SFH of Universe etc - look at sabrina's papers)
-    \item Systematically understanding the underlying difference between low and high mass pairs, Projected vs. physical 3D separations/pairs Two routes of studying galaxy pairs are through observations and simulations, but simulations allow us to fully understand the 3D position and velocity of objects. 
+    \item Systematically understanding the underlying difference between low and high mass pairs, Projected vs. 3D separations/pairs Two routes of studying galaxy pairs are through observations and simulations, but simulations allow us to fully understand the 3D position and velocity of objects. 
     \item in this study, we'll be quantifying the pair fraction of low mass pairs, and self consistently comparing to the pair fraction of high mass systems
     \item In this work, we aim to characterize the pair fraction of both high and low mass galaxies, major and minor pairs, consistently as a function of time. 
 \end{itemize}
@@ -108,7 +108,7 @@ ngc 4490/4485 as another low z example (minor dwarf pair)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \section{Methodology}\label{sec:methods}
-We aim to quantify and characterize the frequency, or occurrence rate, of low mass ($\rm\ms{}=10^{9}-5\times 10^{10}\Msun$) and high mass ($\rm\ms{}=5\times10^{10}-10^{12}\Msun$) galaxy pairs in cosmological simulations as a function of cosmic time. 
+We aim to quantify and characterize the frequency, or occurrence rate, of low mass ($\rm\ms{}=10^{8}-5\times 10^{9}\Msun$) and high mass ($\rm\ms{}=5\times10^{9}-10^{11}\Msun$) galaxy pairs in cosmological simulations as a function of cosmic time. 
 To this end, we utilize the IllustrisTNG simulation to select halo pairs at each snapshot according to a strict set of selection criteria as outlined in the remainder of this section. 
 In Sec.~\ref{sec:methods-sims}, we provide motivation for and details of the simulation utilized in this study.
 Sec.~\ref{sec:methods-halos} outlines the initial mass cuts used to define our \subcat, to which we will 
@@ -164,13 +164,19 @@ Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that
     Selecting low mass pairs from the low group mass range ensures that we are not selecting satellite systems in the halos of more massive systems, nor low mass pairs in a large group. 
     Additionally, $z\sim0$ groups of high mass will host isolated mass analogs of the MW--M31 and MW--LMC systems, while the low mass groups will host isolated mass analogs of an LMC--LMC or LMC--SMC pair. 
     
-        % explain what halos we will move forward with. 
-    From the set of groups that pass the group mass cut, we create a catalog of all subhalos within each group that pass a ``current mass" threshold: the subhalo mass at the given snapshot, given by \texttt{SubhaloMass} field in the group catalogs, must be $M_h > 1\times10^{9}\Msun$.\footnote{Note that for the TNG100 hydro run, the subhalo mass is the total sum of all bound dark \textit{and} baryonic matter.}
-    This lower mass threshold ensures that our halos are resolved into $>100$ particles, and thus should be robust to the SUBFIND and SUBLINK algorithms, even at the low mass end.  
     
-    The set of all subhalos at each snapshot that pass the group mass and current mass cuts constitutes our entire subhalo sample, which we call the \subcat. 
-    At this stage, the \subcat{} consists of all subhalos which pass the
-    group mass and current mass criteria, and contains the subhalo ID and associated FoF group number of each subhalo.
+        % explain what halos we will move forward with. 
+    From the set of groups that pass the group mass cut, we create a catalog of all subhalos within each group that pass a ``current mass" threshold, such that the subhalo mass at the given snapshot, given by \texttt{SubhaloMass} field in the group catalogs, is
+    \begin{equation*}
+    \mbox{\textbf{min. subhalo mass:}}\,
+    \Mhalo > 1\times10^{9}\Msun.\footnote{Note that for the TNG100 hydro run, the subhalo mass is the total sum of all bound dark \textit{and} baryonic matter.}
+    \end{equation*}
+    This lower mass threshold ensures that our halos are resolved into $>100$ particles, and thus should be robust to the \subfind\ and \sublink\ algorithms, even at the low mass end.  
+    For each subhalo that passes both of the above criteria, we use the \sublink\ merger trees to identify the maximum subhalo mass achieved by the subhalo, \Mpeak. 
+    We consider only the given snapshot and all previous snapshots in the determination of \Mpeak.
+    
+    All subhalos in a given snapshot that pass both the group and current mass selection criteria will be added to our full sample of subhalos, which we call the \subcat. 
+    The catalog contains subhalos at each snapshot from $z=0-\sim4.2$ (snapshot numbers 20-99) and their associated properties, namely: Subhalo ID, FoF Group Number, current subhalo mass \Mhalo, and peak halo mass \Mpeak.
     From here, we will use further selection criteria to narrow down this large sample and to match pairs of subhalos in each group.
 % End choosing halos     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%    
@@ -182,47 +188,40 @@ Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that
     There are a few reasons we opt to assign stellar masses to our subhalos, rather than use those computed by the simulation. 
 
     Primarily, applying an abundance matching prescription to assign stellar masses to each of the dark matter halos allows us to account for the observed spread in the SMHM relationship. 
-    This is particularly important in the low mass regime ($M_h \lesssim 10^{11}\Msun$) where the scatter in the SMHM function is large. 
+    This is particularly important in the low mass regime ($M_h \lesssim 10^{11}\Msun$) where the scatter in the SMHM function is large, $\sim 1$dex at $M_{h}\sim 10^{10}\Msun$. 
     In addition, using stellar masses as calculated from abundance matching allows us to side step any simulation-dependent stellar mass effects.
-    In the case of TNG100 specifically, it is known that the stellar masses of low mass galaxies are often overestimated compared to the galaxy luminosity function at the low mass end\cite{}. 
+    In the case of TNG100 specifically, stellar masses of low mass galaxies are often overestimated compared to the galaxy luminosity function at the low mass end\cite{}. 
     Using an observationally-calibrated abundance matching prescription will thus lead to a more robust result for comparison with and predictions for observations. 
     Finally, utilizing an abundance matching prescription allows us to directly compare results between dark matter only and hydro simulations, since the stellar masses are assigned the same way. 
     We make brief note of results for our equivalent analysis using the dark matter only, TNG100-Dark simulation as well in Sec.~\ref{sec:discussion}.\kc{need to specify section once written}
     
         % what am prescription are we using? 
-    In particular, we use the abundance matching relationship presented in~\citet{Moster2013}, which provides an analytic prescription to assign stellar masses to dark matter halos. 
-    The~\citet{Moster2013} relationship is a function of the halo mass, evolves with redshift, and includes terms to account for the systematic scatter in the SMHM relationship, with larger scatter at lower halo masses.
-    Additionally, stellar mass is defined separately for central halos (``hosts") and for infalling satellites (``subhalos"), where the first is a function of the virial mass of the halo and its redshift, $M_{vir}$ and $z$, and the second is a function of the mass and redshift at the time of infall, $M_{inf}$ and $z_{inf}$. 
-    This assumes that the satellite halos are at the peak of their stellar mass before infall, and neglects the affect of star formation or stellar stripping within the host halo. 
-
-
-
+    We use the abundance matching relationship presented in~\citet{Moster2013}, which provides an analytic prescription to assign stellar masses to dark matter halos. 
+    The~\citet{Moster2013} relationship is a function of subhalo mass, redshift, and includes terms to account for the systematic scatter in the SMHM relationship, with larger scatter at lower halo masses.
     
-    
-    
-
-
-        % what do we use for the mass ~ 
-    In this work, we will use the peak halo mass \Mpeak\ from the \sublink\ merger trees to calculate subhalo stellar masses. 
-    \citet{Munshi2021} found that the stellar mass of subhalos at $z=0$ in the ``Marvel-ous Dwarfs" and ``DC Justice League" zoom simulations are more closely correlated with the peak halo mass ($M_{peak}$) than the $z=0$ halo mass for halos with peak halo mass $10^8<M_{\rm peak}<10^{11} \Msun$. 
-    % separate citation for peak halo mass and stellar mass relatiosnhip for M > 1e11Msun 
-    Using the peak halo mass additionally allows us to remain robust to scenarios in which a secondary has formed most of its stars, then loses a significant portion of its dark matter content through tidal interactions with a primary, but retains the bulk of its stellar content.
-        
-        % regarding the redshift dependence ~
-    We additionally assume that the stellar mass of both the primary and secondary halo can change as a function of redshift after the secondary has entered the primary's halo and do not immediately cease star formation. 
-    This assumption is consistent with findings from~\cite{Akins2021}, which found that massive dwarf satellites ($M_*\approx 10^8-10^9\, \Msun$) entering MW-mass host halos are rarely quenched, and with~\cite{geha13} which finds that dwarfs $>1\Mpc$ from a MW-type galaxy are often star forming and rarely quenched.
-    Additionally, the SAGA survey has found that large satellites of MW-type galaxies are often very blue, with infall into the halo spurring high rates of star formation due to the large gas fraction in dwarfs~\citep{saga}. 
-    Thus, we calculate stellar masses for our subhalos using $M_{\rm peak}$ and the redshift of the current snapshot to calculate the stellar mass of each subhalo, and to account for the additional stellar mass that can form after infall. 
-
-    As mentioned in a footnote in Sec.~\ref{sec:methods-halos}, the total halo mass of subhalos in the hydro simulation includes the mass of both dark matter and baryonic particles. 
-    In TNG100-1, the DM particle mass is decreased XX\% compared to the DM particle mass in \tng100-1 Dark to account for the additional mass of baryons, such that the total mass of the halo will remain roughly the same between the dark matter only and hydro simulations. 
-    Since the~\citet{Moster2013} AM relation was calibrated using DM subhalos from the \texttt{MilleniumII} dark matter only simulation, we will use the total subhalo mass from the TNG100-1 hydro simulation as a proxy for the corresponding DM halo mass in the TNG100-1 Dark run, \texttt{SubhaloMass}. 
-
         % realizations? 
-    For each subhalo at each snapshot in our full subhalo sample (see Sec.~\ref{sec:methods-halos}), we create a "realization" of the catalog for , 1000 stellar mass values from the SMHM relationship to account for the systematic uncertainty in subhalo stellar masses.
-    Each realization is treated as an independent sample of galaxy stellar masses, which allows us to report realistic spreads of pair properties.
-    Thus, we create 1000 separate pair catalogs, and compute pair properties (pair frequency, separations, etc) for each individual abundance matching realization.
-    \kc{what is the name of this catalog? (Isolated Group cats + 1000 Stellar Mass) }
+    We elect to use the maximum subhalo mass \Mpeak\ in the stellar mass calculation, rather than the subhalo mass at the given snapshot.
+    We also use the current redshift of the given snapshot, $z_{snap}$, of each subhalo in the stellar mass calculation. 
+    Thus, $\ms{}=f(\Mpeak,z_{snap})$. 
+    
+    Using \Mpeak\ mass allows us to remain robust to scenarios in which a secondary has formed most of its stars, then loses a significant portion of its dark matter content through tidal interactions with a primary, but retains the bulk of its stellar content.
+    In fact, \citet{Munshi2021} found that the stellar mass of subhalos at $z=0$ in the ``Marvel-ous Dwarfs" and ``DC Justice League" zoom simulations are more closely correlated with $M_{peak}$ than the $z=0$ halo mass for halos with peak halo mass $10^8<M_{\rm peak}<10^{11} \Msun$. 
+
+    Using $z_{snap}$ means that we allow the stellar mass of both the primary and secondary halo to change as a function of redshift, even after the secondary has entered the primary's halo. %and do not immediately cease star formation. 
+    This assumption is consistent with findings from~\cite{Akins2021}, which found that massive dwarf satellites ($M_*\approx 10^8-10^9\, \Msun$) entering MW-mass host halos are rarely quenched, and with~\cite{geha13} which finds that dwarfs $>1\Mpc$ from a MW-type galaxy are often star forming and rarely quenched.
+    Additionally, the SAGA survey has found that large satellites of MW-type galaxies are often very blue, with infall into the halo spurring high rates of star formation due to the large gas fraction in dwarfs~\citep{Mao2021}. 
+    % maybe need a note here on whether this is fair to extend to higher mass system?
+
+    We then calculate the stellar mass for a given subhalo by gaussian sampling each of the fitting parameters of the analytic framework from~\cite{Moster2013}, in order to account for the spread in the SMHM relationship.
+    We generate a single stellar mass ``realization" of the full \subcat\ by calculating a stellar mass for each subhalo, using an independent draw the SMHM distribution for each subhalo. 
+    For each snapshot, we repeat this process 1000 times to generate 1000 realizations of stellar masses for the \subcat.
+    The resulting catalog is called the \starcat, and consists of the set of all subhalos from the \subcat, as well as the 1000 stellar mass realizations. 
+    Each realization is treated as an independent sample of galaxy stellar masses, which will allow us to report realistic spreads of pair properties.
+
+    % As mentioned in a footnote in Sec.~\ref{sec:methods-halos}, the total halo mass of subhalos in the hydro simulation includes the mass of both dark matter and baryonic particles. 
+    % In TNG100-1, the DM particle mass is decreased XX\% compared to the DM particle mass in \tng100-1 Dark to account for the additional mass of baryons, such that the total mass of the halo will remain roughly the same between the dark matter only and hydro simulations. 
+    % Since the~\citet{Moster2013} AM relation was calibrated using DM subhalos from the \texttt{MilleniumII} dark matter only simulation, we will use the total subhalo mass from the TNG100 hydro simulation as a proxy for the corresponding DM halo mass in the TNG100-1 Dark run, \texttt{SubhaloMass}. 
+
 
 % End Abundance matching %
 %%%%%%%%%%%%%%%%%%%%%%%%%%   
@@ -230,8 +229,8 @@ Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that
 %%%%%%%%%%%%%%%%%%%%%%%%%%    
 % Pair selection section %
     \subsection{Pair selection}\label{sec:methods-pairs}
-    The full pair sample is constructed from the set of all subhalos and their abundance matching realizations. Each pair will consist of a ``primary" more massive object, and a ``secondary" less massive companion. 
-    \kc{We are starting with XX catalog, we'll sprinkle on some selection criteria, then store YY and ZZ. }
+    Starting from the \starcat, here we outline the pair matching process through which we generate the \paircat. 
+    At each redshift, and for each stellar mass realization, we will identify subhalo pairs consisting of a "primary" and a "secondary", where primaries are the more massive of the pair by stellar mass.
 
     % justify why we want to use stellar mass to define things
     %A majority of the literature uses the definition of "major" and "minor" pairs based on the stellar mass of the objects. This is true as well for observational pair samples, such as Lotz 2011, wherein the halo mass of the objects is unknown, and thus the stellar mass is used to define the mass ratio of the pair. In order to reproduce statistics that can be meaningfully compared to observations/can be used to inform observations, we opt to define our pair sample via the stellar masses from the abundance matching prescription given in Sec.~\ref{sec:methods-am}. 
@@ -239,31 +238,20 @@ Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that
     %%% 
     % begin subsubsection
     \subsubsection{Selecting primaries}
-        Primary galaxies (equivalently, ``primary subhalos") are the most massive galaxy of their group by stellar mass. Thus, each group can have at most one primary galaxy.  
-        
-        We apply mass cuts on the stellar mass of the primary to define our sample of dwarf primaries and massive primaries. Each stellar mass realization is treated independently, such that the primary of a group may change between stellar mass realizations. Additionally, some groups may not have a ``primary" in one realization, but will in others. \kc{}
-    
-        For each stellar mass realization, we rank order the subhalos of each group by stellar mass, then perform a mass cut specific to the type of group: dwarf primaries from dwarf mass groups, and massive primaries from massive mass groups (see Sec.~\ref{sec:methods-halos} for group mass criteria). 
-        We define the stellar mass range for dwarf primaries and massive primaries as:
-        \begin{align*} 
-        \mbox{\textbf{dwarf primaries:}}&\, 1\times 10^{8}< \rm M_{*} < 5\times10^{9}\Msun \\ 
-        \mbox{\textbf{massive primaries:}}&\, 5\times 10^{9}< \rm M_{*} < 1\times 10^{11}\Msun.
-        \end{align*}
-        \kc{justification for this stellar mass range? LG relation to put into context these ranges }
-        The primary stellar mass range is chosen to replicate a set of pairs with masses similar to LMC--SMC and MW--M31. \kc{remove "pairs"}
-        
-        
-        The stellar mass criteria is fixed, and does not change as a function of redshift. 
-        The median number of primaries in a single stellar mass realization at $z=0$ is XX dwarf primaries and XX massive primaries (see Sec.~\ref{sec:pairprops} for more info). 
-        
-        The abundance matching prescription has a spread of $\sim 1$dex at $M_{h}\sim 10^{10}\Msun$~\citep{Moster2013},
-        \kc{move to AM section}%thus the set of selected primaries in each realization is typically unique. 
-    
-        % explain special cases that people might wonder about.
-        %A subhalo will not be selected as a primary if it is not the first most massive halo in the group, i.e., there are no subhalos in the group that are more massive than the primary (by stellar mass). However, s
-        Since our selection is based on stellar mass, and there is a large spread in the SMHM relation, the primary for any realization of the catalog may not be the most massive subhalo in terms of total subhalo mass. 
-        %This is by design, since our selection criteria are meant to more closely replicate observational pair selection criteria which use the stellar mass ratio between the primary and companion to define a major or minor pair, rather than the DM halo mass. 
+        Primary galaxies (equivalently, ``primary subhalos") are the most massive galaxy of their FoF group by stellar mass, such that each group can have at most one primary galaxy.  
+        Each stellar mass realization is treated independently, such that the subhalo identified as the primary of a group may change between stellar mass realizations. 
 
+        At a given snapshot, and for each stellar mass realization, we rank order the subhalos of each group by stellar mass. 
+        Primaries must be the most massive subhalo in their group, and pass the following stellar mass criteria:         
+        \begin{align*} 
+        \mbox{\textbf{low mass primaries:}}&\, 10^{8}< \rm M_{*1} < 5\times10^{9}\Msun \\ 
+        \mbox{\textbf{high mass primaries:}}&\, 5\times 10^{9}< \rm M_{*1} < 10^{11}\Msun.
+        \end{align*}
+        The stellar mass criteria is fixed, and does not change as a function of redshift. 
+        At $z=0$, the stellar mass range for low mass primaries corresponds to isolated analogs of the LMC or M33, while the high mass primaries represent isolated analogs of the MW or M31. 
+
+        % The median number of primaries in a single stellar mass realization at $z=0$ is XX dwarf primaries and XX massive primaries (see Sec.~\ref{sec:pairprops} for more info). 
+        Since our selection is based on stellar mass, and there is a large spread in the SMHM relation, a primary subhalo may not be the most massive subhalo in terms of total subhalo mass. 
 
     % end  primary subsubsection
     %%% 
@@ -271,40 +259,35 @@ Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that
     %%% 
     % begin secondary subsubsection
     \subsubsection{Selecting secondary companions}
-        The second most massive galaxy by stellar mass in each group is then used to define the secondary companion for each primary. 
-        As before, the selection of secondary companions occurs independently for each stellar mass realization, and for each snapshot, such that the population of secondaries in each realization will have a different stellar mass distribution.
-        %we collect 1000 different sets of pairs for each redshift.
+        As before, the selection of secondary companions occurs independently for each stellar mass realization, and for each snapshot. 
+        Secondary subhalos are defined as the second most massive subhalo in a FoF group by stellar mass. 
+        Secondary subhalos with stellar mass $M_{*2}$ must have a stellar mass ratio:
+        \begin{align*}
+            &\mbox{\textbf{stellar mass ratio:}}\,      
+            M_{*2}/M_{*1} > 1/10.
+        \end{align*} 
+        We do not include companions with a stellar mass ratio $M_{*2}/M_{*1} <1/10$ due to the lower bound subhalo mass criteria of $\Mhalo=10^9$, which has at least a the corresponding stellar mass of $10^6\Msun$ at $z=0$.
+        The stellar mass ratio criterion ensures completeness of the sample, even at the lowest stellar masses considered.
 
-    \subsubsection{To create the pair catalog,}
-        We create two categories of pairs: 
-        major pairs and minor pairs, such that the secondary companion galaxies are selected via the stellar mass ratio between the secondary and primary.     
-        % Since we have already rank ordered the halos in each stellar mass realization by their stellar mass, the stellar mass ratio will never exceed 1.   
+    \subsubsection{Creating the pair catalog}
+        Pairs consist of a single primary and secondary in a FoF group as selected via the criteria above. 
+        Each pair is categorized as either a major or minor pair based on the stellar mass ratio between the primary and secondary. 
         The stellar mass ratio criteria for major and minor pairs are:
         \begin{align*} 
         \mbox{\textbf{major pair:}}&\, \frac{1}{4}\leq \frac{\rm M_{*2}}{\rm M_{*1}}< 1 \\ 
-        \mbox{\textbf{minor pair:}}&\, \frac{1}{10}\leq \frac{\rm M_{*2}}{\rm M_{*1}} < \frac{1}{4}
+        \mbox{\textbf{minor pair:}}&\, \frac{1}{10}\leq \frac{\rm M_{*2}}{\rm M_{*1}} < \frac{1}{4}.
         \end{align*}
-        \kc{give the reason for this look at z0.png}
 
-        \kc{For each pair we store the pair separation in physical units and relative velocity. We require that each pair have a minimum separation of $15 \kpc$ between the primary and secondary, which is XX times the smoothing length of the simulation. }
-        \kc{need to explain how the separations and velocities are computed from the catalog etc. }
-        At smaller separations, more and more mass will be attributed to the central subhalo, which can lead to confusion in the SUBFIND catalogs. %the merger tree histories. \kc{the }.
-      
-        If a primary subhalo does not have a companion that meets the stellar mass ratio criteria, separation criteria, or lower subhalo mass criteria (see Sec.~\ref{sec:methods-halos}), the subhalo will still be considered a primary. 
+        For each pair, we calculate the physical separation (\kpc, not comoving \kpc) between the two subhalos using the \texttt{SubhaloPos} field from the group catalogs, and we require that each pair have a minimum separation of $15 \kpc$ between the primary and secondary.
+        The minimum separation cut is 20 times the smoothing length of the simulation at $z=0$ which ensures that \subfind can identify the subhalos as distinct objects. 
+
+        If a primary subhalo does not have a companion that meets the stellar mass ratio criteria and separation criteria, the subhalo will still be considered a primary. 
         We refer to all primaries without companions as ``isolated primaries."
-        \kc{move this down to the secondary section}
-        If a subhalo passes the stellar mass cut for a primary, but does not have an associated companion from the selection criteria for a secondary (see next subsection), the subhalo will still be considered a primary. We refer to all primaries without companions as ``isolated primaries."
-        The total set of primaries includes both paired primaries and isolated primaries.
-    
-        The pair catalog contains blah blah blah. 
-        1000 sets of pairs at each snapshot blah blah 
+        The total number of primaries includes both isolated primaries and those with companions, and is larger than or equal to the total number of pairs.
 
-        The pair sample consists of 1000 sets of pairs at each snapshot, each set representing a different realization of the abundance matching prescription. 
-        At each snapshot, we calculate the median occurrence rate and kinematic values for each of the 1000 realizations. 
-        Each of the following plots shows the parameter's median and percentile spread calculated from the set of 1000 medians from each realization.
+        For each snapshot and each of the 1000 realizations of the abundance matching prescription, we create a set of isolated primaries and pairs. 
+        The final \paircat is the collection of all isolated primaries and pairs at each snapshot, and includes the following information: for each isolated primary, we store the subhalo mass and stellar mass from the given realization; from each pair we store the primary and secondary subhalo masses, stellar masses, group radius, and separation.
         
-        how do we use these catalogs? Interested in the aggregate properties of the full sample, and so we will treat blah blah 
-    
     % end secondary subsubsection
     %%%     
 % Pair selection end %
@@ -319,25 +302,24 @@ Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that
 \begin{figure*}[htb]
     \centering
     \includegraphics[width=\textwidth]{counts_1000.png}
-    \caption{(Top) Median number of dwarf (left) and massive (right) primaries and pairs as a function of redshift.
-    Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations, as described in Sec.~\ref{sec:results}.
-    There are approximately 8 times as many dwarf primaries as massive primaries. 
+    \caption{(Top) Number of isolated low mass (left) and high mass (right) primaries and pairs as a function of redshift.
+    The solid and dashed lines represent the median of the set of total counts from each of the 1000 stellar mass realizations in the \paircat, while the shaded regions depict the 1-99 percentile spread of the median.
+    There are approximately 8 times as many low mass primaries as high mass primaries. 
     % dwarf galaxies
-    The dwarf primary count (solid) is at a minimum at $z=4$, rises to a maximum by $z\sim1$, then decreases from $z=1\to0$. 
-    The dwarf pair count (dashed) peaks at $z\sim2$.
+    The low mass primary count (left) peaks at $z=1$ (with $\sim 15000$ primary subhalos per realization), while the low mass pair count peaks at $z=2$ (with $\sim 3000$ pairs per realization). 
     % Massive galaxies (right)
-    The massive primary count (pink solid line in top right panel) behaves similarly to the dwarf primary count, with a minimum count at $z=4$ which rises to a maximum of $\sim2000$ halos per realization at $z\sim1$, then decreases slightly by $\sim5\%$ to $\sim$1800 halos by $z=0$. 
-    Unlike dwarf pairs whose pair count peaks at $z=2$, pair count for massive galaxies (pink dashed line) follows similar behavior to the total massive primary count, with a minimum at $z=4$, and increasing to $z=\sim 1$ before leveling off. At very low redshift, the pair count and primary count have opposite behavior, with the pair count \textit{increasing} at very low redshifts of $z=0-0.25$ and \textit{peaking} at $z=0$.
-    \kc{where does it peak and what is }
-    (Bottom) Fraction of pairs per primary as a function of redshift (i.e., the ratio between dotted line and solid line in each column). Dwarf and massive pair fractions are roughly flat for $z=2.5-4$, but display opposite behavior for $z=0-2.5$. The dwarf pair fraction decreases steadily from $\sim0.24$ to $\sim0.08$, a decrease of roughly $65\%$, while the massive pair fraction is roughly flat between $z=1-2.5$ with an average of $0.31$, before spiking sharply from $\sim 0.29$ to $\sim 0.36$ between $z=0-0.25$, an increase of $25\%$.}
+    The high mass primary count (right) peaks at $z\sim1$ (with $\sim 1900$ primary subhalos per realization), while the high mass pair count peaks at $z=0$ (with $\sim 700$ pairs per realization). 
+    (Bottom) Total pair fraction (fraction of primaries with a companion secondary) as a function of redshift (see Sec.~\ref{sec:pairprops} for calculation details).
+    Low mass pair fraction is approximately flat between $z=2.5-4$, and decreases from $z=2.5$ to $z=0$. 
+    The high mass total pair fraction is flat or decreasing from $z=1$ to $z=4$, but spikes sharply between $z=0-0.25$.}
     \label{fig:counts}
 \end{figure*}
 
 \begin{figure*}[htb]
     \centering
     \includegraphics[width=\textwidth]{smrdist_1000.png}
-    \caption{\kc{using all 1000 realizations - combined sample of XX catalog} Stellar mass ratio distribution of all dwarf (top) and massive (bottom) pairs. Major pairs (solid lines) are defined as pairs with mass ratio $\ms{2}/\ms{1} > 1/4$, while minor pairs (dotted lines) are defined as pairs with stellar mass ratio $1/10<\ms{2}/\ms{1}<1/4$. Overall, the stellar mass ratio distribution of major and minor pairs of dwarf and massive galaxies show little evolution from $z=4$ (right) to $z=0$ (left). 
-    Major pairs make up $51-55\%$ of the full sample of pairs at every redshift for both dwarf and massive pairs.}
+    \caption{Stellar mass ratio distribution of all low mass (top) and high mass (bottom) pairs for all 1000 stellar mass realizations combined. Major pairs (solid lines) are defined as pairs with mass ratio $\ms{2}/\ms{1} > 1/4$, while minor pairs (dotted lines) are defined as pairs with stellar mass ratio $1/10<\ms{2}/\ms{1}<1/4$. Overall, the stellar mass ratio distribution of major and minor pairs of low and high mass galaxies show little evolution from $z=4$ (right) to $z=0$ (left). 
+    Major pairs make up $51-55\%$ of the full sample of pairs at every redshift for both low and high mass pairs.}
     \label{fig:massratio}
 \end{figure*}
 % end pair prop plots %  
@@ -346,322 +328,173 @@ Sec.~\ref{sec:methods-pairs} describes the second set of selection criteria that
 %%%%%%%%%%%%%%%%%%%%
 % Pair prop. start %
 \section{Sample: Overview of pair properties} \label{sec:pairprops}
-    Utilizing the pair catalog, We compute the \# of prims in each realization of the 
-    The full pair sample contains 1000 individual sets of pairs at each snapshot, for all 100 snapshots of the \tng100-1 simulation. 
-   
-
-
-    Fig.~\ref{fig:counts} shows the redshift evolution of the median number of dwarf and massive primaries and pairs we identify over the redshift range $z=0-4$.   
-    For each snapshot, we calculate the median number of primaries and of pairs in each realization within the Pair Catalog, yielding a set of 1000 medians. 
-    The solid line and dashed lines are the median of this set of 1000 medians, and the shaded regions show the 1-99\% spread of the set.
+    Utilizing the \paircat, for each snapshot, we compute the total number of primaries (isolated and paired) and pairs in each of the 1000 realizations, then take the median and 1 and 99 percentile spread on the median over all realizations. 
+    Additionally, we compute the low and high mass total pair fraction (the total number of pairs, $\rm N_{pair}$, divided by the total number of primaries $\rm N_{prim}$) for each individual realization, then find the median and spread over all 1000 realizations. 
     
-    The number of identified primaries is smallest at $z=4$, and rises to a maximum around $z=1$ for both dwarf and massive primaries.        
-    There are approximately 8 times as many dwarf primaries as massive primaries. 
+    Fig.~\ref{fig:counts} shows the median number (solid and dashed lines) of identified low and high mass primaries and pairs over the redshift range $z=0-4$.   
+    The shaded regions show the 1-99\% spread of the set, though the spread is hard to distinguish in the low mass case.
     
-    The median dwarf primary count (green solid line in top left panel) reaches a maximum of $\sim15000$ halos at $z\sim0.6$, then decreases by $\sim16\%$ to 12000 halos at $z=0$. 
-    The dwarf pair count (green dashed line) peaks much earlier at $z\sim2$ with $\sim3000$ pairs, and decreases to $\sim1000$ pairs at $z=0$.
-    From $z=4$ to $z=2$, the number of dwarf primaries doubles, as does the number of pairs due to the growth of structures over cosmic time.
-    The massive primary count (pink solid line in top right panel) reaches a maximum median of $\sim2000$ halos (in one realization) at $z\sim1$, then remains approximately constant to $z=0$. 
-    The pair count for massive galaxies (pink dashed line) behaves similarly to the primary count, increasing from $z=4$ to $z\sim1$, then leveling off to $z=0$. 
+    The number of identified primaries is lowest at $z=4$, and rises to a maximum around $z=1$ for both low and high mass primaries.
+    The median count of low mass primaries (green solid line in top left panel) reaches a maximum of $\sim15000$ halos at $z\sim0.6$, then decreases by $\sim16\%$ to 12000 halos at $z=0$. 
+    The count of high mass primaries (pink solid line in top right panel) reaches a maximum of $\sim2000$ at $z\sim1$, then remains approximately constant to $z=0$. 
+    There are roughly 8 times as many low mass primaries as high mass primaries. 
 
-    
+    Unlike the primary count, the pair counts for low and high mass pairs peak at very different redshifts. 
+    The count of low mass pairs (green dashed line) peaks much earlier at $z\sim2$ with $\sim3000$ pairs, and decreases to $\sim1000$ pairs at $z=0$.
+    % From $z=4$ to $z=2$, the number of dwarf primaries doubles, as does the number of pairs due to the growth of structures over cosmic time.
+    The pair count for high mass galaxies (pink dashed line), on the other hand, behaves more similarly to the primary count, increasing from $z=4$ to a peak at $z\sim1$, then leveling off through $z=0$. 
 
-    The bottom panel of Fig.~\ref{fig:counts} shows the number of pairs divided by the number of primaries, or the fraction of pairs per primary as a function of redshift. 
-    Dwarf and massive pair fractions are roughly flat for $z=2.5-4$, but display opposite behavior for $z=0-2.5$. The dwarf pair fraction decreases steadily from $\sim0.24$ to $\sim0.08$, a decrease of roughly $65\%$, while the massive pair fraction is roughly flat between $z=1-2.5$ with an average of $0.31$, before spiking sharply from $\sim 0.29$ to $\sim 0.36$ between $z=0-0.25$, an increase of $25\%$.
+    The bottom panel of Fig.~\ref{fig:counts} shows the total pair fraction for low mass and high mass pairs, or equivalently, the fraction of primaries with a companion.
+    The total pair fractions for both low and high mass pairs are roughly flat for $z=2.5-4$, and display opposite behavior for low redshifts between $z=0-2.5$. 
+    The low mass pair fraction decreases from $\sim0.24$ to $\sim0.08$, a decrease of roughly $65\%$, while the high mass pair fraction remains flat between $z=1-2.5$.
+    At very low redshifts, from $z=0-0.25$, the high mass pair fraction spikes sharply from $\sim 0.29$ to $\sim 0.36$, an increase of $25\%$.
 
-    include all 1000 realizations as a single "Combined Sample"
-    We show the distribution of stellar mass ratios between the secondary and primary of each dwarf and massive pair in Fig.~\ref{fig:massratio} from the Pair Catalog, com 
-    \kc{explain how we compute this}
-    all realizations.
-    % Major pairs make up $51-55\%$ of the full sample of pairs at every redshift for both dwarf and massive pairs.
-    In general, the shape of the distribution remains constant from $z=0-4$ for both dwarfs and massive pairs, and between the dwarf and massive pairs at each redshift. 
-    Thus, the typical stellar mass ratio of pairs in our sample is independent of mass scale and of redshift. \kc{how much more likely are you to find 1/4 than 1:1 things? what about 1:10 to 1:4?}
-            
-% Pair prop. end %
-%%%%%%%%%%%%%%%%%%
-
-
-  
-% \begin{table*}[htb]
-%   \centering
-%     \begin{tabular}{lcc}
-%      & Dwarf Pairs & Massive Pairs \\\hline\hline
-%     % Group Mass & $8\times10^{10} < \rm M_g < 5\times10^{11} M_\odot$ & $1\times10^{12} < \rm M_g < 4\times10^{12} M_\odot$  \\
-%     % Subhalo Max Mass &  &  \\
-%     % Subhalo Current Mass & $>1\times10^{10} \Msun$ & $> 5\times10^{11} \Msun$ \\
-%     Primary &$1\times10^{8} < \msam < 5\times10^{9} \Msun$ & $5\times10^{9} < \msam < 1\times10^{11} \Msun$\\\hline
-%     \end{tabular}
-%     \caption{\label{table:mass}Selection criteria for dwarf and massive pairs.}
-%     \end{table*}
-
-% equivalent snapshot table
-% \begin{table*}[tbp]
-%   \centering
-%   \begin{tabular}{l|cc|cccc} % increase this to 7 columns
-%     \hline \hline
-%    & {Snapshot} & {Number of primaries} & {Number of pairs}\\
-%    & \ill & \tng  & \illd & \illh & \tngd & \tngh \\ 
-%   \hline
-%   z = 0   &   135  &   99   & $11431.5_{-24.42}^{68.38}$ & $12650.0_{-25.84}^{46.84}$ & $13255.0_{-32.60}^{56.72}$ & $12035.0_{-69.24}^{20.36}$\\
-%   z = 1   &   85   &   50   &  $14769.0_{-30.24}^{47.28}$ & $16568.0_{-32.20}^{69.60}$ & $17445.5_{-40.86}^{51.90}$ & $15946.5_{-59.38}^{39.22}$ \\
-%   z = 2   &   68   &   33   &  $12602.5_{-31.98}^{45.94}$ & $14174.0_{-12.48}^{62.32}$ & $15413.5_{-34.62}^{28.86}$ & $14334.0_{-29.44}^{45.24}$ \\
-%   z = 3   &   60   &   25   &     $8533.5_{-54.50}^{39.46}$ & $9390.0_{-63.40}^{41.32}$ & $10901.0_{-44.64}^{46.56}$ & $10106.5_{-47.90}^{39.74}$  \\
-%   % z = 3.7   &   54   &   21   \\
-%   \hline \hline
-%   \end{tabular}
-%   \caption{\label{tab:equiv-snapshot} The snapshot number of the original \ill\ and the \tng\ simulations at redshifts $z=0-3$, as well as the median number dwarf (massive) primaries that were selected with $1\times 10^{8} < \msam < 5\times 10^{9} \rm M_\odot$ ($5\times 10^{9} < \msam < 1\times 10^{11} \rm M_\odot$) in XX abundance matching realizations. \kc{fill in with numbers after doing more realizations} \kc{include takeaway}}
-%   \end{table*}
-
+    In Fig.~\ref{fig:massratio}, we show the combined distribution of stellar mass ratios of every pair from all 1000 realizations in the \paircat.
+    Major pairs make up $51-55\%$ of the full sample of pairs at every redshift for both low and high mass pairs.
+    In general, the shape of the distribution remains constant from $z=0$ (left) to $z=4$ (right) for both low and high mass pairs, and is thus independent of mass scale and of redshift. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Begin Results section %
 
-\section{Results: The frequency and kinematics of dwarf and massive pairs}
-We have created catalogs of isolated low and high mass galaxy pairs from $z=0-4$ in the TNG100-1 simulation. 
-In this section, we will analyze the occurrence rate and kinematic properties (physical separations and relative velocities) for major and minor pair types across cosmic time. 
+\section{Results: The frequency of low mass and high mass pairs}
+We have created catalogs of isolated low and high mass galaxy pairs from $z=0-4$ in the TNG100 simulation. 
+In this section, we will analyze the occurrence rate of major and minor pair types across cosmic time. 
 
-In Sec.~\ref{sec:results-frac}, we show the redshift evolution of the fraction of primaries with a major or minor companion (the ``pair fraction") and compare the results for dwarf pairs and massive pairs.
-In Sec.~\ref{sec:results-kinematics}, we look at the redshift evolution of the separations and relative velocities between primary and secondary halos of each pair. % need to specify this is snapshot by snapshot?
-In Sec.~\ref{sec:results-scaled}, we compare the separations and velocities scaled by the FoF group's virial properties. 
-Finally, in Sec.~\ref{sec:results-virialcut}, we take subsets of the Pair Catalog, selecting only pairs within some fraction of the virial radius, and illustrate the impact on the recovered low and high mass pair fractions. 
+We are interested in the aggregate properties of the full sample, and so we will treat each stellar mass realization in the \paircat\ as an independent sample. 
+At each snapshot, we calculate the median occurrence rate of each of the 1000 realizations. 
+From this set of 1000 medians, we calculate the median and percentile spread which is shown in the following plots at the solid or dashed line, and the shaded region, respectively. 
 
-%%%%%%%%%%%%%%%%%%%%%   
-% Definitions start %
-% \subsection{Definitions} \label{sec:results-defs}
-        
-% Definitions end %
-%%%%%%%%%%%%%%%%%%% 
+In Sec.~\ref{sec:results-frac}, we show the redshift evolution of the fraction of primaries with a major or minor companion (the ``pair fraction") and compare the results for low mass and high mass pairs.
+In Sec.~\ref{sec:results-frac-sepcut}, we look at the redshift evolution of pair fraction as a function of pair separation. 
+% In Sec.~\ref{sec:results-scaled}, we compare the separations and velocities scaled by the FoF group's virial properties. 
+% Finally, in Sec.~\ref{sec:results-virialcut}, we take subsets of the Pair Catalog, selecting only pairs within some fraction of the virial radius, and illustrate the impact on the recovered low and high mass pair fractions. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Pair fraction section %
-    \subsection{Pair fraction}\label{sec:results-frac}
-    We determine the occurrence rate of a pair type by calculating the pair fraction. 
-    The pair fraction is defined here as the ratio of the number of pairs to the total number of primaries (isolated + paired):
-    $$\rm \frac{N_{pair-type}}{N_{primaries}}.$$
-    For example, the dwarf major pair fraction is calculated as the number of dwarf major pairs divided by the number of dwarf primaries. 
-    The pair fraction of dwarf or massive pairs with a major or minor companion gives the likelihood of finding a companion of a certain mass type about a primary identified in the field.
+    \subsection{Major and minor pair fractions}\label{sec:results-frac}
+    We determine the occurrence rate of a major or minor pair by calculating the pair fraction. 
+    The pair fraction is defined here as the ratio of the number of pairs to the total number of isolated \textit{and} paired primaries:
+    $$f_{p}=\rm \frac{N_{pairs}}{N_{primaries}}.$$
+    For example, the pair fraction of low mass major pairs is the number of low mass major pairs divided by the number of low mass primaries. 
+    The pair fraction can be understood as a measure of the likelihood of finding a companion of a certain mass type about a primary identified in the field.
     
-    Fig.~\ref{fig:pairratio} shows the pair fractions calculated for massive and dwarf pairs (including both major and minor pairs separately) as a function of time for $z=0-4$. 
+    Fig.~\ref{fig:pairfrac} shows the pair fractions calculated for low and high mass pairs (including both major and minor pairs separately) as a function of time for $z=0-4$. 
+        % differences between major and minor pairs? 
+    The pair fraction of minor pairs is less than that of major pairs for both low and high mass pairs at all redshifts, due to the lower stellar mass ratio limit we put on our pairs.
+    If we lower the stellar mass ratio floor for minor pairs, the minor pairs would outnumber the major pairs.
+    % Expanding the mass ratio criteria of our minor pair sample to include stellar mass ratios between 1/10-1/100 in our minor pair sample increases the fraction of minor pairs by a factor of $>2$ for massive pairs and between $~1.5-2x$ for dwarf pairs. \kc{are there any additional takeaways from this? }
+    
         % differences between massive and dwarf pairs? 
-    The dwarf pair fraction evolves distinctly from that of massive pairs.
-    Dwarf pair fractions (both major and minor) start at their minima at $z=0$, and increase by about 200\% by $z\sim2-2.5$, at which point the pair fractions level off and remain constant from $z=3-4$. 
-    On the other hand, massive pair fractions reach their maxima at $z=0$, then abruptly declining to $z\sim0.25$, before remaining approximately constant from $z=1-4$. 
+    The low mass pair fraction evolves distinctly from that of high mass pairs.
+    Low mass major and minor pair fractions start at their minima at $z=0$, and increase by about 200\% by $z\sim2-2.5$, at which point they level off and remain constant from $z=3-4$. 
+    On the other hand, high mass pair fractions reach their maxima at $z=0$, then abruptly declining to $z\sim0.25$, before remaining approximately constant from $z=1-4$. 
     
         % difference panels
-    The bottom panels of Fig.~\ref{fig:pairratio} shows the dwarf pair fraction subtracted from the massive pair fraction (labelled ``$\rm M-D$"). 
-    The pair fraction difference reaches a maximum at $z=0$ for both major and minor pairs, and declines to $z\sim2-2.5$ at which point the difference levels out close to 0, where major dwarf and massive pairs, as well as minor dwarf and massive, are equivalently common. 
+    The bottom panels of Fig.~\ref{fig:pairfrac} shows the low mass pair fraction subtracted from the high mass pair fraction (labelled ``$\rm High-Low$").
+    The pair fraction difference reaches a maximum at $z=0$ for both major and minor pairs, and declines to $z\sim2-2.5$. 
+    From $z=2.5-4$, the difference is approximately 0, and thus both major and minor pairs of high and low mass are equivalently common. 
     
-        % differences between major and minor pairs? 
-    The median pair fraction of minor pairs is less than that of major pairs of the same mass range at all redshifts. 
-    This is due to the lower stellar mass ratio limit we put on our pairs. 
-    Expanding the mass ratio criteria of our minor pair sample to include stellar mass ratios between 1/10-1/100 in our minor pair sample increases the fraction of minor pairs by a factor of $>2$ for massive pairs and between $~1.5-2x$ for dwarf pairs. \kc{are there any additional takeaways from this? }
-    
-        % what do we learn from this? what are the takeaways? where do we discuss this in more detail?
-    Overall, these results show that massive and dwarf pair counts evolve differently over time, particularly at very low redshift, despite the pair fractions being roughly equal at higher z. 
-    These differences could be a result of the different formation mechanisms at play in the evolution of the systems at these two different mass scales, or alternatively, from differences in satellite dynamics between dwarf and massive systems (see Sec.~\ref{sec:results-kinematics}). 
-    The implications for the difference in the evolution of pair fractions for dwarf and massive pairs across time is discussed in detail in Sec.~\ref{sec:discussion}.
+        % takeaways 
+    Overall, these results show that low mass and high mass pair counts evolve differently over time, particularly at very low redshift, despite the pair fractions being roughly equal at higher redshift. 
+    The implications for the difference in the evolution of pair fractions for low mass and high mass pairs across time is discussed in detail in Sec.~\ref{sec:discussion}.
     
         % pair fraction plot
     \label{sec:results}
     \begin{figure*}[htp]
       \centering
       \includegraphics[width=\textwidth]{pairfrac_1000.png}
-      \caption{
-        % Top plots ~
-        (Top) Median pair fraction, defined as the fraction of dwarf or massive primaries with a major (solid) or minor (dashed) companion by stellar mass (see Sec.~\ref{sec:methods-pairs}). 
-        Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations. 
+      \caption{% Top plots ~
+        (Top) Median pair fraction, defined as the fraction of low mass or high mass primaries with a major (solid) or minor (dashed) companion by stellar mass (see Sec.~\ref{sec:methods-pairs}). 
+        Shaded areas show the 1-99 percentile range on the median (solid and dashed lines) from 1000 stellar mass realizations. 
           % massive pairs
-        The massive pair fraction (pink) remains approximately constant for $z>1$, with an average pair fraction of 0.16-0.17 for major pairs and 0.14-0.15 for minor pairs. Between $z=0.25$ and $z=0$, the massive major pair fraction increases to 0.207, while the minor pair fraction increases to 0.152.
+        The high mass pair fraction (pink) remains approximately constant for $z>1$, for both major and minor pairs. 
+        Between $z=0.3$ and $z=0$, the major pair fraction increases from $0.163^{+0.011}_{-0.010}$ to $0.207^{+0.012}_{-0.014}$, while the minor pair fraction increases from $0.125^{+0.017}_{-0.014}$ to $0.152^{+0.016}_{-0.017}$.
           % dwarf pairs
-        Dwarf pair fractions, shown in green, are approximately constant from $z=3-4$, then decline monotonically to $z=0$. The major pair fraction is $0.041$ at $z=0$ and $0.126$ at $z=3$, while the minor pair fractions are $0.034$ and $0.111$ at $z=0$ and $z=3$, respectively. 
+        Low mass pair fractions, shown in green, are approximately constant from $z=3-4$, then decline monotonically to $z=0$. The major pair fraction is $0.041^{+0.003}_{-0.004}$ at $z=0$ and $0.126^{+0.008}_{-0.007}$ at $z=3$, while the minor pair fractions are $0.034\pm0.004$ and $0.111\pm0.008$ at $z=0$ and $z=3$, respectively. 
         % Bottom plots ~
-        (Bottom) The median subtracted (massive - dwarf) pair fraction difference, with the shaded $1$-$99$ percentile range from 1000 abundance matching realizations. The pair fraction difference increases with decreasing redshift, peaking at $z=0$ with a difference of 0.166 for major pairs and 0.111 for minor pairs. This shows that the redshift evolution of the pair fractions of massive pairs and dwarf pairs proceed differently, particularly at low redshift.}
-      \label{fig:pairratio}
+        (Bottom) The median subtracted difference between high and low mass pair fractions, with the shaded $1$-$99$ percentile range from 1000 abundance matching realizations. The pair fraction difference increases with decreasing redshift, peaking at $z=0$ with a difference of $0.166\pm0.013$ for major pairs and $0.111\pm0.017$ for minor pairs. This shows that the redshift evolution of the pair fractions of low and high mass pairs proceeds differently, particularly at low redshift.}
+      \label{fig:pairfrac}
     \end{figure*}
 % end pair fraction 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% beging Kinematics results %
-    \subsection{Kinematic evolution}\label{sec:results-kinematics}
-    We also analyze the kinematic behavior of our pair sample as a function of time. 
-    Instantaneous pair separations are defined as the relative separation between the primary and secondary of each pair in the snapshot, and are computed in physical $\kpc$, and \textit{not} in comoving $\kpc/h$. 
-    Similarly, relative velocities are defined as the relative velocity difference in the same snapshot between the primary and secondary of each pair, and are computed in physical $\kms$.
-    
-    In this section, we compute the median relative separations and velocities of all pairs in each snapshot, each of which includes the set of pairs from 1000 stellar mass realizations.
-    We separate the population of dwarf and massive pairs further into major and minor pairs to show how the stellar mass ratio between the primary and secondary may affect the kinematics. 
-    
-    % separations %
-        \subsubsection{Separations}
-        %% text on separation vs. redshift plot
-        %% intro to separations & bulk results
-        % We calculate the median relative separations between the primary and secondary halos of the pairs identified in our dwarf pair sample and massive pair sample. 
-        % We split the results by the stellar mass ratio of each pair, dividing the sample into "major" pairs and minor pairs, which allows us to compare the behavior of different mass ratio systems individually in the dwarf and massive mass range.
-        Our results are 
-        illustrated in Fig.~\ref{fig:sep}, which shows the redshift evolution of the median relative separations for dwarf pairs and massive pairs. 
-        %% the behavior of massive and dwarf pairs
-        We show that the median relative separations between the primary and secondary of both dwarf and massive pairs increases with decreasing redshift, regardless of pair type. 
-        A combination of physical mechanisms is likely spurring the increase in median pair separations at low $z$. 
-        For example, high $z$, low separation pairs may undergo mergers at earlier times, removing them from the sample at later snapshots, thus increasing the median separation over time. 
-        Alternatively, mass accretion, from the cosmic web and/or from mergers, causes dark matter halos to become both more massive and more extended as $z\to0$. 
-        Thus, the growth of structure that is expected in $\Lambda$CDM could naturally lead to an increase in typical pair separations at low $z$.
-        We explore the relationship between halo growth and relative pair separations in Sec.~\ref{sec:results-scaled}.
-        
-        %% the DIFFERENCE between dwarf and massive pairs
-        Dwarf and massive pairs exhibit similar relative separation trends as a function of time, however, the scale of the typical relative separations of pairs in our sample is set by the mass halo of the primary.
-        Dwarf pairs and massive pairs have a relative separation difference of $\sim150\kpc$ at $z=0$, and a difference of $\sim40$ at $z=4$.   
-        This is expected, as more massive halos have larger spheres of influence and more substructure. 
-        \kc{maybe move this sentence to discussion:}But, the difference between dwarf and massive pair relative separation ranges, and their evolution over time begs the question: what does this mean for observational pair selection criteria at different mass scales and at different redshifts? 
-        We leave the discussion of the implications our relative separation results on pair selection criteria for Sec.~\ref{sec:discussion}. 
-        
-        %% the difference between major and minor pairs
-        In addition, the bottom panels of Fig.~\ref{fig:sep} shows the median subtracted difference between the relative separations calculated for major pairs and minor pairs of both mass types. 
-        There is a small offset in the median separations of major and minor dwarf pairs (between $10-25\,\kpc$ from  $z=0-1$ and approximately $5\,\kpc$ from $z=1-4$), and a larger offset for major and minor massive pairs (between $25-100\,\kpc$ from  $z=0-1$ and approximately $10-40\,\kpc$ from $z=1-4$). 
-        The major-minor offset is likely a result of more major pairs merging more quickly (thus at earlier times and higher $z$) due to the increased effect of dynamical friction, thus leading to a population of low relative separation minor pairs that have yet to merge.  
-    
-        %% separation plots
-        \begin{figure*}[htp]
-          \centering
-          \includegraphics[width=\textwidth]{sep_1000.png}
-          \caption{(Top) Median physical separation in kpc between the primary and secondary halos of dwarf pairs (left) and massive pairs (right) as a function of redshift. 
-          Shaded areas show the 1-99\% percentile range of the median from 1000 abundance matching realizations. 
-          Major pairs are shown in solid lines, and minor pairs are depicted with dashed lines.
-          In general, for both dwarf pairs and massive pairs, the average physical separation of the two halos in a pair increases for as the redshift decreases from $z=4\to0$. 
-          % Dwarf pairs
-          The typical separation between major (minor) dwarf pairs increases from $42(38)\,\kpc$ at $z=4$ to a peak of $128(109)\,\kpc$ at $z=0$.
-          % Massive Pairs
-          The separation between major (minor) massive pairs likewise increases from $81(71)\,\kpc$ at $z=4$ to $288(205)\,\kpc$ at  $z=0$.
-          % Difference plots
-          (Bottom) The median difference and 1-99\% range (as above) between the median separation of major pairs and minor pairs.
-          At dwarf mass scales, minor companions tend to be $\sim10-20\kpc$ closer to their primary than major companions, while minor massive pairs have a relative separation that is $10-50\kpc$ less than major pairs.
-            }
-          \label{fig:sep}
-        \end{figure*}
-    
-    % velocities %
-        \subsubsection{Relative Velocities}
-        %% text on velocity vs. redshift plot
-        %% intro to velocity & bulk results
-        % In addition to the separations between the primary and secondary halos of our pair sample, we also calculate the median relative velocity between the halos of each pair.
-        % Once again we split the results into "major" and "minor" pairs for both the dwarf and massive pair sample to get a better understanding of the impact of the mass of the secondary. 
-        In Fig.~\ref{fig:vel}, we show the median relative velocity between the primary and secondary halos of dwarf and massive pairs as a function of redshift. 
-        %% the behavior of massive and dwarf pairs
-        We find that the median relative velocity of a pair decreases towards lower redshift, regardless of pair type.
-        The median velocity of a major dwarf pair decreases linearly from $130$ at $z=4$ to $70\,\kms$ at $z=0$. Likewise, the median velocity for major massive pairs decreases from $260$ at $z=4$ to $170\,\kms$ at $z=0$, though with more spread at high $z$.
-        \todo{} As the circular velocity of a secondary object about the primary is inversely proportional to the radius, it is not surprising to find a decrease in the relative velocity for pairs at lower redshift due to the decrease in concentration/increase in the virial radius of the halo as $z\to0$. \kc{citation needed}
-        See Sec.~\ref{sec:results-scaled} for more details.
-        
-        %% the DIFFERENCE between dwarf and massive pairs
-        As in the case of relative separations of pairs, dwarf and massive pairs show a similar evolutionary trend in relative velocity as a function of redshift, though at different scales determined by the mass of the primary.
-        Massive pairs have a median relative velocity $\sim100\kms$ larger than dwarf pairs at $z=0$, and $\sim140\kms$ at $z=4$. \kc{see comment}
-        %This is also not particularly surprising, since the circular velocity prop to $( M/r)^1/2,$, and massive primaries may be >10x as massive as dwarf primaries, while the separation between a massive primary and it's secondary will only be 2x further than a dwarf pair.
-    
-        %% the difference between major and minor pairs
-        Fig.~\ref{fig:vel} also includes a panel showing the subtracted median difference at each snapshot of the minor pair from the major pair. Unlike the relative separation, the relative velocities do not have a strong dependence on mass ratio of the pairs. 
-        The offsets between the relative velocities of dwarf major and minor pairs is between $0-5\,\kms$, and between $0-25\,\kms$ for massive major and minor pairs. \kc{see comment} %does it make sense that minor pairs are faster?
-        
-        %% velocity plots 
-        \begin{figure*}[htp]
-          \centering
-          \includegraphics[width=\textwidth]{vel_1000.png}
-          \caption{
-            (Top) Median relative velocity (in \kms) between the primary and secondary halos of dwarf pairs (left) and massive pairs (right) as a function of redshift. 
-            Shaded areas show the 1-99 percentile range of the median from 1000 abundance matching realizations. 
-            The overall behavior of the redshift evolution of pair relative velocities is nearly identical for dwarf and massive pairs.
-            As the redshift decreases from $z=4$ to $z=0$, the average relative velocity of a pair decreases for both dwarf and massive pairs.
-            % brief describe
-            The median relative velocity of a dwarf pair (major or minor) is $70\,\kms$ at $z=0$ and $133\,\kms$ at $z=4$, and of a massive pair is $170\,\kms$ at $z=0$ and $260\,\kms$ at $z=4$ ($295\,\kms$ for a minor pair at $z=4$). 
-            % Difference plot
-            (Bottom) The median relative velocity difference between major and minor pairs ("Maj - Min"), and 1-99\% shaded region.
-            There is little difference between the relative velocity of major and minor dwarf pairs (bottom left), with minor pairs having a relative velocity of $0-5\,\kms$ higher than major pairs. 
-            Massive pair types (bottom right) also have little velocity difference at low redshift, although minor pairs have a relative velocity between $1-20\,\kms$ faster than major pairs at higher redshift ($z>\sim 2.5$).
-            }
-          \label{fig:vel}
-        \end{figure*}
-% end kinematic results %        
-%%%%%%%%%%%%%%%%%%%%%%%%%
+% begining separation cut-pair fraction results %
 
-%%%%%%%%%%%%%%%%%%%%%%%%
-% begin scaled results %
-    \subsection{Scaled Kinematics}\label{sec:results-scaled}
-    %% intro to scaled kin. evolution & bulk results
-    In the previous section, Sec.~\ref{sec:results-kinematics}, we show that the separations and relative velocities of dwarf and massive pairs evolve similarly as a function of redshift. 
-    However, the magnitude of pair separations and velocities are set by the mass scale of the pair. 
-    For example, a dwarf pair at $z=0$ has a median relative velocity of $70\kms$, while a massive pair will have a median velocity of $175\kms$ at $z=0$.
-    
-    To explore the impact of halo growth and mass scale the kinematics pairs, we study the relative separation of a primary and secondary halo scaled by the virial radius ($r_{vir}$) of the FoF group, and the relative velocity ($v_{vir}$) divided by the circular speed of the FoF group at the virial radius. 
-    That is, 
-    $$\rm r_{scaled}=\scsep$$
-    $$\rm v_{scaled}=\scvel$$
-    $$\rm v_{vir}=\sqrt{G M_{vir}/r_{vir}},$$
-    where $\rm r_{vir}$ is the group radius \texttt{Group\_R\_TopHat200} in physical $\kpc$ from the group catalogs, and $\rm M_{vir}$ the total group mass \texttt{Group\_M\_TopHat200} in $\Msun$.
-    
-    In Fig.~\ref{fig:scaled}, we show the median scaled separation and scaled velocity for dwarf and massive major pairs as a function of time. 
-    Minor pairs show the same trends, and so we have omitted them here for brevity.
-    
-    %% the behavior of massive and dwarf pairs
-    Overall, the median scaled separation of dwarf pairs and massive pairs do not evolve significantly differently from $z=4\to0$.
-    In fact, the median separation of halos in a pair is smaller than the group virial radius at $z<2.5$, but is larger than the virial radius at $z>2.5$.
-    %maybe not bound at high z, though could become bound by low z by mass accretion ? 
-    Dwarf pairs tend to have slightly larger separations relative to the group virial radius than massive pairs at almost all redshifts, though the spread of median scaled separations is large for massive pairs at $z>2$. 
-    
-    The median scaled velocities of dwarf pairs and massive pairs increase at lower redshift (see right panel of Fig.~\ref{fig:scaled}). In fact, dwarf and massive pairs evolve almost identically for $z=0-4$, and thus, the redshift evolution of a pair at either of these mass scales is independent of the total mass of the system. 
-    We also find that pairs at $z<0.5$ have relative velocities in excess of their virial velocity, but are smaller than the virial velocity for $z=0.5-4$.
-     
-    %% distributions of scaled kinematics
-    In Fig.~\ref{fig:scaled-dist}, we show the distribution of scaled separations and velocities at redshifts $z=0,1,2,3,4$. 
-    The distributions show roughly equivalent shape and extent for both dwarf and massive scaled kinematics, and do not vary significantly with redshift. 
+\subsection{Major pair fractions as a function of maximum separation}\label{sec:results-frac-cuts}
+    We also analyze subsets of the low and high mass major pairs that pass additional separation criteria. 
+    Here, we study two different sets of separation criteria to compare the resulting pair fractions of subsets of the low and high mass major pairs to the full sample shown in Fig.~\ref{fig:pairfrac}.
+    The first separation criteria that we employ selects pairs of different separations as a function of the size of the group's halo, as discussed in Sec.~\ref{sec:results-frac-vircut}. 
+    In Sec.~\ref{sec:results-frac-sepcut}, we use physical 3D separation cuts to compare the population of low separation major pairs of low and high mass. 
 
-    % behavior of massive vs. dwarf 
-    Overall, our results imply that there is little difference between high mass and low mass pairs in the redshift evolution of pair velocities, though pair separations seem to have a weak dependence at low redshift on the type of pair. Inner regions of the halo , high mass pairs tend to be even closer, likely due to 
-    This appears opposite to the physical separations, but when you scale to the total mass of the system, the 
-    Fof groups are increasng in size . \todo{}
-    
-    %% scaled evolution plot
+\subsubsection{Separation cut - fraction of the virial radius}\label{sec:results-frac-vircut}
+    \todo{here! }
+              Interestingly, the recovered fraction of the full sample at <0.5rvir is <50\% but still closely resembles the full pair frac at z<2! thus, at low z, the behavior of the pair fractions is dominated by halos within 0.5 Rvir ~~ 
+
+
+    %figures
+    %%%%%%%%%%%%%%%%%%%%
     \begin{figure*}[htp]
-      \centering
-      \includegraphics[width=\textwidth]{scaledcombo_1000.png}
-      \caption{ \label{fig:scaled}
-          %  Left
-          (Left) Median scaled separation as a function of redshift (see Sec.~\ref{sec:methods} for the definitions of scaled separation and velocity). All shaded regions show $X-XX\%$ percentile spread from 1000 abundance matching realizations. 
-          % any overall trends?
-          At $z>2$, a majority of all pair types have separations greater than the group virial radius, while at $z<2$, a majority of pairs have smaller separations.  
-          Massive major pairs at low redshift tend to have slight smaller scaled separations than dwarfs at $z<\sim2$, but vary significantly at higher redshifts. 
-          % Right 
-          (Right) Median scaled velocity as a function of redshift.
-          % any overall trends?
-          All pairs show a peak in scaled velocity around $z=0$. From $z=0-0.5$, a majority of both dwarf and massive pairs have relative velocities larger than the circular velocity of their group at the virial radius. At $z>0.5$, however, the majority of pairs have $v_{rel}<v_{vir}$. The scaled velocity evolves nearly identically for dwarf and massive pairs.
-          % Bottom 
-          (Bottom) The scaled separation/velocity of dwarf major pairs subtracted from that of massive major pairs, indicated by ``M-D".
-          The scaled separation difference shows small differences between the dwarf and massive population, with dwarf pairs having slightly higher scaled separation for $z<1$. The scaled velocity difference is $\sim0$ at all redshifts.
-          Minor pairs (not shown here) follow the same trends as major pairs in both the massive and dwarf regime.}
+        \centering
+        \includegraphics[width=\textwidth]{pairfrac_vircut.png}
+        \caption{ The pair fraction of the subset of high mass (pink) and low mass (green) pairs with 3D separations within a fraction of the group's virial radius (see Sec.~\ref{sec:results-frac-sepcut} for details of calculations). 
+        The median and 1-99 percentile spread are shown by the solid lines and shaded regions, respectively.
+        Pair fractions for the subsample of low and high mass pairs with separations less that 0.25\Rvir are constant or declining with increasing redshift, and do not resemble the pair fractions for the full pair sample. 
+        However, increasing the maximum separation of a pair to $0.5\Rvir$ leads to low and high mass major pair fractions that take on the same behavior as the full sample for $z<2$, where the low mass pair fraction decreases, and the high mass pair fraction (on average) increases. 
+        The pair fraction trends for the low and high mass subsamples become similar to those of the true pair fractions (as seen in Fig.~\ref{fig:pairfrac}) when all pairs within $1.5\Rvir$ are included in the subsample.
+      % bottom plot
+        (Bottom) The fraction of the total collection of pairs in the subset of pairs that passes each separation cut.
+        More than 50\% of low and high mass pairs have separations $<1.5\Rvir$ at all redshifts. 
+        When the maximum separation is increased to $2.5\Rvir$, the recovery rate at all redshifts is $>90\%$ for low mass pairs, and $>80\%$ for high mass pairs. 
+        }
+      \label{fig:vircut}
     \end{figure*}
-    
-    %% scaled distribution plot
-    \begin{figure*}[htp]
-      \centering
-      \includegraphics[width=\textwidth]{scaledcombodist_1000.png}
-      \caption{
-          Scaled separation distribution (left) and scaled velocity distribution (right) at $z=0,1,2,3$, and $4$, normalized by the total number of pairs at the corresponding redshift. 
-          % the point? what am I trying to get across
-          The first thing to note is that there is relatively little redshift-dependent change in the overall shape and extent of each distribution, and thus the scaled quantities are only loosely independent of redshift. 
-          Additionally, the shape and extent of the dwarf pair (top) and the massive pair (bottom) distributions are nearly identical, thus the scaled quantities are also independent of the halo mass scale. Thus, the kinematics of dwarf pairs and massive pairs evolve roughly equivalently when normalizing by the halo mass.
-          Unscaled versions of this plot are discussed in Sec.~\ref{sec:discussion}.
-      }
-      \label{fig:scaled-dist}
-    \end{figure*} 
-% end scaled results %
-%%%%%%%%%%%%%%%%%%%%%%
-    
-% end kinematics %
-%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%
 
-\subsection{Separation cuts as fxn of virial radius}
-put in plots~ 
+\subsubsection{Separation cut - physical separations}\label{sec:results-frac-sepcut}
+    We calculate the pair fraction for all major low mass and high mass pairs, excluding pairs that exceed separations of $(50,70,100,150,200,300)\kpc$. 
+    This additional separation criterion creates subsamples of the \paircat, and contains low and high mass pairs with separations between $15-50\kpc$, $15-70\kpc$, and so on\footnote{See Sec.~\ref{sec:methods-pairs} for a description of the $15\kpc$ lower separation cutoff.}.
+
+    Fig.~\ref{fig:sepcut} shows the pair fractions for the subsamples of pairs with separations lower than the physical separation listed at the top of each column. 
+    Similarly to the previous pair fraction plots, the top row presents the total median (solid line) of the collection of 1000 individual medians from each realization, and the shaded regions show the 1-99\%ile spread on the same collection of individual medians. 
+    The bottom row of the plot shows the "recovery fraction", or the number of pairs in each subsample compared to the full sample of major pairs.
+    
+    As the maximum separation increases (left to right), so too does the pair fraction, as you begin to include more and more of the distantly separated pairs, as well as the recovery fraction. 
+    The low mass major pair fraction (green) maintains roughly the same behavior (decreasing with decreasing redshift) for each separation cut, and closely resembles the pair fraction of the full sample (in Fig.~\ref{fig:pairfrac}) for maximum separation cuts higher than $150\kpc$. 
+    The low mass pair fraction does not change significantly by excluding pairs with separations $>150\kpc$, thus the pair fraction profile is dominated by the closest 50\% of low mass pairs. 
+
+    On the other hand, none of the subsamples of the high mass pairs display similar behavior to the full sample. 
+    In particular, for smaller separation cuts (50\kpc or 70\kpc), the redshift evolution of the pair fraction more closely resembles the low mass pairs.
+    For $r_{sep}<300\kpc$, the trends in the high mass major pair fraction is only similar at $z>1.5$, where it levels off, rather than continues to increase at higher $z$. 
+
+    The recovery rate for low mass pairs is universally higher than for high mass pairs.
+    By increasing the allowed separations $300\kpc$, virtually all low mass pairs are included in the subsample, with $>90\%$ of the total sample at $z=0$, and $\sim100\%$ for $z>1$.
+    However, high mass pairs have a median separation of $\sim300\kpc$ at $z=0$, which means the recovery rate for low separation high mass pairs is very low. 
+    In order to get a recovery fraction of at least 50\% at all redshifts from $z=0-4$, the subset of high mass pairs must include pairs with separations at least up to $300\kpc$.
+    
+    %figures
+    %%%%%%%%%%%%%%%%%%%%
+    \begin{figure*}[htp]
+        \centering
+        \includegraphics[width=\textwidth]{pairfrac_sepcut.png}
+        \caption{      % top plot
+        (Top) The major pair fraction of the subset of high mass (pink) and low mass (green) pairs with 3D separations less than the value given at the top of each column. 
+        The median and 1-99 percentile spread are shown by the solid lines and shaded regions, respectively. 
+        % what do we notice
+        The behavior of the redshift evolution of major pair fractions for low and high mass pairs is strongly dependent on the maximum separation included in the subset.
+        Pair fractions of low mass and high mass pairs are nearly indistinguishable for the lowest separation pairs $r_{sep}<50\kpc$ at every redshift. 
+        For $z<2$, the true pair fraction behaviour (as seen in Fig.~\ref{fig:pairfrac}) becomes distinguishable when the maximum separation is $300\kpc$.
+      % bottom plot
+        (Bottom) The fraction of the total collection of pairs in the subset of pairs that passes each separation cut.
+        Less than 50\% of massive pairs have separations $r_{sep}<50\kpc$, and 50-100\% have separations $r_{sep}<300\kpc$. 
+        Between 20-60\% of low mass pairs have separations $r_{sep}<50\kpc$, while a separation cut of $r_{sep}<300\kpc$ captures roughly 100\% of the low mass pair population at all redshifts. 
+        }
+      \label{fig:sepcut}
+    \end{figure*}
+    %%%%%%%%%%%%%%%%%%%%
 % end Results section%
-%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -673,159 +506,150 @@ put in plots~
 % We categorize these pairs into one of four pair types: massive major pairs, such as the MW+M31; massive minor pairs, such as M31+M33 or MW+LMC; dwarf major pairs, such as M33+LMC; and finally, dwarf minor pairs, such as the LMC+SMC.
 % \kc{can maybe move these two sentences to a discussion section}
     
-    \kc{ make a subsection about the equivalence of our findings with the dark matter simulation) We make brief note of results for our equivalent analysis using the dark matter only TNG100-Dark simulation as well in Sec.~\ref{sec:results}.}
+%     \kc{ make a subsection about the equivalence of our findings with the dark matter simulation) We make brief note of results for our equivalent analysis using the dark matter only TNG100-Dark simulation as well in Sec.~\ref{sec:results}.}
 
-\subsection{Implications for the differences in pair fractions of dwarf and massive pairs}
-In Sec.~\ref{sec:results-frac}, we presented the pair fraction of massive and dwarf galaxy pairs and found that the relative frequency of the two populations evolve distinctly from $z=0-4$. 
-While the frequency of massive pairs compared to the number of massive primaries is roughly constant and become more common at low redshift, dwarf major and minor pairs become more than 50\% less common at $z=0$ compared to $z=2$. 
-Since scaled separations and velocities do not change drastically between dwarf and massive pairs, the difference in the evolution of the pair fractions indicates that the merger processes of each population may proceed differently.
+% \subsection{Implications for the differences in pair fractions of dwarf and massive pairs}
+% In Sec.~\ref{sec:results-frac}, we presented the pair fraction of massive and dwarf galaxy pairs and found that the relative frequency of the two populations evolve distinctly from $z=0-4$. 
+% While the frequency of massive pairs compared to the number of massive primaries is roughly constant and become more common at low redshift, dwarf major and minor pairs become more than 50\% less common at $z=0$ compared to $z=2$. 
+% Since scaled separations and velocities do not change drastically between dwarf and massive pairs, the difference in the evolution of the pair fractions indicates that the merger processes of each population may proceed differently.
 
-% One scenario that could explain this behavior is a very rapid merger timescale for dwarf pairs, and a slower merger timescale for massive pairs. 
-% In this case, dwarf pairs will merge quickly after formation, thus depleting the number of dwarf pairs at later times. 
-% Simultaneously, the merged remnant of a dwarf pair is likely to join the population of isolated primaries until star formation finally pushes the stellar mass up into the massive primary regime.
-% The likelihood of a dwarf pair becoming a massive primary with a minor companion is very small, since only XX\% of dwarf pairs have a major tertiary companion. \kc{calculate the number of }
+% % One scenario that could explain this behavior is a very rapid merger timescale for dwarf pairs, and a slower merger timescale for massive pairs. 
+% % In this case, dwarf pairs will merge quickly after formation, thus depleting the number of dwarf pairs at later times. 
+% % Simultaneously, the merged remnant of a dwarf pair is likely to join the population of isolated primaries until star formation finally pushes the stellar mass up into the massive primary regime.
+% % The likelihood of a dwarf pair becoming a massive primary with a minor companion is very small, since only XX\% of dwarf pairs have a major tertiary companion. \kc{calculate the number of }
 
-% Alternatively, if the dark matter halo and stellar mass of a dwarf galaxy pair increase enough through cosmic accretion or very minor mergers from $z=4$ to $z=2$, the pair will be reclassified as a massive pair at later times. 
+% % Alternatively, if the dark matter halo and stellar mass of a dwarf galaxy pair increase enough through cosmic accretion or very minor mergers from $z=4$ to $z=2$, the pair will be reclassified as a massive pair at later times. 
 
-For example, dwarf galaxy merger timescales may be significantly shorter than massive galaxy merger timescales, which would deplete the population of dwarf galaxy pairs by low redshift. 
-Additionally, early dwarf galaxy mergers may result in systems that are identified as massive pairs at late times, and massive pairs may grow such that they exceed our mass criteria, thus leading to an apparent overall decrease in the number of pairs. 
-The drop in the absolute number of dwarf and massive primaries at low z as shown in Fig.~\ref{fig:counts} indicates that indeed many of these systems leave the mass range specified by our selection criteria between $z=0-1$. 
-However, since the number of dwarf primaries is roughly constant between $z=0.5-1.5$, but the number of pairs is still decreasing during this time, this indicates that mergers are occurring during this time, and not yet leaving the mass regime specified. 
-In fact, the number of dwarf pairs that are removed from the sample from $z=0$ to $z=2$ is 10 times greater than the total number of massive pairs, indicating that these pairs are not simply accreting matter and moving into the higher mass bin.
-
-
+% For example, dwarf galaxy merger timescales may be significantly shorter than massive galaxy merger timescales, which would deplete the population of dwarf galaxy pairs by low redshift. 
+% Additionally, early dwarf galaxy mergers may result in systems that are identified as massive pairs at late times, and massive pairs may grow such that they exceed our mass criteria, thus leading to an apparent overall decrease in the number of pairs. 
+% The drop in the absolute number of dwarf and massive primaries at low z as shown in Fig.~\ref{fig:counts} indicates that indeed many of these systems leave the mass range specified by our selection criteria between $z=0-1$. 
+% However, since the number of dwarf primaries is roughly constant between $z=0.5-1.5$, but the number of pairs is still decreasing during this time, this indicates that mergers are occurring during this time, and not yet leaving the mass regime specified. 
+% In fact, the number of dwarf pairs that are removed from the sample from $z=0$ to $z=2$ is 10 times greater than the total number of massive pairs, indicating that these pairs are not simply accreting matter and moving into the higher mass bin.
 
 
 
-\subsection{Comparison to previous pair fraction studies}
-We performed a pair fraction analysis for dwarf and massive galaxy pairs in the TNG100 simulation, utilizing the full 6D position and velocity information that simulations enable. 
-However this means that direct comparison to pair fractions reported from observations is not straight-forward, as observationally selected pairs uniquely suffer from contamination, due to projected pairs, and restrictive separation criteria, that exclude more widely separated pairs. 
-Fortunately, a number of previous studies of pair fractions in the Illustris simulations have used lightcones to create mock images of observationally-motivated fields, from which they select pairs in the same fashion that is typically done with observational data.
-These studies select simulated galaxies based on stellar mass, and then use cuts on the projected separation and line of sight velocity difference to select pairs, which permits direct comparison between simulations and observations. 
-
-At the low mass end, \citet{Besla2018} quantified dwarf galaxy pair fractions in Illustris-1, both projected and physical pairs, which enabled a direct comparison of the cosmologically-derived pair fractions with an equivalently selected dwarf pair fraction from SDSS.  
-The pair selection criteria for dwarf galaxies, here defined as stellar masses\footnote{The stellar masses of galaxies from the Illustris simulations used in \citet{Besla2018} are from the median of the \citet{Moster2013} abundance matching prescription, the same as used in this work, rather than the stellar mass values from the simulations.} from $2\times10^{8} < M_{*} < 5\times10^{9}\,\Msun$, include a projected separation criteria of $r_{p} < 150\,\kpc$ and a relative line-of-sight velocity difference $\Delta v_{\rm los} < 150\,\kms$. 
-
-By searching for pairs in a projected space while having access to the true 3D positions and velocities of the galaxies, they quantified the contamination fraction and found that up to $\sim40$\% of identified companions were unrelated but appeared to be close due to projection effects. 
-In Illustris, they found that the projected major pair fraction of dwarf galaxies at $z\sim0$ is $f_{p,proj.}\sim0.005-0.012$, while the . \kc{where tf are these numbers from??? }
-The total pair fraction (including all stellar mass ratios) is $0.032\pm0.005$ for the projected mock catalogs, which are consistent with SDSS equivalently-selected pairs, which find a total pair fraction of $0.035\pm0.3$. 
-
-However, using the full physical catalogs, they find a lower pair fraction of $0.02\pm0.004$. \kc{I *THINK* this is the fraction of TOTAL pairs (N\_1 from the tables)? not just major pairs? otherwise I don't know how it's different.}
-For comparison, when we modify our pair selection criteria to match those of \citet{Besla2018}, and require a physical separation $r_{\rm sep}< 150\,\kms$ and a 3D relative velocity $\Delta v_{\rm los} < 150\,\kms$, we find a dwarf major pair fraction of XX at $z=0$, which is slightly SKZ than the \citet{Besla2018} results.
-This is/is not surprising because SKZ. 
-
-As the behavior of the major pair fraction as a function of primary stellar mass is consistent between the projected mock catalogs and the SDSS catalogs, they conclude that cosmological simulations can be used to reliably constrain observational pair fractions of dwarf mergers across time. \kc{across time... is this true?} 
-Additionally, which projected and physical pair catalogs yield different absolute values of pair fractions, their behavioral trends as a function of mass are nearly identical such that, in terms of trends, projected and physical pair fractions will yield similar results. 
 
 
-% While the study uses projected separations and line of sight velocities, we can assume that the same \textit{trends} are valid for full-6D selected pairs, such that our pair fraction trends can be reasonably compared to those in observations. 
+% \subsection{Comparison to previous pair fraction studies}
+% We performed a pair fraction analysis for dwarf and massive galaxy pairs in the TNG100 simulation, utilizing the full 6D position and velocity information that simulations enable. 
+% However this means that direct comparison to pair fractions reported from observations is not straight-forward, as observationally selected pairs uniquely suffer from contamination, due to projected pairs, and restrictive separation criteria, that exclude more widely separated pairs. 
+% Fortunately, a number of previous studies of pair fractions in the Illustris simulations have used lightcones to create mock images of observationally-motivated fields, from which they select pairs in the same fashion that is typically done with observational data.
+% These studies select simulated galaxies based on stellar mass, and then use cuts on the projected separation and line of sight velocity difference to select pairs, which permits direct comparison between simulations and observations. 
 
-Separate studies have analyzed the pair fractions of higher mass galaxies in Illustris simulation. 
-In particular, \citet{snyder2017} created mock catalogs using lightcones in the Illustris-1 simulation to pick pairs in the same fashion as done in observations. 
-Specifically, they consider only major pairs with: $1\times 10^{11}>M_{*,1} >1\times 10^{10.5}Msun$, projected distances between $14\kpc-71\kpc$, and a redshift separation of $\Delta z<0.02(1+z_{pri}$, which corresponds to a velocity separation of $<1.8\time10^4\kms$. 
-They find that the major pair fraction for primaries with stellar mass $1\times 10^{10.5-11}Msun$ is constant or decreasing for $z>1$. 
-Additionally, they compared to observational studies \kc{what studies} that selected pairs with stellar mass $(M* > 10^{10.8}\Msun)$, $(10 <d/(kpc h-1) < 30)$, and $(Msec/Mpri > 0.1)$, and found good agreement between the measured pair fractions as a function of redshift.
-Thus, projected pair fractions in the Illustris simulation are likely representative of those found in observations for massive galaxy pairs.
+% At the low mass end, \citet{Besla2018} quantified dwarf galaxy pair fractions in Illustris-1, both projected and 3D pairs, which enabled a direct comparison of the cosmologically-derived pair fractions with an equivalently selected dwarf pair fraction from SDSS.  
+% The pair selection criteria for dwarf galaxies, here defined as stellar masses\footnote{The stellar masses of galaxies from the Illustris simulations used in \citet{Besla2018} are from the median of the \citet{Moster2013} abundance matching prescription, the same as used in this work, rather than the stellar mass values from the simulations.} from $2\times10^{8} < M_{*} < 5\times10^{9}\,\Msun$, include a projected separation criteria of $r_{p} < 150\,\kpc$ and a relative line-of-sight velocity difference $\Delta v_{\rm los} < 150\,\kms$. 
 
-\citet{snyder2023} extended this work to utilize the TNG simulation, and created mock images of extragalactic survey fields mimicking future planned surveys like JADES.
-From the mock images, they calculated the pair fraction for major pairs with projected separations between $5-70 \kpc$ and with redshift separations of $\Delta z< 0.02(1+z)$, and also found flat or decreasing major pair fractions. 
-This is in agreement with our work, as our major pair fraction for massive galaxies is approximately constant or decreasing with higher redshift for $z>1$. 
-While we cannot directly compare the values of the pair fractions themselves, as the projected and physical pair separations will yield very different pair fractions as shown in \citet{Besla2018}, we can say that the behavioral trends are the same. 
-Pair fractions computed using physical separations do not have to account for contamination due to projection effects, which would increase the inferred pair fraction, however our separation criteria is much less stringent, which would also increase the pair fraction. 
+% By searching for pairs in a projected space while having access to the true 3D positions and velocities of the galaxies, they quantified the contamination fraction and found that up to $\sim40$\% of identified companions were unrelated but appeared to be close due to projection effects. 
+% In Illustris, they found that the projected major pair fraction of dwarf galaxies at $z\sim0$ is $f_{p,proj.}\sim0.005-0.012$, while the . \kc{where tf are these numbers from??? }
+% The total pair fraction (including all stellar mass ratios) is $0.032\pm0.005$ for the projected mock catalogs, which are consistent with SDSS equivalently-selected pairs, which find a total pair fraction of $0.035\pm0.3$. 
 
-% Alejandro's paper connection: studies are finding good agreement between simulations and TNG, as evidenced by this paper. They found that TNG simulated images well approximated the morphologies of galaxies in the KIDS survey, although they were a bit more compact and lumpy. But this means that there is precedent for using TNG in these kinds of comparisons. 
+% However, using the full physical catalogs, they find a lower pair fraction of $0.02\pm0.004$. \kc{I *THINK* this is the fraction of TOTAL pairs (N\_1 from the tables)? not just major pairs? otherwise I don't know how it's different.}
+% For comparison, when we modify our pair selection criteria to match those of \citet{Besla2018}, and require a 3D separation $r_{\rm sep}< 150\,\kms$ and a 3D relative velocity $\Delta v_{\rm los} < 150\,\kms$, we find a dwarf major pair fraction of XX at $z=0$, which is slightly SKZ than the \citet{Besla2018} results.
+% This is/is not surprising because SKZ. 
 
-% ? maybe to do: plot with comparison values 
-\subsection{Implications for observational pair selection criteria}
-    %figures
-    %%%%%%%%%%%%%%%%%%%%
-    \begin{figure*}[htp]
-      \centering
-      \includegraphics[width=\textwidth]{sepdist_1000.png}
-      \caption{Normalized physical separation distribution for dwarf (top) and massive (bottom) pairs from $z=0$ (left) to $z=4$ (right). Major pairs are shown as solid lines, while minor pairs are dotted. The median separation of each pair type (from Fig.~\ref{fig:sep}) is shown in solid (major) and dotted (minor) vertical black lines. 
-      At higher redshift $z=3-4$, a large fraction of both dwarf and massive pairs have low separations ($<$ 125 \& 250 $\kpc$ respectively). However, at low redshift, the separation distribution tends to spread out more evenly across a large range of separations, thus increasing the median.
-        }
-      \label{fig:sep-dist}
-    \end{figure*}
-    %%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%%%%%%%%%%%%%
-    \begin{figure*}[htp]
-      \centering
-      \includegraphics[width=\textwidth]{frac_selected.png}
-      \caption{ The fraction of total pairs selected with additional separation selection criteria as a function of redshift. 
-        }
-      \label{fig:frac-select}
-    \end{figure*}
-    %%%%%%%%%%%%%%%%%%%%
+% As the behavior of the major pair fraction as a function of primary stellar mass is consistent between the projected mock catalogs and the SDSS catalogs, they conclude that cosmological simulations can be used to reliably constrain observational pair fractions of dwarf mergers across time. \kc{across time... is this true?} 
+% Additionally, which projected and 3D pair catalogs yield different absolute values of pair fractions, their behavioral trends as a function of mass are nearly identical such that, in terms of trends, projected and 3D pair fractions will yield similar results. 
 
-    % outline
-    \begin{itemize}
-        \item examples of typical pair selection criteria (i.e. <75 kpc, velocity crit, etc.)
-        \item Show how low separation cuts affect pair fractions      
-        \item Sep distribution plot and explanation (text below) 
-        \item Plot of \% of total pairs selected as function of z for different separation criteria (or maybe better is to do total as function of separation, for different redshifts?) 
-        \item What does this mean for JWST and future surveys?
-    \end{itemize}
+
+% % While the study uses projected separations and line of sight velocities, we can assume that the same \textit{trends} are valid for full-6D selected pairs, such that our pair fraction trends can be reasonably compared to those in observations. 
+
+% Separate studies have analyzed the pair fractions of higher mass galaxies in Illustris simulation. 
+% In particular, \citet{snyder2017} created mock catalogs using lightcones in the Illustris-1 simulation to pick pairs in the same fashion as done in observations. 
+% Specifically, they consider only major pairs with: $1\times 10^{11}>M_{*,1} >1\times 10^{10.5}Msun$, projected distances between $14\kpc-71\kpc$, and a redshift separation of $\Delta z<0.02(1+z_{pri}$, which corresponds to a velocity separation of $<1.8\time10^4\kms$. 
+% They find that the major pair fraction for primaries with stellar mass $1\times 10^{10.5-11}Msun$ is constant or decreasing for $z>1$. 
+% Additionally, they compared to observational studies \kc{what studies} that selected pairs with stellar mass $(M* > 10^{10.8}\Msun)$, $(10 <d/(kpc h-1) < 30)$, and $(Msec/Mpri > 0.1)$, and found good agreement between the measured pair fractions as a function of redshift.
+% Thus, projected pair fractions in the Illustris simulation are likely representative of those found in observations for massive galaxy pairs.
+
+% \citet{snyder2023} extended this work to utilize the TNG simulation, and created mock images of extragalactic survey fields mimicking future planned surveys like JADES.
+% From the mock images, they calculated the pair fraction for major pairs with projected separations between $5-70 \kpc$ and with redshift separations of $\Delta z< 0.02(1+z)$, and also found flat or decreasing major pair fractions. 
+% This is in agreement with our work, as our major pair fraction for massive galaxies is approximately constant or decreasing with higher redshift for $z>1$. 
+% While we cannot directly compare the values of the pair fractions themselves, as the projected and 3D pair separations will yield very different pair fractions as shown in \citet{Besla2018}, we can say that the behavioral trends are the same. 
+% Pair fractions computed using 3D separations do not have to account for contamination due to projection effects, which would increase the inferred pair fraction, however our separation criteria is much less stringent, which would also increase the pair fraction. 
+
+% % Alejandro's paper connection: studies are finding good agreement between simulations and TNG, as evidenced by this paper. They found that TNG simulated images well approximated the morphologies of galaxies in the KIDS survey, although they were a bit more compact and lumpy. But this means that there is precedent for using TNG in these kinds of comparisons. 
+
+% % ? maybe to do: plot with comparison values 
+% \subsection{Implications for observational pair selection criteria}
+%     %figures
+%     %%%%%%%%%%%%%%%%%%%%
+%     \begin{figure*}[htp]
+%       \centering
+%       \includegraphics[width=\textwidth]{frac_selected.png}
+%       \caption{ The fraction of total pairs selected with additional separation selection criteria as a function of redshift. 
+%         }
+%       \label{fig:frac-select}
+%     \end{figure*}
+%     %%%%%%%%%%%%%%%%%%%%
+
+%     % outline
+%     \begin{itemize}
+%         \item examples of typical pair selection criteria (i.e. <75 kpc, velocity crit, etc.)
+%         \item Show how low separation cuts affect pair fractions      
+%         \item Sep distribution plot and explanation (text below) 
+%         \item Plot of \% of total pairs selected as function of z for different separation criteria (or maybe better is to do total as function of separation, for different redshifts?) 
+%         \item What does this mean for JWST and future surveys?
+%     \end{itemize}
     
     
-% text on the separation distribution plot
-Fig.~\ref{fig:sep-dist} shows the full distribution of separations for major and minor dwarf and massive pairs at $z=\{0,1,2,3,4\}$, and includes all 1000 AM realizations. 
-For reference, the median at each corresponding redshift from Fig.~\ref{fig:sep} (that is, the median of the medians of each realization) are shown in light black vertical lines.
-Each plot is normalized such that the area under an individual curve is 1.
-    % the redshift evolution
-At $z=4$, all pair types (dwarf and massive, major and minor) have narrow distributions that pile up around 0 $\kpc$\footnote{Note that only pairs with separations $>10\kpc$ are included in this analysis, see Sec.~\ref{sec:methods-pairs}.}, with ranges between $10-150\,\kpc$ for dwarf pairs and $10-300\,\kpc$ for massive pairs. 
-The distributions become more and more broad as $z\to0$, where separations range between $\sim10-400\,\kpc$ for dwarf pairs and $\sim10-1000\,\kpc$ for massive pairs.
+% % text on the separation distribution plot
+% % Fig.~\ref{fig:sep-dist} shows the full distribution of separations for major and minor dwarf and massive pairs at $z=\{0,1,2,3,4\}$, and includes all 1000 AM realizations. 
+% % For reference, the median at each corresponding redshift from Fig.~\ref{fig:sep} (that is, the median of the medians of each realization) are shown in light black vertical lines.
+% % Each plot is normalized such that the area under an individual curve is 1.
+%     % the redshift evolution
+% % At $z=4$, all pair types (dwarf and massive, major and minor) have narrow distributions that pile up around 0 $\kpc$\footnote{Note that only pairs with separations $>10\kpc$ are included in this analysis, see Sec.~\ref{sec:methods-pairs}.}, with ranges between $10-150\,\kpc$ for dwarf pairs and $10-300\,\kpc$ for massive pairs. 
+% % The distributions become more and more broad as $z\to0$, where separations range between $\sim10-400\,\kpc$ for dwarf pairs and $\sim10-1000\,\kpc$ for massive pairs.
 
-Since the distribution of separations changes dramatically from $z=4$ to $z=0$, the population of low separation pairs that are selected at $z=4$ includes the majority of true pairs, but this is not the case at low z. 
-At low z, separation criteria must be very broad to encompass the majority of pairs. 
-Figure~\ref{fig:frac-select} shows the fraction of pairs that have separations less than $\{50, 75, 100, 150\}\kpc$.
-At high redshift ($z\sim2-4$) a majority of pairs are included in the selection, however at lower redshift ($z\sim0-1$), the pair completeness decreases substantially, with fewer than XX\% of the total number pairs for XX separation criteria. 
+% % Since the distribution of separations changes dramatically from $z=4$ to $z=0$, the population of low separation pairs that are selected at $z=4$ includes the majority of true pairs, but this is not the case at low z. 
+% % At low z, separation criteria must be very broad to encompass the majority of pairs. 
+% % Figure~\ref{fig:frac-select} shows the fraction of pairs that have separations less than $\{50, 75, 100, 150\}\kpc$.
+% % At high redshift ($z\sim2-4$) a majority of pairs are included in the selection, however at lower redshift ($z\sim0-1$), the pair completeness decreases substantially, with fewer than XX\% of the total number pairs for XX separation criteria. 
 
-As JWST is expected to image dwarfs (give stellar mass range) out to z=XX in XX survey, the selection criteria for dwarf pairs that are applied will affect the inferred pair fractions greatly. 
+% As JWST is expected to image dwarfs (give stellar mass range) out to z=XX in XX survey, the selection criteria for dwarf pairs that are applied will affect the inferred pair fractions greatly. 
 
-%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \pagebreak
+
 \section{Summary and Conclusions}\label{sec:summary}
-In this paper, we collect a large set of dwarf and massive subhalo pairs from the Illustris TNG100-1 simulation. 
-Pairs are selected from the full volume over all 100 snapshots of the simulation, though the sample size of pairs in the first 20 snapshots ($z>4.2$) is extremely small. 
-Major and minor pairs are determined using the stellar mass ratio between the primary and secondary halo using stellar masses from 1000 random realizations of the abundance matching prescription. 
-From this pair sample, we calculate the pair fractions and snapshot by snapshot kinematics of 4 different pair types: dwarf major pairs, dwarf minor pairs, massive major pairs, and massive minor pairs.
+% In this paper, we collect a large set of dwarf and massive subhalo pairs from the Illustris TNG100-1 simulation. 
+% Pairs are selected from the full volume over all 100 snapshots of the simulation, though the sample size of pairs in the first 20 snapshots ($z>4.2$) is extremely small. 
+% Major and minor pairs are determined using the stellar mass ratio between the primary and secondary halo using stellar masses from 1000 random realizations of the abundance matching prescription. 
+% From this pair sample, we calculate the pair fractions and snapshot by snapshot kinematics of 4 different pair types: dwarf major pairs, dwarf minor pairs, massive major pairs, and massive minor pairs.
 
-Our main findings are as follows:
-\begin{itemize}
-    \item The pair fraction for dwarf and massive pairs does not proceed identically throughout cosmic time. In fact, the two mass scales have opposite behavior at low z. The number of dwarf pairs per dwarf primary decreases from $z=2\to0$, while the number of massive pairs per massive primary is approximately constant from $z=4\to0.25$, with an abrupt increase at lower redshift. 
-    \item The median physical separation between the primary and secondary subhalo of a pair increases with decreasing redshift. The typical separation of a dwarf (massive) pair is $120\,\kpc$ ($240\,\kpc$) at $z=0$ and $40\,\kpc$ ($80\,\kpc$) at $z=4$.
-    \item The median relative velocity between the primary and secondary subhalo of a pair decreases towards lower redshift. The typical relative velocity of a dwarf (massive) pair is $70\,\kms$ ($175\,\kms$) at $z=0$ and $132\,\kms$ ($290\,\kms$) at $z=4$.
-    \item The separation scaled by the total virial radius of the group is similar for dwarf and massive pairs, though massive pairs tend to have lower scaled separations for redshifts between $z=0-2$. The relative velocity scaled by the circular velocity at the virial radius evolves identically for both dwarf and massive pairs, indicating that the relative velocities are self-similar at different mass scales. 
-    \item All of the above trends hold true for both major and minor pairs of the same mass range (i.e., the conclusions for the dwarf major pairs hold too for the dwarf minor pairs). 
-\end{itemize}
+% Our main findings are as follows:
+% \begin{itemize}
+%     \item The pair fraction for dwarf and massive pairs does not proceed identically throughout cosmic time. In fact, the two mass scales have opposite behavior at low z. The number of dwarf pairs per dwarf primary decreases from $z=2\to0$, while the number of massive pairs per massive primary is approximately constant from $z=4\to0.25$, with an abrupt increase at lower redshift. 
+%     \item The median 3D separation between the primary and secondary subhalo of a pair increases with decreasing redshift. The typical separation of a dwarf (massive) pair is $120\,\kpc$ ($240\,\kpc$) at $z=0$ and $40\,\kpc$ ($80\,\kpc$) at $z=4$.
+%     \item The median relative velocity between the primary and secondary subhalo of a pair decreases towards lower redshift. The typical relative velocity of a dwarf (massive) pair is $70\,\kms$ ($175\,\kms$) at $z=0$ and $132\,\kms$ ($290\,\kms$) at $z=4$.
+%     \item The separation scaled by the total virial radius of the group is similar for dwarf and massive pairs, though massive pairs tend to have lower scaled separations for redshifts between $z=0-2$. The relative velocity scaled by the circular velocity at the virial radius evolves identically for both dwarf and massive pairs, indicating that the relative velocities are self-similar at different mass scales. 
+%     \item All of the above trends hold true for both major and minor pairs of the same mass range (i.e., the conclusions for the dwarf major pairs hold too for the dwarf minor pairs). 
+% \end{itemize}
 
-Our results are consistent with prior works that have studied the pair fractions of massive and dwarf galaxies in the Illustris simulations in a projected sense. 
-The agreement between the pair fraction trends from projected and from physical pair selection criteria points to the IllustrisTNG simulation's robust ability to reproduce the characteristics of galaxy pairs from observations. 
+% Our results are consistent with prior works that have studied the pair fractions of massive and dwarf galaxies in the Illustris simulations in a projected sense. 
+% The agreement between the pair fraction trends from projected and from 3D pair selection criteria points to the IllustrisTNG simulation's robust ability to reproduce the characteristics of galaxy pairs from observations. 
 
-Additionally, we conclude that:
-\begin{itemize}
-    \item Dwarf galaxy pairs and massive galaxy pairs likely have different evolutionary and merger processes which result in the opposing behavior of dwarf and massive pair fractions as a function of redshift.
-    \item The separation criteria used to observationally identify pairs likely results in an incompleteness of at least XX\% by $z=0$, though is less problematic for high redshift pairs where pairs tend to have smaller separations. 
-\end{itemize}
+% Additionally, we conclude that:
+% \begin{itemize}
+%     \item Dwarf galaxy pairs and massive galaxy pairs likely have different evolutionary and merger processes which result in the opposing behavior of dwarf and massive pair fractions as a function of redshift.
+%     \item The separation criteria used to observationally identify pairs likely results in an incompleteness of at least XX\% by $z=0$, though is less problematic for high redshift pairs where pairs tend to have smaller separations. 
+% \end{itemize}
 
-Our conclusions point to the importance of time-evolving pair selection criteria that account for the natural separation increase of pairs at the universe expands. 
+% Our conclusions point to the importance of time-evolving pair selection criteria that account for the natural separation increase of pairs at the universe expands. 
 
 
-\kc{other main takeaways?}
+% \kc{other main takeaways?}
 
-\begin{itemize}
-    \item otherMain takeaways: (maybe include these within main findings bullets~)
-        \begin{itemize}
-            \item lit comp.
-            \item dwarfs not equal massives 
-            \item JWST imps.
-        \end{itemize}
-    \item Future work
-\end{itemize}
+% \begin{itemize}
+%     \item otherMain takeaways: (maybe include these within main findings bullets~)
+%         \begin{itemize}
+%             \item lit comp.
+%             \item dwarfs not equal massives 
+%             \item JWST imps.
+%         \end{itemize}
+%     \item Future work
+% \end{itemize}
 
 % Findings:
 % \begin{itemize}
