@@ -1,0 +1,89 @@
+We thank the reviewer for the thorough, thoughtful comments on our manuscript, which prompted us to reexamine the language used to discuss observations throughout the paper.
+
+All additions/edits to the paper are marked in bold red text (with the \add{} command). 
+
+Please find a more detailed description of each of the changes below, as well as responses to individual comments in the order that they appeared. Also, please note that we have added an additional coauthor, Nitya Kallivayalil, who was mistakenly not included in the author list during the first submission.
+
+Best,
+Katie
+
+Begin reviewer comments:
+------------------------
+
+The manuscript entitled " A physically motivated framework for measuring the mass and redshift dependence of galaxy pair fractions across cosmic time" by Chamberlain et al. contributes to the analysis of galaxy growth via mergers using numerical simulations to determine the fraction of close pairs and its dependence on mass and redshift. The separation with respect to stellar mass is especially interesting as the differences in the pair fraction predicted by the simulations could be tested with deep survey data (at least out to intermediate redshifts).
+
+On a practical note, I find that the "dynamic" definition of the pair separation with respect to the virial radius of the host halo would be rather complicated to implement in observational data, as the way this virial radius is selected (from the unobservable DM) would unavoidably introduce systematics that would induce artificial trends hard to disentangle. This will be especially harder if photometric redshifts are used (note that this type of study requires a large number of sources with a high completeness down to relatively small apparent distances, something that many spectroscopic surveys struggle with). While less optimal, a fixed separation criterion allows for a robust selection in both simulations and observations. Perhaps this is the reason why this paper lacks a comprehensive comparison with observational data.
+–
+>> We thank the reviewer for this comment. In this study we have selected pairs using a standard pair separation cut, as is done in observations (<50 kpc, 100 kpc, 150 kpc, etc). We illustrated that such a fixed separation will result in completeness issues, which will limit the effectiveness of comparison against simulations. This will be particularly true for efforts to tease out physical differences in the pair fractions of massive vs low mass galaxies over time. 
+
+To address this shortcoming, we have introduced a “dynamic” definition that involves the virial radius of the host.  The referee is correct that this is a well defined quantity in the simulations, but not in the observations. However we disagree that such an approach is unfeasible for observational studies. A dynamic definition can be introduced in an observational study using the halo-to-stellar mass relation (abundance matching). This is the same relationship we have used in our theoretical study to infer stellar masses from halo mass. As such, the errors introduced would be similar to those of the theoretical study. No comparison between theory and observations is devoid of assumptions. Applying a “dynamic” definition for pair separation is simply an example method where the introduced errors would be similar for both theory and observational samples. 
+– 
+
+There is also a concern I have regarding the sample selection. On page 2, col 2, line 132, the authors state that "... no other more massive perturbers are nearby", admittedly with the intention of focusing on the pairs and somehow removing the effect of the environment over larger scales. However, this will cause a systematic in the selection towards isolated pairs. In general, the distribution of pairs will be heavily dependent on the environment. 
+–
+>>We thank the reviewer for their response, and have clarified in the draft that these results are true of isolated environments only.
+
+In this study, our primary goal is to identify whether physical differences between the fraction of low mass galaxy pairs and high mass galaxy pairs exist as a function of time. We recognize that an isolation criteria can be challenging to implement in observations at high z. However, an isolation criterion is necessary in our study to remove environmental factors that can impact pair counts, such as the disruption of pairs by a more massive host. This isolation criteria enables the low mass and high mass pairs to be compared directly, as lower mass pairs are more susceptible to environmental effects. Furthermore, isolation criteria are standardly applied in studies of galaxies at low z (see Geha+ 2012, which studies isolated quenched vs. star forming galaxies at 1.5Mpc from other galaxies, or Besla+ 2018 which applies isolation criteria to the SDSS sample in their paper). We have added language to make it clear that requiring isolation may be challenging at high z. 
+–
+
+
+The imposed selection will target close pairs in lower density regions, affecting in several ways the analysis:
+
+1) Observational samples need estimates of the stellar mass of the galaxies, which requires a derivation of the stellar M/L, itself dependent on the star formation history of the galaxies. A sample targeting isolated galaxies may produce different M/L than a more standard field distribution, on samples defined in groups/clusters. This is even more relevant when a large range of cosmological time is invoked (in this case out to z~4). The trends could be (partly) caused by this: the M/L of z~4 galaxies can be very different with respect to the M/L of z~0 galaxies (say at fixed mass, morphology, velocity dispersion, etc).
+–
+>> We agree with the reviewer that the M/L ratio of z~4 galaxies may be different that of z~0 galaxies. The trends reported in our study rely on stellar masses derived from abundance matching, which is calibrated for central halos (i.e. isolated galaxies; Moster+2023). The M/L ratio does not factor into the analysis of the simulation data and cannot explain our reported trends.  We agree that observational studies comparing galaxies selected from stellar mass cuts at high and low z galaxies should account for such differences in their errors.  We stress that the goal of this study is to identify whether any physical differences should be expected in the pair fractions of low and high mass galaxies in an ideal LCDM theoretical study.
+–
+ 
+
+2) On figure 3, for instance, the decreasing trend consistently found in low mass pairs (minor and major), could be produced by the selection of isolated pairs. Statistically, there are far more low mass galaxies in any cosmological volume, but there is also the assembly of lower mass halos into more massive structures, so the decreasing trend towards low z may just be caused by the details of the selection that progressively eliminates more pairs as they will be found in groups. This should be clarified, as an observational comparison will not only need an assumption of virial radius (as mentioned above) but also the selection of isolated pairs as in the adopted methodology.
+–
+>>We thank the reviewer for this comment. We have added additional text to make it clear that our reported trends are unique to our selection criteria, and may well be different for non-isolated low mass halos.  
+
+The primary goal for this study is to set the theoretical foundation for isolated pair fraction studies that seek to understand/quantify the differences between low mass and high mass pairs. Specifically, our goal is to identify if any differences in pair fractions are expected to exist in LCDM theory - the idea pointed out by the referee, that lower mass halos may assemble into more massive structures, would indeed be a prediction from LCDM theory that a such a study of pair fractions could in fact illustrate. We have added a section 5.4 to make this point and thank the referee for this comment. 
+
+Because  our selection methodology identifies halo pairs independently at each snapshot, it is true that some low mass galaxies may not be identified in our sample at one redshift but do enter the sample at another. The exact physical processes responsible for the trends we identify in this paper require tracking the individual halos across cosmic time and will be addressed in our next study.
+–
+
+
+I would like to see a better explanation as to why abundance matching(AM) is used instead of directly taking the stellar mass of the galaxies in TNG. The authors give a not too convincing explanation in 2.3, and the worry is that the predictions will inherit potential systematics from AM.
+–
+>> We thank the referee for raising this issue and have adjusted section 2.3 accordingly. The intention behind using abundance matching is threefold:
+First, abundance matching allows us a prescriptive way to perform equivalent analyses for fair comparison in both the TNG Hydro and TNG Dark simulations (mentioned in section 2.3 paragraph 2).
+Second, abundance matching allows us to remain independent of the specific subgrid physics that is implemented in the TNG Hydro simulation (mentioned in section 2.3 paragraph 3). Different hydrodynamical simulations use alternative subgrid physics, therefore it is likely that applying our analysis to another simulation suite using simulation stellar masses would yield different results. The abundance matching technique voids such uncertainties.
+Third, abundance matching permits many realizations of stellar masses to account for the observed spread of stellar masses at a fixed halo mass, or uncertainties in the M/L ratio in the determination of stellar mass. Otherwise, we would only be able to perform this analysis for a singular given realization from the simulation. 	
+We have improved some of the language in this section to make it more clear that there are a variety of reasons to use abundance matching, and added a mention of the third point above more explicitly in section 2.3 paragraph 4. Fortunately, the abundance matching method of Moster+2013 already includes ~1 dex spread in the stellar mass associated with a halo of mass ~1e11Msun. The uncertainty in the AM relationship is built into our analysis as we sample the abundance matching relation many times within this error space.
+–
+
+
+The authors should include a more extended comparison of their work with observationally motivated studies that assessed the growth of galaxy mass in groups of close pairs (see, e.g., Ferreras et al. 2013, Man et al. 2016, Conselice et al. 2022). Section 5.2 discusses some recent work on pair fractions, such as Besla et al. 2018, that compares low mass close pairs in SDSS with Illustris. Note the notorious low completeness at very close separation of SDSS, which would make the proposed separations presented here very challenging for actual survey data. The Snyder et al. (2017) reference focuses on more massive galaxies in the Illustris simulation, and compares with Man et al. (2016). No figure in the manuscript shows any results from observational constraints. The crux of the methodology proposed here is how one can implement a separation selection based on the virial radius in observational data. I think the connection with observations is fundamental if this paper is to make a substantial step forward.
+–
+>> We thank the reviewer for this comment. The intention of this paper is to show systematically that: 1) pair fractions evolve as a function of redshift; and 2) the behavior of low mass pairs and high mass pairs differs in a theoretical setting. We have edited text in the discussion section to make this clearer, and to highlight that this work is not a mock survey study. As pointed out by the referee, our pair selection choices differ markedly from that utilized by most observational studies.  As such, we do not attempt to compare our results with those of observational pair fraction studies. We have also adjusted the title of this paper to better reflect our intention. 
+  
+Instead, we do compare with other simulation based pair fraction studies (some of which have their own comparisons to observational data) to ensure that our results are consistent. While these papers all use mock catalogs to compute pair fractions, they use much of the same methodology for selection that we do. 
+
+However, we do want to emphasize that, while our methodology may be challenging to adapt observationally, we have identified important selection considerations for performing observational pair fraction studies of different galaxy masses at different redshifts. The observational community should be made aware of these issues if comparisons to cosmological simulations is desired.  
+–
+
+
+Moreover, regarding the implementation with real data, note, for instance, that the quoted minimum separation (10 kpc) in page 6, col 1, line 399, would be at the resolution limit in most ground-based surveys at intermediate redshift. I think the actual apparent separation criterion should be led by the observational limits, and not the resolution limits of the simulation.
+–
+>> The minimum separation of 10 kpc is necessary to avoid incompleteness issues in the simulations. 10 kpc corresponds to a few times the simulation softening length.  It is not in the scope of this present work to include the effect of observational limits on the recovery of the pair fractions.
+–
+
+
+Figure 3: The fiducial separation to define a pair should be quoted in the caption, as the next figure extends on this choice of separation.
+–
+>> We thank the reviewer for this comment, and have added this in the caption of Figure 3. 
+–
+
+
+Overall, while this is a matter of taste, I would remove the brief paragraphs introduced in each section that describe what will be done in that section. I find it acceptable to do this type of brief description at the end of the introduction, regarding the whole paper. Doing this in each section seems like a page filler, and rather kills the flow of the text.
+–
+>> We thank the reviewer for this comment, and have decided to leave the introductory paragraphs of each section for ease of navigation for the reader.
+–
+
+
+In section 3, page 6, col 2, line 450, the number of pairs would be better understood if quoted as a fraction, or at least emphasize that the sample is defined within a fixed comoving volume at those two redshifts.
+–
+>> We thank the reviewer for this comment. We have added a line in the text to specify that this sample is defined with a fixed comoving volume in section 3.
+–
