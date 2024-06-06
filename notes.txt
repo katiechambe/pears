@@ -1,0 +1,42 @@
+\citet{rg15} 
+overview: create merger trees by tracking baryonic content of subhalos. used merger trees to determine merger rate 
+important: define the mass ratio of a galaxy merger as the time when secondary progenitor reaches maximum stellar mass. 
+require 10 stellar particles for smallest progenitor 
+we use DM based-merger tree 
+halo-halo merger rate (FoF group): 
+    - halo mass between 1e12-1e13 (my massive pairs are the lower 1e12-6.5e12 range)
+    - find halo merger rate is robust to different implementations of baryonic physics (dark and hydro are the same) 
+    - $(1+z)^2.3$ scaling for merger rate with 
+explains how the mass ratio of the merger is severly underestimates using the masses of the progenitors right before merger. also, this avoids stellar stripping and artificial
+finds that merger rate goes up as mass ratio goes down. finds merger rate goes up with descendent mass M* 
+finds that the major merger rate of M*>1e11 gals matches well with observations between z=0-3.
+at z=~0, good agreement with obs at >1e10M*, but not below ~1e10. Likely due to observability timescales. 
+The Illustris simulation, on the other hand, always predicts an increasing mass dependence, which becomes steeper for larger galaxy masses.
+Also, Illustris can be considered "representation" of the large-scale density feild of the universe, i.e. cosmic variance is not a problem. 
+Since the major merger rate increases with redshift, but the major merger fraction is ~constant, the timescale must be different. 
+Galaxy merger rate is consistent with Lotz 2011 for Ms>1e10.
+
+\citet{snyder2017} created lightcones in the Illustris-1, then identified pairs with 4 observationally-motivated selection criteria: $1e11>M*1 >1e10.5Msun$, major pairs by stellar mass, projected distance between $14kpc-71kpc$, and redshift sep of $0.02(1+z_pri)$ or a velocity separation of $<18000kms$. Found that the major pair fraction for primaries with stellar mass $1e10.5-11$ is constant or decreasing for $z>1$. Compared to some data with selection criteria $(M* > 1010.8 Msun)$, $(10 <d/(kpc h-1) < 30)$, and $(Msec/Mpri > 0.1)$ and found good agreement. 
+
+\citet{snyder2023} 
+selection: extended this work to use Illustris TNG, create mock extragalactic survey fields using light cones in the newer TNG simulations. THey analyzed close pairs in the catalogs and images. Mass ratio M2/M1 >= 0.25,Separation 5-70 kpc Redshifts z< 0.02(1+z). mass range? 
+Finds agreement with previous work that has flat pair fraction. Also looked at stellar mass from tng vs. simulated detection stellar mass.
+
+\cite{Besla2018} 
+overview: frequency of low redshift isolated dwarf galaxies 
+used abundance matching for stellar masses 
+Criteria: $rp < 150 kpc$, and $\delta vlos < 150km/s$.  dwarfs: $2e8 < Mstar < 5e9$
+methods: lightcone projection 
+Found: same number of companions per dwarf in Illustris as in SDSS,  40\% 
+Importance: concluded that cosmological simulations can be used to constrain frac of dwarf mergers across time. First pair frac study comparing observed pair frac and cosmo sims in consistent manner. Also found hydro projected fmajor frac to be between 0.005-0.012 
+How does my work compare? : one difference is that gurtina said companions which can be 1 or more. BUT she found a $N_c$ of 0.21 (would be the addition of major AND minor? pairs? no... )
+\kc{make equivalent cut on rsep and vsep and compare N_c. also count # of triples.  }
+
+% Translating from pair fractions to merger rates requires knowledge of the observability timescale, that is, the amount of time a merging galaxy will spend at a given separation from the primary. 
+% Lotz et. al 
+% \citet{rg15} quantified the galaxy merger rate in the original Illustris simulation \kc{volume?} by constructing merger trees that follow the dark matter content of subhalos between successive snapshots. 
+% They find good agreement between their derived galaxy major merger rate and merger rates from observations for galaxies with $M_{*}>1e\times 10^{11}\Msun$ from z=0-3. 
+% However, for low mass galaxies $M_{*}<1e\times 10^{10}\Msun$ at z=0, there is significant disagreement. 
+% This disagreement may be due to observability timescale that is used to convert from observed pair fractions to merger rates, which has been calibrated for large galaxies (), but may be different for dwarf galaxies. 
+% This showed that the Illustris simulation was a good representative of the merger behaviour/expectations that we infer from observations, and that comparing Illustris to observations is not off the wall. 
+% % how does this work differ/what does this intersection mean? 
